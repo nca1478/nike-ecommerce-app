@@ -1,9 +1,9 @@
-import { db } from "@/lib/db";
-import { products } from "@/lib/db/schema";
 import { ProductCard } from "@/components/ProductCard";
+import { getAllProducts } from "@/app/actions/products";
+import type { Product } from "@/lib/db/schema";
 
 export default async function Home() {
-  const allProducts = await db.select().from(products);
+  const allProducts = await getAllProducts();
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -15,7 +15,7 @@ export default async function Home() {
 
       <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {allProducts.map((product) => (
+          {allProducts.map((product: Product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
