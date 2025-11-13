@@ -1,81 +1,245 @@
-# Nike Store - Next.js E-commerce
+# Nike Store - E-commerce App
 
-Una aplicación de e-commerce moderna construida con Next.js, TypeScript, y las mejores tecnologías del ecosistema.
+Una aplicación de e-commerce moderna construida con Next.js 16, TypeScript y las mejores tecnologías del ecosistema React. Incluye catálogo de productos, carrito de compras persistente y autenticación.
 
-## 🚀 Tecnologías
+## 🚀 Stack Tecnológico
 
-- **Next.js 16** - Framework de React
-- **TypeScript** - Tipado estático
-- **TailwindCSS** - Estilos utility-first
-- **Drizzle ORM** - ORM type-safe
-- **Neon PostgreSQL** - Base de datos serverless
-- **Better Auth** - Autenticación
-- **Zustand** - Gestión de estado
-- **ESLint** - Linting
+### Frontend
 
-## 📦 Instalación
+- **Next.js 16.0.3** - Framework React con App Router y React Server Components
+- **React 19.2.0** - Biblioteca UI con React Compiler habilitado
+- **TypeScript 5** - Tipado estático para mayor seguridad
+- **TailwindCSS 4** - Framework CSS utility-first con PostCSS
+- **Next/Image** - Optimización automática de imágenes
 
-1. Clona el repositorio
-2. Instala las dependencias:
+### Backend & Base de Datos
+
+- **Neon PostgreSQL** - Base de datos serverless con pooling de conexiones
+- **Drizzle ORM 0.44.7** - ORM type-safe con inferencia de tipos
+- **Drizzle Kit 0.31.6** - Herramientas de migración y gestión de schemas
+
+### Estado & Autenticación
+
+- **Zustand 5.0.8** - Gestión de estado global con persistencia
+- **Better Auth 1.3.34** - Sistema de autenticación con adaptador Drizzle
+
+### Herramientas de Desarrollo
+
+- **ESLint 9** - Linting con configuración Next.js
+- **TSX** - Ejecución de TypeScript para scripts
+- **dotenv-cli** - Gestión de variables de entorno
+
+## 📦 Instalación y Configuración
+
+### 1. Clonar e Instalar Dependencias
 
 ```bash
+git clone <repository-url>
+cd nike-ecommerce-app
 npm install
 ```
 
-3. Configura las variables de entorno en `.env.local`:
+### 2. Configurar Variables de Entorno
+
+Crea un archivo `.env.local` en la raíz del proyecto:
 
 ```env
-DATABASE_URL=your_neon_database_url
-BETTER_AUTH_SECRET=your_secret_key
+# API Base URL
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+
+# Neon PostgreSQL Database
+DATABASE_URL=postgresql://user:password@host/database?sslmode=require&channel_binding=require
+
+# Better Auth Configuration
+BETTER_AUTH_SECRET=your_secret_key_here
 BETTER_AUTH_URL=http://localhost:3000
 ```
 
-4. Genera y ejecuta las migraciones:
+**Generar un secreto seguro:**
 
 ```bash
-npm run db:push
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 
-5. Seed de la base de datos:
+### 3. Configurar Base de Datos
 
 ```bash
+# Aplicar el schema a la base de datos
+npm run db:push
+
+# Insertar productos de ejemplo (6 productos Nike)
 npm run db:seed
 ```
 
-6. Inicia el servidor de desarrollo:
+### 4. Iniciar Aplicación
 
 ```bash
+# Modo desarrollo
 npm run dev
+
+# Producción
+npm run build
+npm start
 ```
+
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
 
 ## 📝 Scripts Disponibles
 
-- `npm run dev` - Inicia el servidor de desarrollo
-- `npm run build` - Construye la aplicación para producción
-- `npm run start` - Inicia el servidor de producción
-- `npm run lint` - Ejecuta el linter
-- `npm run db:generate` - Genera migraciones
-- `npm run db:push` - Aplica cambios al schema
-- `npm run db:seed` - Seed de datos de ejemplo
+| Script                | Descripción                                         |
+| --------------------- | --------------------------------------------------- |
+| `npm run dev`         | Inicia servidor de desarrollo en puerto 3000        |
+| `npm run build`       | Construye la aplicación optimizada para producción  |
+| `npm run start`       | Inicia servidor de producción                       |
+| `npm run lint`        | Ejecuta ESLint para verificar código                |
+| `npm run db:generate` | Genera archivos de migración desde el schema        |
+| `npm run db:migrate`  | Ejecuta migraciones pendientes                      |
+| `npm run db:push`     | Sincroniza schema directamente con la base de datos |
+| `npm run db:seed`     | Inserta datos de ejemplo en la base de datos        |
 
 ## 🏗️ Estructura del Proyecto
 
 ```
-nike-store/
-├── app/              # App Router de Next.js
-├── lib/
-│   ├── db/          # Configuración de base de datos y schemas
-│   ├── store/       # Stores de Zustand
-│   └── auth.ts      # Configuración de Better Auth
-├── public/          # Archivos estáticos
-└── drizzle.config.ts # Configuración de Drizzle
+nike-ecommerce-app/
+├── app/                          # Next.js App Router
+│   ├── actions/                  # Server Actions
+│   │   └── products.ts          # Acciones para productos
+│   ├── layout.tsx               # Layout raíz con fuentes Geist
+│   ├── page.tsx                 # Página principal (catálogo)
+│   └── globals.css              # Estilos globales
+│
+├── components/                   # Componentes React
+│   └── ProductCard.tsx          # Tarjeta de producto con carrito
+│
+├── lib/                         # Lógica de negocio y utilidades
+│   ├── db/                      # Configuración de base de datos
+│   │   ├── index.ts            # Cliente Drizzle + Neon
+│   │   ├── schema.ts           # Schema de productos
+│   │   └── seed.ts             # Script de seed con 6 productos
+│   ├── store/                   # Stores de Zustand
+│   │   └── useCartStore.ts     # Store del carrito (persistente)
+│   └── auth.ts                  # Configuración Better Auth
+│
+├── public/                      # Archivos estáticos
+├── drizzle.config.ts           # Configuración Drizzle Kit
+├── next.config.ts              # Configuración Next.js
+├── tsconfig.json               # Configuración TypeScript
+├── eslint.config.mjs           # Configuración ESLint
+├── postcss.config.mjs          # Configuración PostCSS
+├── package.json                # Dependencias y scripts
+├── .env.local                  # Variables de entorno (no commitear)
+├── README.md                   # Este archivo
+└── SETUP.md                    # Guía detallada de configuración
 ```
 
-## 🎯 Características
+## 🎯 Características Implementadas
 
-- ✅ Listado de productos desde PostgreSQL
-- ✅ Diseño responsive con TailwindCSS
-- ✅ Gestión de estado con Zustand
-- ✅ ORM type-safe con Drizzle
-- ✅ Autenticación con Better Auth
-- ✅ TypeScript en todo el proyecto
+### ✅ Catálogo de Productos
+
+- Listado de productos desde PostgreSQL usando Server Components
+- Renderizado del lado del servidor para mejor SEO
+- Grid responsive (1 columna móvil, 2 tablet, 3 desktop)
+- Imágenes optimizadas con Next/Image
+
+### ✅ Carrito de Compras
+
+- Gestión de estado con Zustand
+- Persistencia en localStorage
+- Agregar productos con incremento de cantidad
+- Cálculo automático de totales
+- Eliminar productos del carrito
+
+### ✅ Base de Datos
+
+- Schema de productos con Drizzle ORM
+- Campos: id, name, description, price, image, category, createdAt
+- Tipos TypeScript inferidos automáticamente
+- Seed con 6 productos Nike de ejemplo
+
+### ✅ Autenticación
+
+- Configuración de Better Auth con adaptador Drizzle
+- Soporte para email y contraseña
+- Preparado para agregar providers OAuth
+
+### ✅ UI/UX
+
+- Diseño moderno con TailwindCSS 4
+- Componentes con hover effects y transiciones
+- Fuentes Geist Sans y Geist Mono
+- Responsive design mobile-first
+
+## 🔧 Configuración Técnica
+
+### Drizzle ORM
+
+El proyecto usa Drizzle con el dialecto PostgreSQL y el adaptador Neon serverless:
+
+```typescript
+// lib/db/schema.ts
+export const products = pgTable("products", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  description: text("description").notNull(),
+  price: decimal("price", { precision: 10, scale: 2 }).notNull(),
+  image: text("image").notNull(),
+  category: text("category").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+```
+
+### Zustand Store
+
+Carrito persistente con middleware de persistencia:
+
+```typescript
+// lib/store/useCartStore.ts
+interface CartStore {
+  items: CartItem[];
+  addItem: (product: Product) => void;
+  removeItem: (productId: number) => void;
+  clearCart: () => void;
+  getTotalPrice: () => number;
+}
+```
+
+### Server Actions
+
+Acciones del servidor para operaciones de base de datos:
+
+```typescript
+// app/actions/products.ts
+"use server";
+export async function getAllProducts() {
+  return await db.select().from(products);
+}
+```
+
+## 🚧 Próximas Características
+
+- [ ] Página de detalle de producto
+- [ ] Página de carrito con checkout
+- [ ] Sistema de autenticación completo (login/registro)
+- [ ] Filtros por categoría y precio
+- [ ] Búsqueda de productos
+- [ ] Sistema de favoritos
+- [ ] Historial de pedidos
+- [ ] Panel de administración
+- [ ] Integración con pasarela de pago
+
+## 📚 Recursos Adicionales
+
+- [Documentación de Next.js](https://nextjs.org/docs)
+- [Documentación de Drizzle ORM](https://orm.drizzle.team)
+- [Documentación de Neon](https://neon.tech/docs)
+- [Documentación de Better Auth](https://better-auth.com)
+- [Documentación de Zustand](https://zustand-demo.pmnd.rs)
+- [Guía de configuración detallada](./SETUP.md)
+
+## 🐛 Solución de Problemas
+
+Ver [SETUP.md](./SETUP.md) para guía detallada de solución de problemas.
+
+## 📄 Licencia
+
+Este proyecto es privado y está destinado únicamente para fines educativos.
