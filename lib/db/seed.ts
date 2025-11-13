@@ -1,3 +1,9 @@
+import * as dotenv from "dotenv";
+import { resolve } from "path";
+
+// Cargar variables de entorno antes de cualquier otro import
+dotenv.config({ path: resolve(process.cwd(), ".env.local") });
+
 import { db } from "./index";
 import { products } from "./schema";
 
