@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nike Store - Next.js E-commerce
 
-## Getting Started
+Una aplicación de e-commerce moderna construida con Next.js, TypeScript, y las mejores tecnologías del ecosistema.
 
-First, run the development server:
+## 🚀 Tecnologías
+
+- **Next.js 16** - Framework de React
+- **TypeScript** - Tipado estático
+- **TailwindCSS** - Estilos utility-first
+- **Drizzle ORM** - ORM type-safe
+- **Neon PostgreSQL** - Base de datos serverless
+- **Better Auth** - Autenticación
+- **Zustand** - Gestión de estado
+- **ESLint** - Linting
+
+## 📦 Instalación
+
+1. Clona el repositorio
+2. Instala las dependencias:
+
+```bash
+npm install
+```
+
+3. Configura las variables de entorno en `.env.local`:
+
+```env
+DATABASE_URL=your_neon_database_url
+BETTER_AUTH_SECRET=your_secret_key
+BETTER_AUTH_URL=http://localhost:3000
+```
+
+4. Genera y ejecuta las migraciones:
+
+```bash
+npm run db:push
+```
+
+5. Seed de la base de datos:
+
+```bash
+npm run db:seed
+```
+
+6. Inicia el servidor de desarrollo:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📝 Scripts Disponibles
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `npm run dev` - Inicia el servidor de desarrollo
+- `npm run build` - Construye la aplicación para producción
+- `npm run start` - Inicia el servidor de producción
+- `npm run lint` - Ejecuta el linter
+- `npm run db:generate` - Genera migraciones
+- `npm run db:push` - Aplica cambios al schema
+- `npm run db:seed` - Seed de datos de ejemplo
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🏗️ Estructura del Proyecto
 
-## Learn More
+```
+nike-store/
+├── app/              # App Router de Next.js
+├── lib/
+│   ├── db/          # Configuración de base de datos y schemas
+│   ├── store/       # Stores de Zustand
+│   └── auth.ts      # Configuración de Better Auth
+├── public/          # Archivos estáticos
+└── drizzle.config.ts # Configuración de Drizzle
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 🎯 Características
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- ✅ Listado de productos desde PostgreSQL
+- ✅ Diseño responsive con TailwindCSS
+- ✅ Gestión de estado con Zustand
+- ✅ ORM type-safe con Drizzle
+- ✅ Autenticación con Better Auth
+- ✅ TypeScript en todo el proyecto
