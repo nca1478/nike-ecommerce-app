@@ -26,7 +26,7 @@ export function Navbar() {
               alt="Nike Logo"
               width={60}
               height={22}
-              className="h-6 w-auto"
+              className="h-6 w-auto invert"
               priority
             />
           </Link>
