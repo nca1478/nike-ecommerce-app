@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Nike - Authentication",
@@ -16,13 +17,15 @@ export default function AuthLayout({
       {/* Left side - Brand section */}
       <div className="hidden w-1/2 bg-dark-900 p-12 lg:flex lg:flex-col lg:justify-between">
         <div>
-          <Image
-            src="/logo.svg"
-            alt="Nike Logo"
-            width={60}
-            height={60}
-            className="mb-16"
-          />
+          <Link href="/">
+            <Image
+              src="/logo.svg"
+              alt="Nike Logo"
+              width={60}
+              height={60}
+              className="mb-16"
+            />
+          </Link>
           <h1 className="mb-6 text-heading-2 font-bold leading-tight text-light-100">
             Just Do It
           </h1>
