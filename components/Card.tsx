@@ -68,7 +68,7 @@ export function Card({
             <span className="text-heading-3 font-bold text-dark-900">
               ${price.toFixed(2)}
             </span>
-            <button
+            {/* <button
               className="bg-dark-900 text-light-100 px-6 py-2 rounded-full hover:bg-dark-700 transition-colors text-body-medium"
               onClick={(e) => {
                 e.stopPropagation();
@@ -76,7 +76,7 @@ export function Card({
               }}
             >
               Add to Cart
-            </button>
+            </button> */}
           </div>
         )}
       </div>
