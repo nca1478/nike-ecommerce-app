@@ -25,26 +25,29 @@ npm run db:push
 Crea `app/auth/signin/page.tsx`:
 
 ```tsx
-import { SignInForm } from "@/components/auth/SignInForm";
-import Link from "next/link";
+import { SignInForm } from '@/components/auth/SignInForm';
+import Link from 'next/link';
 
 export default function SignInPage() {
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <div className="w-full max-w-md space-y-8">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold">Iniciar Sesión</h1>
+    return (
+        <div className="flex flex-col items-center justify-center min-h-screen p-4">
+            <div className="w-full max-w-md space-y-8">
+                <div className="text-center">
+                    <h1 className="text-3xl font-bold">Iniciar Sesión</h1>
+                </div>
+                <SignInForm />
+                <div className="text-center text-sm">
+                    <span className="text-gray-600">¿No tienes cuenta? </span>
+                    <Link
+                        href="/auth/signup"
+                        className="font-medium hover:underline"
+                    >
+                        Regístrate
+                    </Link>
+                </div>
+            </div>
         </div>
-        <SignInForm />
-        <div className="text-center text-sm">
-          <span className="text-gray-600">¿No tienes cuenta? </span>
-          <Link href="/auth/signup" className="font-medium hover:underline">
-            Regístrate
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
+    );
 }
 ```
 
@@ -53,26 +56,29 @@ export default function SignInPage() {
 Crea `app/auth/signup/page.tsx`:
 
 ```tsx
-import { SignUpForm } from "@/components/auth/SignUpForm";
-import Link from "next/link";
+import { SignUpForm } from '@/components/auth/SignUpForm';
+import Link from 'next/link';
 
 export default function SignUpPage() {
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <div className="w-full max-w-md space-y-8">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold">Crear Cuenta</h1>
+    return (
+        <div className="flex flex-col items-center justify-center min-h-screen p-4">
+            <div className="w-full max-w-md space-y-8">
+                <div className="text-center">
+                    <h1 className="text-3xl font-bold">Crear Cuenta</h1>
+                </div>
+                <SignUpForm />
+                <div className="text-center text-sm">
+                    <span className="text-gray-600">¿Ya tienes cuenta? </span>
+                    <Link
+                        href="/auth/signin"
+                        className="font-medium hover:underline"
+                    >
+                        Inicia sesión
+                    </Link>
+                </div>
+            </div>
         </div>
-        <SignUpForm />
-        <div className="text-center text-sm">
-          <span className="text-gray-600">¿Ya tienes cuenta? </span>
-          <Link href="/auth/signin" className="font-medium hover:underline">
-            Inicia sesión
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
+    );
 }
 ```
 
@@ -115,35 +121,35 @@ Deberías ver las 5 tablas creadas.
 ### En Server Components
 
 ```tsx
-import { getCurrentUser } from "@/lib/auth/actions";
+import { getCurrentUser } from '@/lib/auth/actions';
 
 export default async function Page() {
-  const user = await getCurrentUser();
-  return <div>{user ? `Hola ${user.email}` : "No autenticado"}</div>;
+    const user = await getCurrentUser();
+    return <div>{user ? `Hola ${user.email}` : 'No autenticado'}</div>;
 }
 ```
 
 ### Proteger una Ruta
 
 ```tsx
-import { requireAuth } from "@/lib/auth/actions";
+import { requireAuth } from '@/lib/auth/actions';
 
 export default async function CheckoutPage() {
-  await requireAuth(); // Redirige si no está autenticado
-  return <div>Checkout</div>;
+    await requireAuth(); // Redirige si no está autenticado
+    return <div>Checkout</div>;
 }
 ```
 
 ### En Client Components
 
 ```tsx
-"use client";
-import { useAuth } from "@/lib/auth/hooks";
+'use client';
+import { useAuth } from '@/lib/auth/hooks';
 
 export function MyComponent() {
-  const { user, loading, isAuthenticated } = useAuth();
-  if (loading) return <div>Cargando...</div>;
-  return <div>{isAuthenticated ? "Autenticado" : "No autenticado"}</div>;
+    const { user, loading, isAuthenticated } = useAuth();
+    if (loading) return <div>Cargando...</div>;
+    return <div>{isAuthenticated ? 'Autenticado' : 'No autenticado'}</div>;
 }
 ```
 

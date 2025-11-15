@@ -1,14 +1,14 @@
-import * as dotenv from "dotenv";
-import { drizzle } from "drizzle-orm/neon-http";
-import { neon } from "@neondatabase/serverless";
-import * as schema from "./schema";
+import * as dotenv from 'dotenv';
+import { drizzle } from 'drizzle-orm/neon-http';
+import { neon } from '@neondatabase/serverless';
+import * as schema from './schema';
 
-dotenv.config({ path: ".env.local" });
+dotenv.config({ path: '.env.local' });
 
 if (!process.env.DATABASE_URL) {
-  throw new Error(
-    "DATABASE_URL is not defined. Please check your .env.local file."
-  );
+    throw new Error(
+        'DATABASE_URL is not defined. Please check your .env.local file.',
+    );
 }
 
 const sql = neon(process.env.DATABASE_URL);

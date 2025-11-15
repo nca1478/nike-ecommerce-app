@@ -1,1 +1,1 @@
-export * from "./latest-shoes.data";
+export * from './latest-shoes.data';

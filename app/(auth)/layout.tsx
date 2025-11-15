@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
+import type { Metadata } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
-    title: "Nike - Authentication",
-    description: "Sign in or create your Nike account",
+    title: 'Nike - Authentication',
+    description: 'Sign in or create your Nike account',
 };
 
 export default function AuthLayout({
@@ -30,8 +30,8 @@ export default function AuthLayout({
                         Just Do It
                     </h1>
                     <p className="max-w-md text-lead text-light-300">
-                        Join millions of athletes and fitness enthusiasts who trust Nike for their
-                        performance needs.
+                        Join millions of athletes and fitness enthusiasts who
+                        trust Nike for their performance needs.
                     </p>
                 </div>
 
@@ -41,7 +41,9 @@ export default function AuthLayout({
                     <div className="h-2 w-2 rounded-full bg-light-400"></div>
                 </div>
 
-                <p className="text-caption text-light-400">© 2024 Nike. All rights reserved.</p>
+                <p className="text-caption text-light-400">
+                    © 2024 Nike. All rights reserved.
+                </p>
             </div>
 
             {/* Right side - Form section */}
@@ -49,7 +51,12 @@ export default function AuthLayout({
                 <div className="w-full max-w-md">
                     {/* Mobile logo */}
                     <div className="mb-8 flex justify-center lg:hidden">
-                        <Image src="/logo.svg" alt="Nike Logo" width={50} height={50} />
+                        <Image
+                            src="/logo.svg"
+                            alt="Nike Logo"
+                            width={50}
+                            height={50}
+                        />
                     </div>
                     {children}
                 </div>

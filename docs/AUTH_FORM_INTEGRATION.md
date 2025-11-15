@@ -29,53 +29,53 @@ Se crearon funciones adaptadoras en `lib/auth/form-actions.ts` que:
 ### `lib/auth/form-actions.ts`
 
 ```typescript
-"use server";
+'use server';
 
-import { signIn as signInAction, signUp as signUpAction } from "./actions";
+import { signIn as signInAction, signUp as signUpAction } from './actions';
 
 /**
  * Adaptador para signIn
  */
 export async function signInFormAction(
-  formData: FormData
+    formData: FormData,
 ): Promise<{ ok: boolean; userId?: string } | void> {
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
 
-  const result = await signInAction({ email, password });
+    const result = await signInAction({ email, password });
 
-  if (result.success && result.data) {
-    return { ok: true, userId: result.data.userId };
-  }
+    if (result.success && result.data) {
+        return { ok: true, userId: result.data.userId };
+    }
 
-  if (result.error) {
-    throw new Error(result.error);
-  }
+    if (result.error) {
+        throw new Error(result.error);
+    }
 
-  return { ok: false };
+    return { ok: false };
 }
 
 /**
  * Adaptador para signUp
  */
 export async function signUpFormAction(
-  formData: FormData
+    formData: FormData,
 ): Promise<{ ok: boolean; userId?: string } | void> {
-  const name = formData.get("fullName") as string;
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
+    const name = formData.get('fullName') as string;
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
 
-  const result = await signUpAction({ name, email, password });
+    const result = await signUpAction({ name, email, password });
 
-  if (result.success && result.data) {
-    return { ok: true, userId: result.data.userId };
-  }
+    if (result.success && result.data) {
+        return { ok: true, userId: result.data.userId };
+    }
 
-  if (result.error) {
-    throw new Error(result.error);
-  }
+    if (result.error) {
+        throw new Error(result.error);
+    }
 
-  return { ok: false };
+    return { ok: false };
 }
 ```
 
@@ -128,7 +128,7 @@ AuthForm recibe resultado
 **Antes:**
 
 ```tsx
-import { signIn } from "@/lib/auth/actions";
+import { signIn } from '@/lib/auth/actions';
 
 <AuthForm type="sign-in" onSubmit={signIn} />;
 // ❌ Error de tipo
@@ -137,7 +137,7 @@ import { signIn } from "@/lib/auth/actions";
 **Después:**
 
 ```tsx
-import { signInFormAction } from "@/lib/auth/form-actions";
+import { signInFormAction } from '@/lib/auth/form-actions';
 
 <AuthForm type="sign-in" onSubmit={signInFormAction} />;
 // ✅ Tipos compatibles
@@ -148,7 +148,7 @@ import { signInFormAction } from "@/lib/auth/form-actions";
 **Antes:**
 
 ```tsx
-import { signUp } from "@/lib/auth/actions";
+import { signUp } from '@/lib/auth/actions';
 
 <AuthForm type="sign-up" onSubmit={signUp} />;
 // ❌ Error de tipo
@@ -157,7 +157,7 @@ import { signUp } from "@/lib/auth/actions";
 **Después:**
 
 ```tsx
-import { signUpFormAction } from "@/lib/auth/form-actions";
+import { signUpFormAction } from '@/lib/auth/form-actions';
 
 <AuthForm type="sign-up" onSubmit={signUpFormAction} />;
 // ✅ Tipos compatibles
@@ -166,23 +166,20 @@ import { signUpFormAction } from "@/lib/auth/form-actions";
 ## 🎯 Ventajas de Esta Solución
 
 1. **Separación de Responsabilidades**
-
-   - Las funciones originales mantienen su estructura
-   - Los adaptadores manejan la conversión de formato
+    - Las funciones originales mantienen su estructura
+    - Los adaptadores manejan la conversión de formato
 
 2. **Reutilización**
-
-   - Las funciones originales (`signIn`, `signUp`) siguen disponibles
-   - Útiles para otros componentes que no usen `AuthForm`
+    - Las funciones originales (`signIn`, `signUp`) siguen disponibles
+    - Útiles para otros componentes que no usen `AuthForm`
 
 3. **Manejo de Errores**
-
-   - Los errores se lanzan como excepciones
-   - `AuthForm` los captura en el `catch` block
+    - Los errores se lanzan como excepciones
+    - `AuthForm` los captura en el `catch` block
 
 4. **Type Safety**
-   - Todo está correctamente tipado
-   - TypeScript valida la compatibilidad
+    - Todo está correctamente tipado
+    - TypeScript valida la compatibilidad
 
 ## 🔍 Mapeo de Campos
 

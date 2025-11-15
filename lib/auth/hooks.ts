@@ -1,40 +1,40 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { getCurrentUser } from "./actions";
+import { useEffect, useState } from 'react';
+import { getCurrentUser } from './actions';
 
 interface User {
-  id: string;
-  name?: string | null;
-  email: string;
-  emailVerified: boolean;
-  image?: string | null;
-  createdAt: Date;
-  updatedAt: Date;
+    id: string;
+    name?: string | null;
+    email: string;
+    emailVerified: boolean;
+    image?: string | null;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export function useAuth() {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState<User | null>(null);
+    const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function loadUser() {
-      try {
-        const currentUser = await getCurrentUser();
-        setUser(currentUser);
-      } catch (error) {
-        console.error("Error loading user:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
+    useEffect(() => {
+        async function loadUser() {
+            try {
+                const currentUser = await getCurrentUser();
+                setUser(currentUser);
+            } catch (error) {
+                console.error('Error loading user:', error);
+            } finally {
+                setLoading(false);
+            }
+        }
 
-    loadUser();
-  }, []);
+        loadUser();
+    }, []);
 
-  return {
-    user,
-    loading,
-    isAuthenticated: !!user,
-  };
+    return {
+        user,
+        loading,
+        isAuthenticated: !!user,
+    };
 }

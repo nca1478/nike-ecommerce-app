@@ -11,7 +11,7 @@ En Next.js 16, la convención de `middleware.ts` ha sido deprecada en favor de `
 ```typescript
 // middleware.ts
 export function middleware(request: NextRequest) {
-  // Lógica de middleware
+    // Lógica de middleware
 }
 ```
 
@@ -20,7 +20,7 @@ export function middleware(request: NextRequest) {
 ```typescript
 // proxy.ts
 export function proxy(request: NextRequest) {
-  // Lógica de proxy (antes middleware)
+    // Lógica de proxy (antes middleware)
 }
 ```
 
@@ -40,7 +40,7 @@ El archivo `proxy.ts` mantiene exactamente la misma funcionalidad:
 ### Protección de Rutas
 
 ```typescript
-const protectedRoutes = ["/checkout", "/profile", "/orders"];
+const protectedRoutes = ['/checkout', '/profile', '/orders'];
 ```
 
 ### Redirección Automática
@@ -64,7 +64,7 @@ El archivo `proxy.ts` incluye la misma configuración de matcher:
 
 ```typescript
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+    matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 };
 ```
 

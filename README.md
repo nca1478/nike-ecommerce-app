@@ -260,14 +260,14 @@ El proyecto usa Drizzle con el dialecto PostgreSQL y el adaptador Neon serverles
 
 ```typescript
 // lib/db/schema.ts
-export const products = pgTable("products", {
-  id: serial("id").primaryKey(),
-  name: text("name").notNull(),
-  description: text("description").notNull(),
-  price: decimal("price", { precision: 10, scale: 2 }).notNull(),
-  image: text("image").notNull(),
-  category: text("category").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
+export const products = pgTable('products', {
+    id: serial('id').primaryKey(),
+    name: text('name').notNull(),
+    description: text('description').notNull(),
+    price: decimal('price', { precision: 10, scale: 2 }).notNull(),
+    image: text('image').notNull(),
+    category: text('category').notNull(),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 ```
 
@@ -278,11 +278,11 @@ Carrito persistente con middleware de persistencia:
 ```typescript
 // lib/store/useCartStore.ts
 interface CartStore {
-  items: CartItem[];
-  addItem: (product: Product) => void;
-  removeItem: (productId: number) => void;
-  clearCart: () => void;
-  getTotalPrice: () => number;
+    items: CartItem[];
+    addItem: (product: Product) => void;
+    removeItem: (productId: number) => void;
+    clearCart: () => void;
+    getTotalPrice: () => number;
 }
 ```
 
@@ -292,9 +292,9 @@ Acciones del servidor para operaciones de base de datos:
 
 ```typescript
 // app/actions/products.ts
-"use server";
+'use server';
 export async function getAllProducts() {
-  return await db.select().from(products);
+    return await db.select().from(products);
 }
 ```
 

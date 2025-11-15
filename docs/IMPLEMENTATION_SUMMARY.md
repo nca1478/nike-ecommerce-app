@@ -223,49 +223,51 @@ const { user, loading, isAuthenticated } = useAuth();
 ### Server Component
 
 ```tsx
-import { getCurrentUser } from "@/lib/auth/actions";
+import { getCurrentUser } from '@/lib/auth/actions';
 
 export default async function Page() {
-  const user = await getCurrentUser();
+    const user = await getCurrentUser();
 
-  return (
-    <div>{user ? <p>Bienvenido, {user.email}</p> : <p>No autenticado</p>}</div>
-  );
+    return (
+        <div>
+            {user ? <p>Bienvenido, {user.email}</p> : <p>No autenticado</p>}
+        </div>
+    );
 }
 ```
 
 ### Client Component
 
 ```tsx
-"use client";
-import { useAuth } from "@/lib/auth/hooks";
+'use client';
+import { useAuth } from '@/lib/auth/hooks';
 
 export function MyComponent() {
-  const { user, loading, isAuthenticated } = useAuth();
+    const { user, loading, isAuthenticated } = useAuth();
 
-  if (loading) return <div>Cargando...</div>;
+    if (loading) return <div>Cargando...</div>;
 
-  return (
-    <div>
-      {isAuthenticated ? (
-        <p>Hola, {user.email}</p>
-      ) : (
-        <a href="/auth/signin">Iniciar Sesión</a>
-      )}
-    </div>
-  );
+    return (
+        <div>
+            {isAuthenticated ? (
+                <p>Hola, {user.email}</p>
+            ) : (
+                <a href="/auth/signin">Iniciar Sesión</a>
+            )}
+        </div>
+    );
 }
 ```
 
 ### Proteger Ruta
 
 ```tsx
-import { requireAuth } from "@/lib/auth/actions";
+import { requireAuth } from '@/lib/auth/actions';
 
 export default async function ProtectedPage() {
-  await requireAuth(); // Redirige si no está autenticado
+    await requireAuth(); // Redirige si no está autenticado
 
-  return <div>Contenido protegido</div>;
+    return <div>Contenido protegido</div>;
 }
 ```
 

@@ -332,7 +332,7 @@
 const user = await getCurrentUser();
 
 // Proteger ruta
-await requireAuth("/auth/signin");
+await requireAuth('/auth/signin');
 
 // Verificar autenticación
 const isAuth = await isAuthenticated();

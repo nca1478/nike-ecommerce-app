@@ -153,39 +153,39 @@ npm run db:push
 #### Registro de Usuario
 
 ```typescript
-import { signUp } from "@/lib/auth/actions";
+import { signUp } from '@/lib/auth/actions';
 
 const result = await signUp({
-  name: "Juan Pérez",
-  email: "juan@example.com",
-  password: "Password123",
+    name: 'Juan Pérez',
+    email: 'juan@example.com',
+    password: 'Password123',
 });
 
 if (result.success) {
-  // Usuario creado exitosamente
-  console.log("User ID:", result.data?.userId);
+    // Usuario creado exitosamente
+    console.log('User ID:', result.data?.userId);
 }
 ```
 
 #### Inicio de Sesión
 
 ```typescript
-import { signIn } from "@/lib/auth/actions";
+import { signIn } from '@/lib/auth/actions';
 
 const result = await signIn({
-  email: "juan@example.com",
-  password: "Password123",
+    email: 'juan@example.com',
+    password: 'Password123',
 });
 
 if (result.success) {
-  // Sesión iniciada exitosamente
+    // Sesión iniciada exitosamente
 }
 ```
 
 #### Cerrar Sesión
 
 ```typescript
-import { signOut } from "@/lib/auth/actions";
+import { signOut } from '@/lib/auth/actions';
 
 await signOut();
 ```
@@ -193,22 +193,22 @@ await signOut();
 #### Crear Sesión de Invitado
 
 ```typescript
-import { createGuestSession } from "@/lib/auth/actions";
+import { createGuestSession } from '@/lib/auth/actions';
 
 const result = await createGuestSession();
 if (result.success) {
-  console.log("Guest token:", result.data?.sessionToken);
+    console.log('Guest token:', result.data?.sessionToken);
 }
 ```
 
 #### Obtener Usuario Actual
 
 ```typescript
-import { getCurrentUser } from "@/lib/auth/actions";
+import { getCurrentUser } from '@/lib/auth/actions';
 
 const user = await getCurrentUser();
 if (user) {
-  console.log("Logged in as:", user.email);
+    console.log('Logged in as:', user.email);
 }
 ```
 
@@ -217,73 +217,73 @@ if (user) {
 #### Formulario de Inicio de Sesión
 
 ```tsx
-import { SignInForm } from "@/components/auth/SignInForm";
+import { SignInForm } from '@/components/auth/SignInForm';
 
 export default function SignInPage() {
-  return (
-    <div className="flex justify-center items-center min-h-screen">
-      <SignInForm />
-    </div>
-  );
+    return (
+        <div className="flex justify-center items-center min-h-screen">
+            <SignInForm />
+        </div>
+    );
 }
 ```
 
 #### Formulario de Registro
 
 ```tsx
-import { SignUpForm } from "@/components/auth/SignUpForm";
+import { SignUpForm } from '@/components/auth/SignUpForm';
 
 export default function SignUpPage() {
-  return (
-    <div className="flex justify-center items-center min-h-screen">
-      <SignUpForm />
-    </div>
-  );
+    return (
+        <div className="flex justify-center items-center min-h-screen">
+            <SignUpForm />
+        </div>
+    );
 }
 ```
 
 #### Menú de Usuario
 
 ```tsx
-import { getCurrentUser } from "@/lib/auth/actions";
-import { UserMenu } from "@/components/auth/UserMenu";
+import { getCurrentUser } from '@/lib/auth/actions';
+import { UserMenu } from '@/components/auth/UserMenu';
 
 export default async function Header() {
-  const user = await getCurrentUser();
+    const user = await getCurrentUser();
 
-  return (
-    <header>
-      {user ? (
-        <UserMenu user={user} />
-      ) : (
-        <a href="/auth/signin">Iniciar Sesión</a>
-      )}
-    </header>
-  );
+    return (
+        <header>
+            {user ? (
+                <UserMenu user={user} />
+            ) : (
+                <a href="/auth/signin">Iniciar Sesión</a>
+            )}
+        </header>
+    );
 }
 ```
 
 ### Hook de Cliente
 
 ```tsx
-"use client";
+'use client';
 
-import { useAuth } from "@/lib/auth/hooks";
+import { useAuth } from '@/lib/auth/hooks';
 
 export function MyComponent() {
-  const { user, loading, isAuthenticated } = useAuth();
+    const { user, loading, isAuthenticated } = useAuth();
 
-  if (loading) return <div>Cargando...</div>;
+    if (loading) return <div>Cargando...</div>;
 
-  return (
-    <div>
-      {isAuthenticated ? (
-        <p>Bienvenido, {user.email}</p>
-      ) : (
-        <p>No autenticado</p>
-      )}
-    </div>
-  );
+    return (
+        <div>
+            {isAuthenticated ? (
+                <p>Bienvenido, {user.email}</p>
+            ) : (
+                <p>No autenticado</p>
+            )}
+        </div>
+    );
 }
 ```
 
@@ -295,10 +295,10 @@ El middleware protege automáticamente las rutas definidas:
 
 ```typescript
 // Rutas protegidas (requieren autenticación)
-const protectedRoutes = ["/checkout", "/profile", "/orders"];
+const protectedRoutes = ['/checkout', '/profile', '/orders'];
 
 // Rutas públicas (acceso libre)
-const publicRoutes = ["/", "/products", "/categories", "/cart"];
+const publicRoutes = ['/', '/products', '/categories', '/cart'];
 ```
 
 ### Protección Manual en Server Components
@@ -361,10 +361,10 @@ const result = await createGuestSession();
 
 - Todas las entradas validadas con Zod
 - Contraseñas con requisitos mínimos:
-  - Mínimo 8 caracteres
-  - Al menos 1 mayúscula
-  - Al menos 1 minúscula
-  - Al menos 1 número
+    - Mínimo 8 caracteres
+    - Al menos 1 mayúscula
+    - Al menos 1 minúscula
+    - Al menos 1 número
 
 ### Sesiones
 
