@@ -1,7 +1,22 @@
+"use client";
+
 import Link from "next/link";
 import { AuthForm, SocialProviders } from "@/components";
+import { signUp } from "@/lib/auth/actions";
 
 export default function SignUpPage() {
+  const handleSignUp = async (data: {
+    email: string;
+    password: string;
+    name?: string;
+  }) => {
+    return signUp({
+      email: data.email,
+      password: data.password,
+      name: data.name || "Usuario",
+    });
+  };
+
   return (
     <div className="space-y-8">
       <div className="space-y-2 text-center">
@@ -35,7 +50,7 @@ export default function SignUpPage() {
         </div>
       </div>
 
-      <AuthForm type="sign-up" />
+      <AuthForm type="sign-up" onSubmit={handleSignUp} />
     </div>
   );
 }

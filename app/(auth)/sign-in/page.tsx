@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { AuthForm, SocialProviders } from "@/components";
+import { signIn } from "@/lib/auth/actions";
 
 export default function SignInPage() {
   return (
@@ -35,7 +38,7 @@ export default function SignInPage() {
         </div>
       </div>
 
-      <AuthForm type="sign-in" />
+      <AuthForm type="sign-in" onSubmit={signIn} />
 
       <div className="text-center">
         <Link
