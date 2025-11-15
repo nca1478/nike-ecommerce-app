@@ -1,9 +1,14 @@
-"use client";
-
 import { Card } from "@/components";
 import { latestShoes } from "@/data";
+import { getCurrentUser } from "@/lib/auth/actions";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const user = await getCurrentUser();
+
+  console.log({ user });
+
   return (
     <div className="min-h-screen bg-light-200">
       {/* Latest Shoes Section */}
@@ -22,7 +27,6 @@ export default function Home() {
               price={shoe.price}
               category={shoe.category}
               badge={shoe.badge}
-              onClick={() => console.log(`Clicked on ${shoe.title}`)}
             />
           ))}
         </div>
