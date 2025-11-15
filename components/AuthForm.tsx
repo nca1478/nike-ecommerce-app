@@ -2,30 +2,62 @@
 
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface AuthFormProps {
   type: "sign-in" | "sign-up";
+  onSubmit: (data: {
+    email: string;
+    password: string;
+    name?: string;
+  }) => Promise<{
+    success: boolean;
+    data?: { userId: string };
+    error?: string;
+  }>;
 }
 
-export default function AuthForm({ type }: AuthFormProps) {
+export default function AuthForm({ type, onSubmit }: AuthFormProps) {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
   const isSignUp = type === "sign-up";
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const name = formData.get("fullName") as string;
+
+    try {
+      const result = await onSubmit({
+        email,
+        password,
+        ...(isSignUp && { name }),
+      });
+
+      if (result?.success) router.push("/");
+    } catch (e) {
+      console.log("error", e);
+    }
+  };
+
   return (
-    <form className="w-full space-y-5">
+    <form className="w-full space-y-5" onSubmit={handleSubmit}>
       {isSignUp && (
         <div className="space-y-2">
           <label
             htmlFor="fullName"
             className="block text-caption font-medium text-dark-900"
           >
-            Full Name
+            Name
           </label>
           <input
             type="text"
             id="fullName"
             name="fullName"
-            placeholder="Enter your full name"
+            placeholder="Enter your name"
             className="w-full rounded-lg border border-light-300 bg-light-100 px-4 py-3 text-body text-dark-900 placeholder:text-dark-500 focus:border-dark-900 focus:outline-none focus:ring-1 focus:ring-dark-900"
             required
           />
