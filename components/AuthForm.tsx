@@ -83,7 +83,7 @@ export default function AuthForm({ type }: AuthFormProps) {
 
       <button
         type="submit"
-        className="w-full rounded-full bg-dark-900 py-3.5 text-body-medium font-medium text-light-100 transition-colors hover:bg-dark-700 focus:outline-none focus:ring-2 focus:ring-dark-900 focus:ring-offset-2"
+        className="w-full rounded-full bg-dark-900 py-3.5 text-body-medium font-medium text-light-100 transition-colors hover:bg-dark-700 focus:outline-none focus:ring-2 focus:ring-dark-900 focus:ring-offset-2 cursor-pointer"
       >
         {isSignUp ? "Sign Up" : "Sign In"}
       </button>
