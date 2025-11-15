@@ -1,6 +1,6 @@
 # Nike Store - E-commerce App
 
-Una aplicación de e-commerce moderna y completa construida con Next.js 16, TypeScript y las mejores tecnologías del ecosistema React. Incluye catálogo de productos, carrito de compras persistente, sistema de autenticación completo con sesiones de invitado y migración automática de datos.
+Una aplicación de e-commerce moderna y completa construida con Next.js 16, TypeScript y las mejores tecnologías del ecosistema React. Incluye sistema de autenticación completo con Better Auth, base de datos PostgreSQL con Drizzle ORM, carrito de compras persistente, y un schema de base de datos robusto listo para producción con productos, variantes, órdenes, pagos, cupones, colecciones y más.
 
 ## 🚀 Stack Tecnológico
 
@@ -145,12 +145,24 @@ nike-ecommerce-app/
 │   │   └── index.ts            # Exportaciones públicas
 │   ├── db/                      # Configuración de base de datos
 │   │   ├── schema/              # Esquemas modulares de Drizzle
+│   │   │   ├── filters/        # Filtros de productos
+│   │   │   │   ├── colors.ts   # Colores con hex
+│   │   │   │   ├── genders.ts  # Géneros
+│   │   │   │   └── sizes.ts    # Tallas
 │   │   │   ├── user.ts         # Tabla de usuarios
 │   │   │   ├── session.ts      # Tabla de sesiones
 │   │   │   ├── account.ts      # Tabla de cuentas OAuth
 │   │   │   ├── verification.ts # Tabla de verificación email
 │   │   │   ├── guest.ts        # Tabla de sesiones invitado
-│   │   │   ├── product.ts      # Tabla de productos
+│   │   │   ├── products.ts     # Productos, variantes, imágenes, reseñas
+│   │   │   ├── categories.ts   # Categorías jerárquicas
+│   │   │   ├── brands.ts       # Marcas
+│   │   │   ├── collections.ts  # Colecciones de productos
+│   │   │   ├── carts.ts        # Carritos y items
+│   │   │   ├── orders.ts       # Órdenes, items, pagos
+│   │   │   ├── addresses.ts    # Direcciones de envío/facturación
+│   │   │   ├── wishlists.ts    # Lista de deseos
+│   │   │   ├── coupons.ts      # Cupones de descuento
 │   │   │   └── index.ts        # Exportaciones de schemas
 │   │   ├── index.ts            # Cliente Drizzle + Neon
 │   │   └── seed.ts             # Script de seed con productos Nike
@@ -205,12 +217,18 @@ nike-ecommerce-app/
 - Cálculo automático de totales
 - Eliminar productos del carrito
 
-### ✅ Base de Datos
+### ✅ Base de Datos Completa
 
-- Schema de productos con Drizzle ORM
-- Campos: id, name, description, price, image, category, createdAt
-- Tipos TypeScript inferidos automáticamente
-- Seed con 6 productos Nike de ejemplo
+- **Schema modular** con Drizzle ORM y PostgreSQL
+- **Productos avanzados**: productos con variantes (color, talla), imágenes múltiples, reseñas
+- **Sistema de carritos**: soporte para usuarios autenticados e invitados
+- **Órdenes completas**: gestión de pedidos con estados, items, direcciones y pagos
+- **Catálogos**: categorías jerárquicas, marcas, colecciones
+- **Filtros**: colores (con hex), tallas, géneros
+- **Funcionalidades adicionales**: wishlist, cupones de descuento, direcciones de envío/facturación
+- **Validación**: schemas Zod integrados para todos los modelos
+- **Type-safety**: tipos TypeScript inferidos automáticamente
+- **Relaciones**: relaciones completas entre todas las entidades
 
 ### ✅ Sistema de Autenticación Completo
 
@@ -256,18 +274,42 @@ nike-ecommerce-app/
 
 ### Drizzle ORM
 
-El proyecto usa Drizzle con el dialecto PostgreSQL y el adaptador Neon serverless:
+El proyecto usa Drizzle con el dialecto PostgreSQL y el adaptador Neon serverless. Schema modular organizado por entidades:
 
 ```typescript
-// lib/db/schema.ts
+// lib/db/schema/products.ts
 export const products = pgTable('products', {
-    id: serial('id').primaryKey(),
+    id: uuid('id').primaryKey().defaultRandom(),
     name: text('name').notNull(),
     description: text('description').notNull(),
-    price: decimal('price', { precision: 10, scale: 2 }).notNull(),
-    image: text('image').notNull(),
-    category: text('category').notNull(),
-    createdAt: timestamp('created_at').defaultNow().notNull(),
+    categoryId: uuid('category_id')
+        .notNull()
+        .references(() => categories.id),
+    genderId: uuid('gender_id')
+        .notNull()
+        .references(() => genders.id),
+    brandId: uuid('brand_id')
+        .notNull()
+        .references(() => brands.id),
+    isPublished: boolean('is_published').notNull().default(false),
+    defaultVariantId: uuid('default_variant_id'),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at').notNull().defaultNow(),
+});
+
+// Variantes de productos con color, talla, precio, stock
+export const productVariants = pgTable('product_variants', {
+    id: uuid('id').primaryKey().defaultRandom(),
+    productId: uuid('product_id')
+        .notNull()
+        .references(() => products.id),
+    sku: text('sku').notNull().unique(),
+    price: text('price').notNull(),
+    salePrice: text('sale_price'),
+    colorId: uuid('color_id').notNull(),
+    sizeId: uuid('size_id').notNull(),
+    inStock: text('in_stock').notNull().default('0'),
+    // ... más campos
 });
 ```
 
@@ -302,24 +344,45 @@ export async function getAllProducts() {
 
 ### MVP Completado ✅
 
-- [x] Sistema de autenticación completo
+**Autenticación:**
+
+- [x] Sistema de autenticación completo con Better Auth
 - [x] Registro e inicio de sesión
 - [x] Sesiones de invitado con UUID
 - [x] Protección de rutas con middleware
 - [x] Migración automática de datos
 - [x] Páginas de auth (sign-in/sign-up)
-- [x] Componentes de UI completos
+- [x] Componentes de UI completos (SignIn, SignUp, UserMenu)
+
+**Base de Datos:**
+
+- [x] Schema completo de e-commerce con 15+ tablas
+- [x] Productos con variantes (color, talla, precio, stock)
+- [x] Sistema de carritos (usuarios + invitados)
+- [x] Órdenes con estados y pagos
+- [x] Categorías jerárquicas y marcas
+- [x] Colecciones de productos
+- [x] Filtros (colores, tallas, géneros)
+- [x] Wishlist y cupones de descuento
+- [x] Direcciones de envío/facturación
+- [x] Reseñas de productos
+- [x] Validación Zod en todos los schemas
+
+**Frontend:**
+
 - [x] Carrito de compras con Zustand
 - [x] Persistencia en localStorage
-- [x] Catálogo de productos desde BD
 - [x] Navbar y Footer responsive
+- [x] Componentes reutilizables (Card, ProductCard, AuthForm)
 
 ### En Desarrollo 🔨
 
+- [ ] Página de catálogo con productos reales
 - [ ] Integración de carrito con base de datos
 - [ ] Página de checkout protegida
 - [ ] Sincronización de carrito entre dispositivos
 - [ ] Página de perfil de usuario
+- [ ] Sistema de seed con datos completos
 
 ### Roadmap Futuro 📅
 
@@ -333,28 +396,34 @@ export async function getAllProducts() {
 
 **Funcionalidades de E-commerce:**
 
-- [ ] Página de detalle de producto
-- [ ] Filtros por categoría y precio
-- [ ] Búsqueda de productos con Algolia
-- [ ] Sistema de favoritos/wishlist
+- [ ] Página de detalle de producto con variantes
+- [ ] Selector de color y talla
+- [ ] Filtros avanzados (categoría, precio, marca, color, talla, género)
+- [ ] Búsqueda de productos
+- [ ] Implementación completa de wishlist
 - [ ] Historial de pedidos
 - [ ] Seguimiento de envíos
-- [ ] Sistema de reseñas y calificaciones
+- [ ] Sistema de reseñas funcional
+- [ ] Aplicación de cupones de descuento
+- [ ] Gestión de direcciones de usuario
 
 **Administración:**
 
 - [ ] Panel de administración
-- [ ] Gestión de productos (CRUD)
-- [ ] Gestión de usuarios
+- [ ] Gestión de productos y variantes (CRUD)
+- [ ] Gestión de categorías, marcas y colecciones
+- [ ] Gestión de usuarios y órdenes
 - [ ] Dashboard de ventas
 - [ ] Reportes y analytics
+- [ ] Gestión de cupones
+- [ ] Control de inventario
 
 **Pagos:**
 
-- [ ] Integración con Stripe
+- [ ] Integración con Stripe/PayPal
 - [ ] Múltiples métodos de pago
-- [ ] Gestión de direcciones de envío
 - [ ] Cálculo de impuestos y envío
+- [ ] Procesamiento de órdenes
 
 **Optimizaciones:**
 
@@ -364,6 +433,8 @@ export async function getAllProducts() {
 - [ ] SEO avanzado
 - [ ] PWA (Progressive Web App)
 - [ ] Internacionalización (i18n)
+- [ ] Caché de productos
+- [ ] Optimización de imágenes
 
 ## 🎨 Características Técnicas Destacadas
 
@@ -465,12 +536,57 @@ Este es un proyecto educativo. Si deseas contribuir:
 ## 📊 Estado del Proyecto
 
 ```
-✅ MVP Completado
-🔨 En Desarrollo Activo
+✅ Autenticación Completa (Better Auth)
+✅ Base de Datos Robusta (15+ tablas)
+✅ Schema de E-commerce Completo
+🔨 Frontend en Desarrollo
+🔨 Integración de Funcionalidades
 📅 Roadmap Definido
 📚 Documentación Completa
-🎯 Listo para Producción (con configuraciones adicionales)
+🎯 Arquitectura Lista para Escalar
 ```
+
+### Tablas de Base de Datos Implementadas
+
+**Autenticación (5 tablas):**
+
+- `user` - Usuarios del sistema
+- `session` - Sesiones activas
+- `account` - Cuentas OAuth
+- `verification` - Tokens de verificación
+- `guest` - Sesiones de invitados
+
+**Productos (7 tablas):**
+
+- `products` - Productos principales
+- `product_variants` - Variantes (color, talla, precio, stock)
+- `product_images` - Imágenes de productos
+- `reviews` - Reseñas de usuarios
+- `categories` - Categorías jerárquicas
+- `brands` - Marcas
+- `collections` - Colecciones de productos
+
+**Filtros (3 tablas):**
+
+- `colors` - Colores con código hex
+- `sizes` - Tallas con orden
+- `genders` - Géneros
+
+**Comercio (6 tablas):**
+
+- `carts` - Carritos de compra
+- `cart_items` - Items del carrito
+- `orders` - Órdenes de compra
+- `order_items` - Items de órdenes
+- `payments` - Pagos procesados
+- `addresses` - Direcciones de envío/facturación
+
+**Extras (2 tablas):**
+
+- `wishlists` - Lista de deseos
+- `coupons` - Cupones de descuento
+
+**Total: 23 tablas** con relaciones completas y validación Zod
 
 ## 📞 Contacto y Soporte
 
@@ -490,4 +606,5 @@ Este proyecto es privado y está destinado únicamente para fines educativos y d
 
 **Versión:** 1.0.0 MVP  
 **Última actualización:** Noviembre 2025  
-**Estado:** ✅ Producción Ready
+**Branch actual:** database-schemas  
+**Estado:** 🔨 En Desarrollo Activo - Base de Datos Completa
