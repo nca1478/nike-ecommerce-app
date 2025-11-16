@@ -1,330 +1,383 @@
-# 🚀 Guía de Migración - Sistema de Autenticación
+# Guía de Migración - Sistema de Productos
 
-## Pasos para Implementar el Sistema de Autenticación
+## 📋 Resumen
 
-### 1. Verificar Variables de Entorno
+Esta guía te ayudará a migrar de la implementación anterior (con datos mock) a la nueva implementación con acciones de servidor optimizadas y base de datos real.
 
-Asegúrate de que tu archivo `.env.local` contenga:
+## 🔄 Pasos de Migración
+
+### Paso 1: Verificar Dependencias
+
+Asegúrate de tener todas las dependencias necesarias:
+
+```bash
+npm install
+```
+
+Dependencias requeridas:
+
+- `drizzle-orm` ✅
+- `@neondatabase/serverless` ✅
+- `next` (v14+) ✅
+- `query-string` ✅
+
+### Paso 2: Configurar Variables de Entorno
+
+Verifica que tu archivo `.env.local` tenga la conexión a la base de datos:
 
 ```env
-# Database
-DATABASE_URL=postgresql://user:password@host:5432/database_name?sslmode=require
-
-# Better Auth (IMPORTANTE: Genera una clave secreta segura)
-BETTER_AUTH_SECRET=tu_clave_secreta_minimo_32_caracteres_aqui
-BETTER_AUTH_URL=http://localhost:3000
-
-# Next.js
-NEXT_PUBLIC_BASE_URL=http://localhost:3000
+DATABASE_URL=postgresql://user:password@host:port/database
 ```
 
-**Generar BETTER_AUTH_SECRET:**
+### Paso 3: Aplicar Esquema e Índices de Rendimiento
+
+Los índices son cruciales para el rendimiento. Usa el script automatizado:
+
+#### Opción A: Setup Completo (Recomendado)
 
 ```bash
-# En Node.js
-node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
-
-# O en terminal Unix/Mac
-openssl rand -hex 32
+# Aplica el esquema + índices automáticamente
+npm run db:setup
 ```
 
-### 2. Generar y Aplicar Migraciones
+Este comando ejecuta:
+
+1. `npm run db:push` - Sincroniza el esquema de Drizzle (incluye índices básicos)
+2. `npm run db:indexes` - Aplica índices adicionales (búsqueda de texto, precio)
+
+#### Opción B: Paso a Paso
 
 ```bash
-# Opción 1: Generar migraciones y aplicarlas
-npm run db:generate
-npm run db:migrate
-
-# Opción 2: Push directo (recomendado para desarrollo)
+# 1. Aplicar esquema con índices básicos
 npm run db:push
+
+# 2. Aplicar índices adicionales
+npm run db:indexes
 ```
 
-### 3. Verificar las Tablas Creadas
+#### Opción C: Usando psql (Manual)
 
-Conéctate a tu base de datos y verifica que se crearon las siguientes tablas:
-
-- `user`
-- `session`
-- `account`
-- `verification`
-- `guest`
-- `products` (ya existente)
-
-### 4. Crear Páginas de Autenticación
-
-#### Página de Inicio de Sesión: `app/auth/signin/page.tsx`
-
-```tsx
-import { SignInForm } from '@/components/auth/SignInForm';
-import Link from 'next/link';
-
-export default function SignInPage() {
-    return (
-        <div className="flex flex-col items-center justify-center min-h-screen p-4">
-            <div className="w-full max-w-md space-y-8">
-                <div className="text-center">
-                    <h1 className="text-3xl font-bold">Iniciar Sesión</h1>
-                    <p className="mt-2 text-gray-600">
-                        Accede a tu cuenta de Nike Store
-                    </p>
-                </div>
-
-                <SignInForm />
-
-                <div className="text-center text-sm">
-                    <span className="text-gray-600">¿No tienes cuenta? </span>
-                    <Link
-                        href="/auth/signup"
-                        className="font-medium hover:underline"
-                    >
-                        Regístrate aquí
-                    </Link>
-                </div>
-            </div>
-        </div>
-    );
-}
+```bash
+psql -d your_database_name -f drizzle/migrations/add_performance_indexes.sql
 ```
 
-#### Página de Registro: `app/auth/signup/page.tsx`
+### Paso 4: Verificar Esquema de Base de Datos
 
-```tsx
-import { SignUpForm } from '@/components/auth/SignUpForm';
-import Link from 'next/link';
-
-export default function SignUpPage() {
-    return (
-        <div className="flex flex-col items-center justify-center min-h-screen p-4">
-            <div className="w-full max-w-md space-y-8">
-                <div className="text-center">
-                    <h1 className="text-3xl font-bold">Crear Cuenta</h1>
-                    <p className="mt-2 text-gray-600">Únete a Nike Store</p>
-                </div>
-
-                <SignUpForm />
-
-                <div className="text-center text-sm">
-                    <span className="text-gray-600">¿Ya tienes cuenta? </span>
-                    <Link
-                        href="/auth/signin"
-                        className="font-medium hover:underline"
-                    >
-                        Inicia sesión aquí
-                    </Link>
-                </div>
-            </div>
-        </div>
-    );
-}
-```
-
-### 5. Actualizar el Header/Navbar
-
-Ejemplo de cómo integrar el menú de usuario en tu header:
-
-```tsx
-// app/components/Header.tsx
-import { getCurrentUser } from '@/lib/auth/actions';
-import { UserMenu } from '@/components/auth/UserMenu';
-import Link from 'next/link';
-
-export async function Header() {
-    const user = await getCurrentUser();
-
-    return (
-        <header className="border-b">
-            <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-                <Link href="/" className="text-2xl font-bold">
-                    Nike Store
-                </Link>
-
-                <nav className="flex items-center gap-6">
-                    <Link href="/products">Productos</Link>
-                    <Link href="/cart">Carrito</Link>
-
-                    {user ? (
-                        <UserMenu user={user} />
-                    ) : (
-                        <div className="flex gap-4">
-                            <Link
-                                href="/auth/signin"
-                                className="px-4 py-2 border rounded-lg hover:bg-gray-50"
-                            >
-                                Iniciar Sesión
-                            </Link>
-                            <Link
-                                href="/auth/signup"
-                                className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800"
-                            >
-                                Registrarse
-                            </Link>
-                        </div>
-                    )}
-                </nav>
-            </div>
-        </header>
-    );
-}
-```
-
-### 6. Proteger la Página de Checkout
-
-```tsx
-// app/checkout/page.tsx
-import { requireAuth, getCurrentUser } from '@/lib/auth/actions';
-
-export default async function CheckoutPage() {
-    // Redirige automáticamente a /auth/signin si no está autenticado
-    await requireAuth('/auth/signin?redirect=/checkout');
-
-    const user = await getCurrentUser();
-
-    return (
-        <div className="container mx-auto px-4 py-8">
-            <h1 className="text-3xl font-bold mb-8">Checkout</h1>
-            <p>Bienvenido, {user?.name || user?.email}</p>
-            {/* Tu formulario de checkout aquí */}
-        </div>
-    );
-}
-```
-
-### 7. Implementar Sesión de Invitado (Opcional)
-
-Si quieres crear automáticamente sesiones de invitado:
-
-```tsx
-// app/layout.tsx o un componente de inicialización
-'use client';
-
-import { useEffect } from 'react';
-import { createGuestSession, isAuthenticated } from '@/lib/auth/actions';
-
-export function GuestSessionProvider({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
-    useEffect(() => {
-        async function initGuestSession() {
-            const authenticated = await isAuthenticated();
-
-            if (!authenticated) {
-                // Crear sesión de invitado si no está autenticado
-                await createGuestSession();
-            }
-        }
-
-        initGuestSession();
-    }, []);
-
-    return <>{children}</>;
-}
-```
-
-### 8. Probar el Sistema
-
-1. **Registro de Usuario:**
-    - Ve a `/auth/signup`
-    - Crea una cuenta con email y contraseña
-    - Verifica que seas redirigido correctamente
-
-2. **Inicio de Sesión:**
-    - Ve a `/auth/signin`
-    - Inicia sesión con tus credenciales
-    - Verifica que la sesión persista
-
-3. **Protección de Rutas:**
-    - Intenta acceder a `/checkout` sin estar autenticado
-    - Verifica que seas redirigido a `/auth/signin`
-    - Inicia sesión y verifica que seas redirigido de vuelta
-
-4. **Cerrar Sesión:**
-    - Usa el botón de cerrar sesión
-    - Verifica que la sesión se elimine correctamente
-
-### 9. Verificar en la Base de Datos
-
-Después de crear un usuario, verifica en tu base de datos:
+Asegúrate de que todas las tablas necesarias existan:
 
 ```sql
--- Ver usuarios creados
-SELECT * FROM "user";
-
--- Ver sesiones activas
-SELECT * FROM "session";
-
--- Ver cuentas (credentials)
-SELECT * FROM "account";
-
--- Ver sesiones de invitado
-SELECT * FROM "guest";
+-- Verificar tablas principales
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = 'public'
+AND table_name IN (
+    'products',
+    'product_variants',
+    'product_images',
+    'brands',
+    'categories',
+    'genders',
+    'colors',
+    'sizes'
+);
 ```
 
-## 🔧 Troubleshooting
+Deberías ver 8 tablas.
 
-### Error: "Cannot find module 'better-auth'"
+### Paso 5: Verificar Índices
 
-```bash
-npm install better-auth
+Verifica que los índices se hayan creado correctamente:
+
+```sql
+-- Listar todos los índices en las tablas de productos
+SELECT
+    tablename,
+    indexname,
+    indexdef
+FROM pg_indexes
+WHERE tablename IN ('products', 'product_variants', 'product_images')
+ORDER BY tablename, indexname;
 ```
 
-### Error: "Cannot find module 'zod'"
+Deberías ver al menos 13 índices nuevos.
+
+### Paso 6: Seed de Datos (Opcional)
+
+Si necesitas datos de prueba:
 
 ```bash
-npm install zod
+npm run db:seed
 ```
 
-### Error: Migraciones no se aplican
+### Paso 7: Actualizar Importaciones
+
+Si tienes código que usa las acciones antiguas, actualiza las importaciones:
+
+#### Antes:
+
+```typescript
+import { getAllProducts } from '@/app/actions/products';
+```
+
+#### Después:
+
+```typescript
+import { getAllProducts } from '@/lib/actions/product';
+```
+
+**Nota:** El archivo `@/app/actions/products.ts` ahora re-exporta las nuevas acciones para compatibilidad hacia atrás.
+
+### Paso 8: Actualizar Componentes
+
+Si tienes componentes personalizados que usan productos, actualízalos para usar los nuevos tipos:
+
+```typescript
+import type { ProductWithDetails } from '@/lib/actions/product';
+
+interface MyComponentProps {
+    products: ProductWithDetails[];
+}
+```
+
+### Paso 9: Probar la Implementación
+
+1. **Iniciar el servidor de desarrollo:**
+
+    ```bash
+    npm run dev
+    ```
+
+2. **Probar el listado de productos:**
+
+    ```
+    http://localhost:3000/products
+    ```
+
+3. **Probar filtros:**
+
+    ```
+    http://localhost:3000/products?sort=price_asc
+    http://localhost:3000/products?search=nike
+    ```
+
+4. **Probar detalle de producto:**
+    ```
+    http://localhost:3000/products/[algún-id-de-producto]
+    ```
+
+### Paso 10: Verificar Rendimiento
+
+Usa las herramientas de desarrollo de tu navegador para verificar:
+
+- ✅ Tiempo de carga de página < 1s
+- ✅ Tiempo de respuesta de API < 200ms
+- ✅ No hay consultas N+1 (verifica logs de Drizzle)
+
+## 🔍 Verificación de Migración
+
+### Checklist de Verificación
+
+- [ ] Variables de entorno configuradas
+- [ ] Base de datos conectada
+- [ ] Índices aplicados
+- [ ] Datos de prueba cargados (opcional)
+- [ ] Página de productos carga correctamente
+- [ ] Filtros funcionan
+- [ ] Búsqueda funciona
+- [ ] Paginación funciona
+- [ ] Detalle de producto carga
+- [ ] Imágenes se muestran correctamente
+- [ ] No hay errores en consola
+
+### Comandos de Verificación
 
 ```bash
-# Eliminar migraciones anteriores
-rm -rf drizzle
+# Verificar conexión a base de datos
+npm run db:push
 
-# Regenerar
-npm run db:generate
+# Verificar que no hay errores de TypeScript
+npx tsc --noEmit
+
+# Verificar que no hay errores de ESLint
+npm run lint
+
+# Construir para producción (verifica que todo compila)
+npm run build
+```
+
+## 🐛 Solución de Problemas
+
+### Problema: "DATABASE_URL is not defined"
+
+**Solución:**
+
+```bash
+# Verifica que .env.local existe
+cat .env.local
+
+# Si no existe, créalo
+cp .env.example .env.local
+# Edita .env.local con tus credenciales
+```
+
+### Problema: "relation 'products' does not exist"
+
+**Solución:**
+
+```bash
+# Ejecuta las migraciones
+npm run db:migrate
+
+# O empuja el esquema
 npm run db:push
 ```
 
-### Error: Cookies no persisten
+### Problema: Consultas lentas
 
-- Verifica que `BETTER_AUTH_URL` coincida con tu dominio
-- En desarrollo, usa `http://localhost:3000`
-- En producción, usa tu dominio real con HTTPS
+**Solución:**
 
-## 📚 Próximos Pasos
+```bash
+# Verifica que los índices existen
+psql -d your_database -c "\di"
 
-1. **Implementar Carrito de Compras:**
-    - Crear esquema de carrito
-    - Asociar carrito con `userId` o `guestSessionToken`
-    - Implementar migración de carrito en `mergeGuestCartWithUserCart`
+# Si no existen, aplícalos
+psql -d your_database -f drizzle/migrations/add_performance_indexes.sql
+```
 
-2. **Agregar Verificación de Email:**
-    - Configurar servicio de email (Resend, SendGrid, etc.)
-    - Implementar flujo de verificación
-    - Actualizar `emailVerified` en la tabla `user`
+### Problema: "Cannot find module '@/lib/actions/product'"
 
-3. **Implementar OAuth:**
-    - Configurar proveedores (Google, GitHub, etc.)
-    - Actualizar configuración de Better Auth
-    - Agregar botones de OAuth en formularios
+**Solución:**
 
-4. **Agregar Recuperación de Contraseña:**
-    - Crear flujo de "Olvidé mi contraseña"
-    - Usar tabla `verification` para tokens
-    - Implementar página de reset
+```bash
+# Verifica que el archivo existe
+ls -la lib/actions/product.ts
 
-## ✅ Checklist de Implementación
+# Verifica la configuración de paths en tsconfig.json
+cat tsconfig.json | grep -A 5 "paths"
+```
 
-- [ ] Variables de entorno configuradas
-- [ ] Migraciones aplicadas
-- [ ] Tablas verificadas en la base de datos
-- [ ] Páginas de signin/signup creadas
-- [ ] Header actualizado con menú de usuario
-- [ ] Middleware configurado
-- [ ] Página de checkout protegida
-- [ ] Sistema probado end-to-end
-- [ ] Sesiones de invitado implementadas (opcional)
-- [ ] Documentación revisada
+### Problema: Imágenes no se muestran
 
-¡Tu sistema de autenticación está listo para usar! 🎉
+**Solución:**
+
+1. Verifica que las URLs de imágenes en la base de datos son válidas
+2. Verifica que Next.js está configurado para permitir dominios externos:
+
+```javascript
+// next.config.ts
+const nextConfig = {
+    images: {
+        domains: ['your-image-domain.com'],
+    },
+};
+```
+
+### Problema: Filtros no funcionan
+
+**Solución:**
+
+1. Verifica que los IDs en los filtros son UUIDs válidos
+2. Verifica que los productos tienen variantes con esos colores/tallas
+3. Revisa los logs de la consola del servidor
+
+## 📊 Monitoreo Post-Migración
+
+### Métricas a Monitorear
+
+1. **Rendimiento de Consultas:**
+
+    ```sql
+    -- Ver consultas lentas
+    SELECT
+        query,
+        mean_exec_time,
+        calls
+    FROM pg_stat_statements
+    WHERE query LIKE '%products%'
+    ORDER BY mean_exec_time DESC
+    LIMIT 10;
+    ```
+
+2. **Uso de Índices:**
+
+    ```sql
+    -- Ver uso de índices
+    SELECT
+        schemaname,
+        tablename,
+        indexname,
+        idx_scan,
+        idx_tup_read,
+        idx_tup_fetch
+    FROM pg_stat_user_indexes
+    WHERE tablename IN ('products', 'product_variants', 'product_images')
+    ORDER BY idx_scan DESC;
+    ```
+
+3. **Tamaño de Tablas:**
+    ```sql
+    -- Ver tamaño de tablas
+    SELECT
+        tablename,
+        pg_size_pretty(pg_total_relation_size(schemaname||'.'||tablename)) AS size
+    FROM pg_tables
+    WHERE tablename IN ('products', 'product_variants', 'product_images')
+    ORDER BY pg_total_relation_size(schemaname||'.'||tablename) DESC;
+    ```
+
+## 🔄 Rollback (Si es necesario)
+
+Si necesitas revertir la migración:
+
+### Paso 1: Restaurar Archivos Antiguos
+
+```bash
+# Si usas Git
+git checkout HEAD~1 -- app/(root)/products/page.tsx
+git checkout HEAD~1 -- lib/utils/query.ts
+```
+
+### Paso 2: Eliminar Índices (Opcional)
+
+```sql
+-- Solo si los índices causan problemas
+DROP INDEX IF EXISTS idx_products_brand_published;
+DROP INDEX IF EXISTS idx_products_category_published;
+-- ... etc
+```
+
+### Paso 3: Restaurar Importaciones
+
+Revierte las importaciones a usar datos mock si es necesario.
+
+## 📚 Recursos Adicionales
+
+- [Documentación de Acciones](./PRODUCT_ACTIONS.md)
+- [Ejemplos de Uso](./PRODUCT_EXAMPLES.md)
+- [Resumen de Implementación](./IMPLEMENTATION_SUMMARY.md)
+- [Drizzle ORM Docs](https://orm.drizzle.team/)
+- [Next.js Server Actions](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations)
+
+## 🆘 Soporte
+
+Si encuentras problemas durante la migración:
+
+1. Revisa los logs del servidor: `npm run dev`
+2. Revisa los logs de la base de datos
+3. Verifica la documentación en `/docs`
+4. Revisa los ejemplos en `PRODUCT_EXAMPLES.md`
+
+## ✅ Migración Completada
+
+Una vez que hayas completado todos los pasos y verificaciones, tu aplicación estará usando el nuevo sistema de productos optimizado con:
+
+- ✅ Consultas SQL optimizadas
+- ✅ Índices de rendimiento
+- ✅ Filtrado avanzado
+- ✅ Búsqueda potente
+- ✅ Paginación eficiente
+- ✅ SSR completo
+- ✅ TypeScript completo
+- ✅ Documentación completa
+
+¡Felicitaciones! 🎉

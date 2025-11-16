@@ -68,8 +68,12 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ### 3. Configurar Base de Datos
 
 ```bash
-# Aplicar el schema a la base de datos
-npm run db:push
+# Aplicar el schema e índices de rendimiento
+npm run db:setup
+
+# O paso a paso:
+# npm run db:push    # Aplica esquema
+# npm run db:indexes # Aplica índices adicionales
 
 # Insertar productos de ejemplo (6 productos Nike)
 npm run db:seed
@@ -202,12 +206,45 @@ nike-ecommerce-app/
 
 ## 🎯 Características Implementadas
 
-### ✅ Catálogo de Productos
+### ✅ Sistema de Productos Avanzado
 
-- Listado de productos desde PostgreSQL usando Server Components
-- Renderizado del lado del servidor para mejor SEO
-- Grid responsive (1 columna móvil, 2 tablet, 3 desktop)
+**Acciones de Servidor Optimizadas:**
+
+- `getAllProducts()` - Listado con filtrado, búsqueda, ordenamiento y paginación
+- `getProduct()` - Detalle completo con variantes e imágenes
+- Consultas SQL optimizadas (sin N+1)
+- Agregaciones de precio en base de datos
+- Selección inteligente de imágenes por color
+
+**Filtrado y Búsqueda:**
+
+- Búsqueda por texto (nombre y descripción)
+- Filtros por marca, categoría, género
+- Filtros por color y talla (nivel variante)
+- Rango de precios dinámico
+- Múltiples opciones de ordenamiento
+
+**Paginación:**
+
+- Límite configurable (default: 12 productos)
+- Navegación entre páginas
+- Preservación de filtros en URLs
+- Total de resultados y páginas
+
+**Rendimiento:**
+
+- Server-Side Rendering completo
+- Índices de base de datos optimizados
+- Una consulta principal con subconsultas
 - Imágenes optimizadas con Next/Image
+- Type-safety completo con TypeScript
+
+**Documentación:**
+
+- [Documentación de Acciones](./docs/PRODUCT_ACTIONS.md)
+- [Ejemplos de Uso](./docs/PRODUCT_EXAMPLES.md)
+- [Guía de Migración](./docs/MIGRATION_GUIDE.md)
+- [Resumen de Implementación](./docs/IMPLEMENTATION_SUMMARY.md)
 
 ### ✅ Carrito de Compras
 
@@ -377,7 +414,11 @@ export async function getAllProducts() {
 
 ### En Desarrollo 🔨
 
-- [ ] Página de catálogo con productos reales
+- [x] Sistema de productos con filtrado avanzado
+- [x] Página de listado de productos con SSR
+- [x] Página de detalle de producto
+- [x] Búsqueda y ordenamiento de productos
+- [x] Paginación de resultados
 - [ ] Integración de carrito con base de datos
 - [ ] Página de checkout protegida
 - [ ] Sincronización de carrito entre dispositivos
@@ -396,10 +437,12 @@ export async function getAllProducts() {
 
 **Funcionalidades de E-commerce:**
 
-- [ ] Página de detalle de producto con variantes
-- [ ] Selector de color y talla
-- [ ] Filtros avanzados (categoría, precio, marca, color, talla, género)
-- [ ] Búsqueda de productos
+- [x] Página de detalle de producto con variantes
+- [x] Selector de color y talla
+- [x] Filtros avanzados (categoría, precio, marca, color, talla, género)
+- [x] Búsqueda de productos
+- [x] Paginación de resultados
+- [x] Ordenamiento múltiple (precio, fecha, nombre)
 - [ ] Implementación completa de wishlist
 - [ ] Historial de pedidos
 - [ ] Seguimiento de envíos
@@ -468,6 +511,15 @@ export async function getAllProducts() {
 ## 📚 Recursos Adicionales
 
 ### Documentación del Proyecto
+
+**Sistema de Productos:**
+
+- [Configuración de Base de Datos](./docs/DATABASE_SETUP.md) - Setup automático
+- [Documentación de Acciones](./docs/PRODUCT_ACTIONS.md) - API de productos
+- [Ejemplos de Uso](./docs/PRODUCT_EXAMPLES.md) - Casos prácticos
+- [Arquitectura](./docs/ARCHITECTURE.md) - Diagramas y flujos
+
+**Autenticación:**
 
 - [Índice de Documentación](./docs/DOCS_INDEX.md) - Navegación completa
 - [Guía de Inicio Rápido](./docs/QUICK_START.md) - 5 minutos

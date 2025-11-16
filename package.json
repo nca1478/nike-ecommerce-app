@@ -7,11 +7,14 @@
         "build": "next build",
         "start": "next start",
         "lint": "eslint",
+        "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
+        "check:ts": "npx tsc --noEmit",
         "db:generate": "drizzle-kit generate",
         "db:migrate": "drizzle-kit migrate",
         "db:push": "drizzle-kit push",
+        "db:indexes": "dotenv -e .env.local -- tsx lib/db/apply-indexes.ts",
         "db:seed": "dotenv -e .env.local -- tsx lib/db/seed.ts",
-        "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\""
+        "db:setup": "npm run db:generate && npm run db:push && npm run db:indexes && npm run db:seed"
     },
     "dependencies": {
         "@neondatabase/serverless": "^1.0.2",

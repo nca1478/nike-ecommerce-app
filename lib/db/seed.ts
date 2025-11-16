@@ -33,20 +33,19 @@ const colorsData = [
 ];
 
 const sizesData = [
-    { name: 'US 6', slug: 'us-6', sortOrder: 1 },
-    { name: 'US 6.5', slug: 'us-6-5', sortOrder: 2 },
-    { name: 'US 7', slug: 'us-7', sortOrder: 3 },
-    { name: 'US 7.5', slug: 'us-7-5', sortOrder: 4 },
-    { name: 'US 8', slug: 'us-8', sortOrder: 5 },
-    { name: 'US 8.5', slug: 'us-8-5', sortOrder: 6 },
-    { name: 'US 9', slug: 'us-9', sortOrder: 7 },
-    { name: 'US 9.5', slug: 'us-9-5', sortOrder: 8 },
-    { name: 'US 10', slug: 'us-10', sortOrder: 9 },
-    { name: 'US 10.5', slug: 'us-10-5', sortOrder: 10 },
-    { name: 'US 11', slug: 'us-11', sortOrder: 11 },
-    { name: 'US 11.5', slug: 'us-11-5', sortOrder: 12 },
-    { name: 'US 12', slug: 'us-12', sortOrder: 13 },
-    { name: 'US 13', slug: 'us-13', sortOrder: 14 },
+    { name: '6', slug: '6', sortOrder: 1 },
+    { name: '6.5', slug: '6-5', sortOrder: 2 },
+    { name: '7', slug: '7', sortOrder: 3 },
+    { name: '7.5', slug: '7-5', sortOrder: 4 },
+    { name: '8', slug: '8', sortOrder: 5 },
+    { name: '8.5', slug: '8-5', sortOrder: 6 },
+    { name: '9', slug: '9', sortOrder: 7 },
+    { name: '9.5', slug: '9-5', sortOrder: 8 },
+    { name: '10', slug: '10', sortOrder: 9 },
+    { name: '10.5', slug: '10-5', sortOrder: 10 },
+    { name: '11', slug: '11', sortOrder: 11 },
+    { name: '11.5', slug: '11-5', sortOrder: 12 },
+    { name: '12', slug: '12', sortOrder: 13 },
 ];
 
 const brandsData = [{ name: 'Nike', slug: 'nike', logoUrl: '/logo.svg' }];

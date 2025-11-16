@@ -1,14 +1,12 @@
-'use server';
+/**
+ * @deprecated Use @/lib/actions/product instead
+ * This file is kept for backward compatibility
+ */
 
-import { db } from '@/lib/db';
-import { products } from '@/lib/db/schema';
-
-export async function getAllProducts() {
-    try {
-        const allProducts = await db.select().from(products);
-        return allProducts;
-    } catch (error) {
-        console.error('Error in getAllProducts action:', error);
-        throw error;
-    }
-}
+export { getAllProducts, getProduct } from '@/lib/actions/product';
+export type {
+    ProductFilters,
+    ProductWithDetails,
+    ProductDetailWithVariants,
+    GetAllProductsResult,
+} from '@/lib/actions/product';
