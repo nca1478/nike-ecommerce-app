@@ -7,3 +7,8 @@ export { default as AuthForm } from './AuthForm';
 export { default as SocialProviders } from './SocialProviders';
 export { Filters } from './Filters';
 export { Sort } from './Sort';
+export { ProductGallery } from './ProductGallery';
+export { ColorVariantPicker } from './ColorVariantPicker';
+export type { ColorVariant } from './ColorVariantPicker';
+export { SizePicker } from './SizePicker';
+export { CollapsibleSection } from './CollapsibleSection';
