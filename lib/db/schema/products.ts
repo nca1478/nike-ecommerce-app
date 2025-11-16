@@ -1,4 +1,11 @@
-import { pgTable, text, boolean, timestamp, uuid } from 'drizzle-orm/pg-core';
+import {
+    pgTable,
+    text,
+    boolean,
+    timestamp,
+    uuid,
+    index,
+} from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
@@ -6,24 +13,43 @@ import { categories } from './categories';
 import { genders } from './filters/genders';
 import { brands } from './brands';
 
-export const products = pgTable('products', {
-    id: uuid('id').primaryKey().defaultRandom(),
-    name: text('name').notNull(),
-    description: text('description').notNull(),
-    categoryId: uuid('category_id')
-        .notNull()
-        .references(() => categories.id, { onDelete: 'restrict' }),
-    genderId: uuid('gender_id')
-        .notNull()
-        .references(() => genders.id, { onDelete: 'restrict' }),
-    brandId: uuid('brand_id')
-        .notNull()
-        .references(() => brands.id, { onDelete: 'restrict' }),
-    isPublished: boolean('is_published').notNull().default(false),
-    defaultVariantId: uuid('default_variant_id'),
-    createdAt: timestamp('created_at').notNull().defaultNow(),
-    updatedAt: timestamp('updated_at').notNull().defaultNow(),
-});
+export const products = pgTable(
+    'products',
+    {
+        id: uuid('id').primaryKey().defaultRandom(),
+        name: text('name').notNull(),
+        description: text('description').notNull(),
+        categoryId: uuid('category_id')
+            .notNull()
+            .references(() => categories.id, { onDelete: 'restrict' }),
+        genderId: uuid('gender_id')
+            .notNull()
+            .references(() => genders.id, { onDelete: 'restrict' }),
+        brandId: uuid('brand_id')
+            .notNull()
+            .references(() => brands.id, { onDelete: 'restrict' }),
+        isPublished: boolean('is_published').notNull().default(false),
+        defaultVariantId: uuid('default_variant_id'),
+        createdAt: timestamp('created_at').notNull().defaultNow(),
+        updatedAt: timestamp('updated_at').notNull().defaultNow(),
+    },
+    (table) => ({
+        // Índices compuestos para filtrado optimizado
+        brandPublishedIdx: index('idx_products_brand_published').on(
+            table.brandId,
+            table.isPublished,
+        ),
+        categoryPublishedIdx: index('idx_products_category_published').on(
+            table.categoryId,
+            table.isPublished,
+        ),
+        genderPublishedIdx: index('idx_products_gender_published').on(
+            table.genderId,
+            table.isPublished,
+        ),
+        createdAtIdx: index('idx_products_created_at').on(table.createdAt),
+    }),
+);
 
 export const productsRelations = relations(products, ({ one, many }) => ({
     category: one(categories, {
@@ -43,21 +69,36 @@ export const productsRelations = relations(products, ({ one, many }) => ({
     reviews: many(reviews),
 }));
 
-export const productVariants = pgTable('product_variants', {
-    id: uuid('id').primaryKey().defaultRandom(),
-    productId: uuid('product_id')
-        .notNull()
-        .references(() => products.id, { onDelete: 'cascade' }),
-    sku: text('sku').notNull().unique(),
-    price: text('price').notNull(), // stored as text to avoid precision issues
-    salePrice: text('sale_price'),
-    colorId: uuid('color_id').notNull(),
-    sizeId: uuid('size_id').notNull(),
-    inStock: text('in_stock').notNull().default('0'),
-    weight: text('weight'),
-    dimensions: text('dimensions'), // JSON string: { length, width, height }
-    createdAt: timestamp('created_at').notNull().defaultNow(),
-});
+export const productVariants = pgTable(
+    'product_variants',
+    {
+        id: uuid('id').primaryKey().defaultRandom(),
+        productId: uuid('product_id')
+            .notNull()
+            .references(() => products.id, { onDelete: 'cascade' }),
+        sku: text('sku').notNull().unique(),
+        price: text('price').notNull(), // stored as text to avoid precision issues
+        salePrice: text('sale_price'),
+        colorId: uuid('color_id').notNull(),
+        sizeId: uuid('size_id').notNull(),
+        inStock: text('in_stock').notNull().default('0'),
+        weight: text('weight'),
+        dimensions: text('dimensions'), // JSON string: { length, width, height }
+        createdAt: timestamp('created_at').notNull().defaultNow(),
+    },
+    (table) => ({
+        // Índices para filtrado por color y talla
+        colorProductIdx: index('idx_variants_color_product').on(
+            table.colorId,
+            table.productId,
+        ),
+        sizeProductIdx: index('idx_variants_size_product').on(
+            table.sizeId,
+            table.productId,
+        ),
+        productIdIdx: index('idx_variants_product_id').on(table.productId),
+    }),
+);
 
 export const productVariantsRelations = relations(
     productVariants,
@@ -70,16 +111,31 @@ export const productVariantsRelations = relations(
     }),
 );
 
-export const productImages = pgTable('product_images', {
-    id: uuid('id').primaryKey().defaultRandom(),
-    productId: uuid('product_id')
-        .notNull()
-        .references(() => products.id, { onDelete: 'cascade' }),
-    variantId: uuid('variant_id'),
-    url: text('url').notNull(),
-    sortOrder: text('sort_order').notNull().default('0'),
-    isPrimary: boolean('is_primary').notNull().default(false),
-});
+export const productImages = pgTable(
+    'product_images',
+    {
+        id: uuid('id').primaryKey().defaultRandom(),
+        productId: uuid('product_id')
+            .notNull()
+            .references(() => products.id, { onDelete: 'cascade' }),
+        variantId: uuid('variant_id'),
+        url: text('url').notNull(),
+        sortOrder: text('sort_order').notNull().default('0'),
+        isPrimary: boolean('is_primary').notNull().default(false),
+    },
+    (table) => ({
+        // Índices para selección optimizada de imágenes
+        productPrimaryIdx: index('idx_images_product_primary').on(
+            table.productId,
+            table.isPrimary,
+            table.sortOrder,
+        ),
+        variantIdx: index('idx_images_variant').on(
+            table.variantId,
+            table.sortOrder,
+        ),
+    }),
+);
 
 export const productImagesRelations = relations(productImages, ({ one }) => ({
     product: one(products, {
