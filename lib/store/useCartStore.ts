@@ -4,12 +4,13 @@ import { Product } from '../db/schema';
 
 interface CartItem extends Product {
     quantity: number;
+    price?: string; // Price from variant
 }
 
 interface CartStore {
     items: CartItem[];
-    addItem: (product: Product) => void;
-    removeItem: (productId: number) => void;
+    addItem: (product: Product & { price?: string }) => void;
+    removeItem: (productId: string) => void;
     clearCart: () => void;
     getTotalPrice: () => number;
 }
@@ -45,7 +46,9 @@ export const useCartStore = create<CartStore>()(
                 const items = get().items;
                 return items.reduce(
                     (total, item) =>
-                        total + parseFloat(item.price) * item.quantity,
+                        total +
+                        (item.price ? parseFloat(item.price) : 0) *
+                            item.quantity,
                     0,
                 );
             },
