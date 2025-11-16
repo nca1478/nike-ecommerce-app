@@ -2,7 +2,7 @@
 
 import { db } from '@/lib/db';
 import { genders, colors, sizes, brands, categories } from '@/lib/db/schema';
-import { eq, inArray } from 'drizzle-orm';
+import { inArray } from 'drizzle-orm';
 import type { FilterParams } from '@/lib/utils/query';
 import type { ProductFilters } from './product';
 

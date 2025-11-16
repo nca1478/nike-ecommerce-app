@@ -1,14 +1,10 @@
+import Link from 'next/link';
 import { Card } from '@/components';
 import { latestShoes } from '@/data';
-import { getCurrentUser } from '@/lib/auth/actions';
 
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-    const user = await getCurrentUser();
-
-    console.log({ user });
-
     return (
         <div className="min-h-screen bg-light-200">
             {/* Latest Shoes Section */}
@@ -19,15 +15,16 @@ export default async function Home() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {latestShoes.map((shoe) => (
-                        <Card
-                            key={shoe.id}
-                            title={shoe.title}
-                            description={shoe.description}
-                            image={shoe.image}
-                            price={shoe.price}
-                            category={shoe.category}
-                            badge={shoe.badge}
-                        />
+                        <Link key={shoe.id} href={`/products/${shoe.id}`}>
+                            <Card
+                                title={shoe.title}
+                                description={shoe.description}
+                                image={shoe.image}
+                                price={shoe.price}
+                                category={shoe.category}
+                                badge={shoe.badge}
+                            />
+                        </Link>
                     ))}
                 </div>
             </section>
