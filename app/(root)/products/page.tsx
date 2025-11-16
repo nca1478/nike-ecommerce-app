@@ -2,93 +2,14 @@ import { Suspense } from 'react';
 import { X } from 'lucide-react';
 import Link from 'next/link';
 import { parseFilters, getActiveFilterCount } from '@/lib/utils/query';
-import { mockProducts, filterOptions } from '@/lib/data/mock-products';
+import { getAllProducts } from '@/lib/actions/product';
+import { resolveFilterSlugs } from '@/lib/actions/filters';
 import { Filters } from '@/components/Filters';
 import { Sort } from '@/components/Sort';
-import { ProductGrid } from '@/components/ProductGrid';
+import { Card } from '@/components/Card';
 
 interface ProductsPageProps {
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}
-
-// Filter products based on search params
-function filterProducts(filters: ReturnType<typeof parseFilters>) {
-    let filtered = [...mockProducts];
-
-    // Filter by gender
-    if (filters.gender) {
-        const genders = Array.isArray(filters.gender)
-            ? filters.gender
-            : [filters.gender];
-        filtered = filtered.filter((p) => genders.includes(p.gender));
-    }
-
-    // Filter by size
-    if (filters.size) {
-        const sizes = Array.isArray(filters.size)
-            ? filters.size
-            : [filters.size];
-        filtered = filtered.filter((p) =>
-            p.sizes.some((size) => sizes.includes(size)),
-        );
-    }
-
-    // Filter by color
-    if (filters.color) {
-        const colors = Array.isArray(filters.color)
-            ? filters.color
-            : [filters.color];
-        filtered = filtered.filter((p) =>
-            p.colors.some((color) => colors.includes(color)),
-        );
-    }
-
-    // Filter by price range
-    if (filters.minPrice || filters.maxPrice) {
-        const min = filters.minPrice ? parseFloat(filters.minPrice) : 0;
-        const max = filters.maxPrice ? parseFloat(filters.maxPrice) : Infinity;
-        filtered = filtered.filter((p) => {
-            const price = p.salePrice || p.price;
-            return price >= min && price <= max;
-        });
-    }
-
-    return filtered;
-}
-
-// Sort products based on sort parameter
-function sortProducts(
-    products: typeof mockProducts,
-    sortBy: string | undefined,
-) {
-    const sorted = [...products];
-
-    switch (sortBy) {
-        case 'newest':
-            return sorted.sort(
-                (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
-            );
-        case 'price_asc':
-            return sorted.sort((a, b) => {
-                const priceA = a.salePrice || a.price;
-                const priceB = b.salePrice || b.price;
-                return priceA - priceB;
-            });
-        case 'price_desc':
-            return sorted.sort((a, b) => {
-                const priceA = a.salePrice || a.price;
-                const priceB = b.salePrice || b.price;
-                return priceB - priceA;
-            });
-        case 'featured':
-        default:
-            // Featured: prioritize products with badges
-            return sorted.sort((a, b) => {
-                if (a.badge && !b.badge) return -1;
-                if (!a.badge && b.badge) return 1;
-                return 0;
-            });
-    }
 }
 
 // Active filter badges component
@@ -99,16 +20,42 @@ function ActiveFilterBadges({
 }) {
     const badges: { label: string; key: string; value: string }[] = [];
 
+    // Search badge
+    if (filters.search) {
+        badges.push({
+            label: `Search: ${filters.search}`,
+            key: 'search',
+            value: filters.search,
+        });
+    }
+
     // Gender badges
     if (filters.gender) {
         const genders = Array.isArray(filters.gender)
             ? filters.gender
             : [filters.gender];
         genders.forEach((g) => {
-            const option = filterOptions.genders.find((opt) => opt.value === g);
-            if (option) {
-                badges.push({ label: option.label, key: 'gender', value: g });
-            }
+            badges.push({ label: `Gender: ${g}`, key: 'gender', value: g });
+        });
+    }
+
+    // Brand badges
+    if (filters.brand) {
+        const brands = Array.isArray(filters.brand)
+            ? filters.brand
+            : [filters.brand];
+        brands.forEach((b) => {
+            badges.push({ label: `Brand: ${b}`, key: 'brand', value: b });
+        });
+    }
+
+    // Category badges
+    if (filters.category) {
+        const categories = Array.isArray(filters.category)
+            ? filters.category
+            : [filters.category];
+        categories.forEach((c) => {
+            badges.push({ label: `Category: ${c}`, key: 'category', value: c });
         });
     }
 
@@ -128,27 +75,23 @@ function ActiveFilterBadges({
             ? filters.color
             : [filters.color];
         colors.forEach((c) => {
-            const option = filterOptions.colors.find((opt) => opt.value === c);
-            if (option) {
-                badges.push({ label: option.label, key: 'color', value: c });
-            }
+            badges.push({ label: `Color: ${c}`, key: 'color', value: c });
         });
     }
 
     // Price range badge
     if (filters.minPrice || filters.maxPrice) {
-        const range = filterOptions.priceRanges.find(
-            (r) =>
-                r.min.toString() === filters.minPrice &&
-                r.max.toString() === filters.maxPrice,
-        );
-        if (range) {
-            badges.push({
-                label: range.label,
-                key: 'price',
-                value: `${filters.minPrice}-${filters.maxPrice}`,
-            });
-        }
+        const priceLabel =
+            filters.minPrice && filters.maxPrice
+                ? `$${filters.minPrice} - $${filters.maxPrice}`
+                : filters.minPrice
+                  ? `From $${filters.minPrice}`
+                  : `Up to $${filters.maxPrice}`;
+        badges.push({
+            label: priceLabel,
+            key: 'price',
+            value: `${filters.minPrice || ''}-${filters.maxPrice || ''}`,
+        });
     }
 
     if (badges.length === 0) return null;
@@ -172,15 +115,26 @@ function ActiveFilterBadges({
 export default async function ProductsPage({
     searchParams,
 }: ProductsPageProps) {
+    // Await searchParams before using
     const params = await searchParams;
     const searchParamsString = new URLSearchParams(
         params as Record<string, string>,
     ).toString();
+
+    // Parse filters from URL
     const filters = parseFilters(searchParamsString);
 
-    // Apply filters and sorting
-    const filteredProducts = filterProducts(filters);
-    const sortedProducts = sortProducts(filteredProducts, filters.sort);
+    // Resolve filter slugs to UUIDs
+    const queryObject = await resolveFilterSlugs(filters);
+
+    // Fetch products from database
+    const {
+        products: productsData,
+        totalCount,
+        page,
+        totalPages,
+    } = await getAllProducts(queryObject);
+
     const activeFilterCount = getActiveFilterCount(filters);
 
     return (
@@ -198,7 +152,7 @@ export default async function ProductsPage({
                         <div className="flex items-center justify-between mb-6">
                             <div>
                                 <h1 className="text-heading-2 font-bold text-dark-900 mb-2">
-                                    New ({sortedProducts.length})
+                                    Products ({totalCount})
                                 </h1>
                                 {activeFilterCount > 0 && (
                                     <p className="text-body text-dark-700">
@@ -219,8 +173,79 @@ export default async function ProductsPage({
                         <ActiveFilterBadges filters={filters} />
 
                         {/* Product Grid */}
-                        {sortedProducts.length > 0 ? (
-                            <ProductGrid products={sortedProducts} />
+                        {productsData.length > 0 ? (
+                            <>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    {productsData.map((product) => (
+                                        <Link
+                                            key={product.id}
+                                            href={`/products/${product.id}`}
+                                        >
+                                            <Card
+                                                title={product.name}
+                                                description={
+                                                    product.description
+                                                }
+                                                image={
+                                                    product.primaryImage ||
+                                                    '/placeholder-product.jpg'
+                                                }
+                                                price={parseFloat(
+                                                    product.minPrice,
+                                                )}
+                                                category={
+                                                    product.category?.name
+                                                }
+                                            />
+                                        </Link>
+                                    ))}
+                                </div>
+
+                                {/* Pagination */}
+                                {totalPages > 1 && (
+                                    <div className="flex justify-center items-center gap-2 mt-12">
+                                        {page > 1 && (
+                                            <Link
+                                                href={`/products?${new URLSearchParams(
+                                                    {
+                                                        ...(params as Record<
+                                                            string,
+                                                            string
+                                                        >),
+                                                        page: (
+                                                            page - 1
+                                                        ).toString(),
+                                                    },
+                                                ).toString()}`}
+                                                className="px-4 py-2 bg-dark-900 text-light-100 rounded-lg hover:bg-dark-700 transition-colors"
+                                            >
+                                                Previous
+                                            </Link>
+                                        )}
+                                        <span className="px-4 py-2 text-dark-900">
+                                            Page {page} of {totalPages}
+                                        </span>
+                                        {page < totalPages && (
+                                            <Link
+                                                href={`/products?${new URLSearchParams(
+                                                    {
+                                                        ...(params as Record<
+                                                            string,
+                                                            string
+                                                        >),
+                                                        page: (
+                                                            page + 1
+                                                        ).toString(),
+                                                    },
+                                                ).toString()}`}
+                                                className="px-4 py-2 bg-dark-900 text-light-100 rounded-lg hover:bg-dark-700 transition-colors"
+                                            >
+                                                Next
+                                            </Link>
+                                        )}
+                                    </div>
+                                )}
+                            </>
                         ) : (
                             <div className="text-center py-16">
                                 <h3 className="text-heading-3 text-dark-900 mb-2">
