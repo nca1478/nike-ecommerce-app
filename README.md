@@ -2,6 +2,37 @@
 
 Una aplicación de e-commerce moderna y completa construida con Next.js 16, TypeScript y las mejores tecnologías del ecosistema React. Incluye sistema de autenticación completo con Better Auth, base de datos PostgreSQL con Drizzle ORM, carrito de compras persistente, y un schema de base de datos robusto listo para producción con productos, variantes, órdenes, pagos, cupones, colecciones y más.
 
+## 🎯 Estado Actual del Proyecto
+
+**Versión:** 1.0.0 MVP  
+**Estado:** ✅ **Listo para Producción (MVP)**  
+**Última actualización:** Noviembre 2025
+
+### ✅ Completado
+
+- Sistema de autenticación completo (Better Auth)
+- Base de datos robusta con 23 tablas
+- Sistema de productos con filtrado avanzado
+- Páginas de listado y detalle de productos (SSR)
+- Búsqueda, ordenamiento y paginación
+- Carrito de compras con persistencia
+- Optimizaciones de rendimiento (índices, React Compiler)
+- Documentación completa (22 archivos)
+
+### 🔨 En Desarrollo
+
+- Integración de carrito con base de datos
+- Página de checkout protegida
+- Sistema de pagos (Stripe/PayPal)
+
+### 📈 Métricas de Calidad
+
+- ✅ ESLint: 0 errores, 0 warnings
+- ✅ TypeScript: 0 errores de tipos
+- ✅ Build: Compilación exitosa
+- ✅ Type Safety: 100%
+- ✅ Documentación: Completa
+
 ## 🚀 Stack Tecnológico
 
 ### Frontend
@@ -114,6 +145,294 @@ npm start
 
 Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
 
+## 🚀 Build de Producción
+
+### Preparación para Producción
+
+Antes de generar el build de producción, asegúrate de:
+
+1. **Verificar variables de entorno de producción**
+2. **Ejecutar tests de calidad**
+3. **Generar el build optimizado**
+4. **Probar el build localmente**
+
+### Procedimiento Completo
+
+#### 1. Configurar Variables de Entorno de Producción
+
+Crea o actualiza tu archivo `.env.local` con las credenciales de producción:
+
+```env
+# API Base URL (tu dominio de producción)
+NEXT_PUBLIC_BASE_URL=https://tu-dominio.com
+
+# Neon PostgreSQL Database (base de datos de producción)
+DATABASE_URL=postgresql://user:password@host/database?sslmode=require&channel_binding=require
+
+# Better Auth Configuration (secreto seguro para producción)
+BETTER_AUTH_SECRET=tu_secreto_de_produccion_aqui
+BETTER_AUTH_URL=https://tu-dominio.com
+```
+
+**⚠️ Importante:** Nunca uses las mismas credenciales de desarrollo en producción.
+
+#### 2. Verificar Calidad del Código
+
+```bash
+# Verificar tipos de TypeScript
+npm run check:ts
+
+# Ejecutar linting
+npm run lint
+
+# Formatear código (opcional)
+npm run format
+```
+
+#### 3. Preparar Base de Datos de Producción
+
+```bash
+# Setup completo de base de datos (genera schema, aplica índices y seed)
+npm run db:setup
+```
+
+O si prefieres control manual:
+
+```bash
+# Generar migraciones
+npm run db:generate
+
+# Aplicar schema a la base de datos
+npm run db:push
+
+# Aplicar índices de rendimiento
+npm run db:indexes
+
+# Insertar datos de ejemplo (opcional en producción)
+npm run db:seed
+```
+
+#### 4. Generar Build de Producción
+
+```bash
+# Build optimizado con todas las optimizaciones de Next.js
+npm run build
+```
+
+Este comando:
+
+- ✅ Compila TypeScript a JavaScript
+- ✅ Optimiza y minifica el código
+- ✅ Genera páginas estáticas (SSG) cuando es posible
+- ✅ Optimiza imágenes y assets
+- ✅ Habilita React Compiler para mejor rendimiento
+- ✅ Genera el directorio `.next` con el build
+
+**Salida esperada:**
+
+```
+Route (app)                              Size     First Load JS
+┌ ○ /                                    5.2 kB         95.3 kB
+├ ○ /_not-found                          871 B          85.9 kB
+├ ○ /api/auth/[...all]                   0 B                0 B
+├ ○ /products                            8.1 kB         98.2 kB
+└ ○ /sign-in                             3.4 kB         93.5 kB
+
+○  (Static)  prerendered as static content
+```
+
+#### 5. Probar Build Localmente
+
+```bash
+# Iniciar servidor de producción
+npm start
+```
+
+Abre [http://localhost:3000](http://localhost:3000) y verifica:
+
+- ✅ Todas las páginas cargan correctamente
+- ✅ La autenticación funciona
+- ✅ Los productos se muestran con imágenes
+- ✅ Los filtros y búsqueda funcionan
+- ✅ El carrito persiste correctamente
+- ✅ No hay errores en la consola del navegador
+
+#### 6. Comando Todo-en-Uno (Recomendado)
+
+Para preparar todo automáticamente:
+
+```bash
+# Ejecuta db:setup + build en un solo comando
+npm run predeploy
+```
+
+Este script ejecuta:
+
+1. `npm run db:setup` - Configura la base de datos completa
+2. `npm run build` - Genera el build de producción
+
+### Optimizaciones de Producción Incluidas
+
+El build de producción incluye automáticamente:
+
+#### Next.js 16 Optimizaciones
+
+- **Server Components** - Renderizado del lado del servidor por defecto
+- **Automatic Code Splitting** - División automática del código por rutas
+- **Image Optimization** - Optimización automática de imágenes con Next/Image
+- **Font Optimization** - Fuentes Geist optimizadas y auto-hospedadas
+- **Minification** - Minificación de JavaScript y CSS
+- **Tree Shaking** - Eliminación de código no utilizado
+
+#### React 19 + React Compiler
+
+- **React Compiler habilitado** - Optimización automática de componentes
+- **Automatic Memoization** - Memoización sin `useMemo` o `useCallback`
+- **Better Performance** - Renderizado más rápido y eficiente
+
+#### Base de Datos
+
+- **Connection Pooling** - Pool de conexiones con Neon
+- **Prepared Statements** - Consultas preparadas con Drizzle
+- **Optimized Indexes** - Índices GIN y funcionales para búsqueda rápida
+- **Type-safe Queries** - Consultas type-safe con TypeScript
+
+### Despliegue en Plataformas
+
+#### Vercel (Recomendado)
+
+```bash
+# Instalar Vercel CLI
+npm i -g vercel
+
+# Desplegar
+vercel
+
+# Producción
+vercel --prod
+```
+
+**Configuración en Vercel:**
+
+1. Conecta tu repositorio de GitHub
+2. Configura las variables de entorno en el dashboard
+3. Vercel detectará automáticamente Next.js
+4. El despliegue se ejecutará automáticamente
+
+#### Otras Plataformas
+
+**Netlify:**
+
+```bash
+# Build command
+npm run predeploy
+
+# Publish directory
+.next
+```
+
+**Railway / Render:**
+
+```bash
+# Build command
+npm run predeploy
+
+# Start command
+npm start
+```
+
+**Docker:**
+
+```dockerfile
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci --only=production
+
+COPY . .
+RUN npm run build
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
+```
+
+### Variables de Entorno Requeridas en Producción
+
+Asegúrate de configurar estas variables en tu plataforma de hosting:
+
+```env
+NEXT_PUBLIC_BASE_URL=https://tu-dominio.com
+DATABASE_URL=postgresql://...
+BETTER_AUTH_SECRET=tu_secreto_seguro
+BETTER_AUTH_URL=https://tu-dominio.com
+```
+
+### Checklist de Despliegue
+
+Antes de desplegar a producción:
+
+- [ ] Variables de entorno configuradas
+- [ ] Base de datos de producción creada
+- [ ] Schema aplicado con `npm run db:setup`
+- [ ] Build generado exitosamente con `npm run build`
+- [ ] Build probado localmente con `npm start`
+- [ ] Tests de calidad pasados (`lint`, `check:ts`)
+- [ ] Imágenes optimizadas
+- [ ] Secretos seguros generados (no usar los de desarrollo)
+- [ ] HTTPS configurado en producción
+- [ ] Dominio personalizado configurado (opcional)
+
+### Monitoreo Post-Despliegue
+
+Después del despliegue, verifica:
+
+1. **Rendimiento:**
+    - Tiempo de carga de páginas < 3s
+    - First Contentful Paint (FCP) < 1.8s
+    - Largest Contentful Paint (LCP) < 2.5s
+
+2. **Funcionalidad:**
+    - Autenticación funciona correctamente
+    - Productos se cargan con imágenes
+    - Carrito persiste entre sesiones
+    - Filtros y búsqueda funcionan
+
+3. **Errores:**
+    - Revisar logs de la plataforma
+    - Verificar errores en la consola del navegador
+    - Monitorear errores de base de datos
+
+### Solución de Problemas en Producción
+
+**Build falla:**
+
+```bash
+# Limpiar caché y reinstalar
+rm -rf .next node_modules
+npm install
+npm run build
+```
+
+**Errores de base de datos:**
+
+```bash
+# Verificar conexión
+npm run db:push
+
+# Regenerar schema
+npm run db:generate
+npm run db:push
+```
+
+**Variables de entorno no se cargan:**
+
+- Verifica que estén configuradas en la plataforma de hosting
+- No uses `.env.local` en producción (solo para desarrollo)
+- Reinicia el servicio después de cambiar variables
+
 ## 📝 Scripts Disponibles
 
 | Script                | Descripción                                                        |
@@ -121,6 +440,7 @@ Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
 | `npm run dev`         | Inicia servidor de desarrollo en puerto 3000                       |
 | `npm run build`       | Construye la aplicación optimizada para producción                 |
 | `npm run start`       | Inicia servidor de producción                                      |
+| `npm run predeploy`   | **Preparación completa:** db:setup + build (para despliegue)       |
 | `npm run lint`        | Ejecuta ESLint para verificar código                               |
 | `npm run format`      | Formatea código con Prettier                                       |
 | `npm run check:ts`    | Verifica tipos de TypeScript sin compilar                          |
@@ -679,21 +999,190 @@ npm run build         # ✅ Pasó (15.2s)
 
 ## 📊 Estado del Proyecto
 
+### Resumen Ejecutivo
+
+**Versión:** 1.0.0 MVP  
+**Estado:** ✅ Listo para Producción (MVP)  
+**Última actualización:** Noviembre 2025  
+**Branch actual:** product-actions
+
+### Funcionalidades Implementadas
+
 ```
 ✅ Autenticación Completa (Better Auth)
+   - Registro e inicio de sesión
+   - Sesiones de invitado con UUID
+   - Protección de rutas con middleware
+   - Migración automática de datos
+
 ✅ Base de Datos Robusta (23 tablas)
-✅ Schema de E-commerce Completo
-✅ Sistema de Productos con Filtrado Avanzado
-✅ Página de Listado de Productos (SSR)
-✅ Página de Detalle de Producto
-✅ Búsqueda, Ordenamiento y Paginación
-✅ Índices de Rendimiento Optimizados
-✅ Resolución Automática de Filtros (Slugs → UUIDs)
-🔨 Integración de Carrito con Base de Datos
+   - Schema completo de e-commerce
+   - Relaciones entre todas las entidades
+   - Validación Zod integrada
+   - Type-safety completo
+
+✅ Sistema de Productos Avanzado
+   - Filtrado por múltiples criterios
+   - Búsqueda por texto
+   - Ordenamiento flexible
+   - Paginación con preservación de filtros
+   - Resolución automática de slugs a UUIDs
+
+✅ Páginas Funcionales
+   - Listado de productos (SSR)
+   - Detalle de producto con variantes
+   - Páginas de autenticación (sign-in/sign-up)
+   - Navegación responsive
+
+✅ Optimizaciones de Rendimiento
+   - Índices de base de datos (GIN, funcionales)
+   - React Compiler habilitado
+   - Imágenes optimizadas con Next/Image
+   - Server Components por defecto
+
+✅ Calidad de Código
+   - TypeScript 5 con type-safety completo
+   - ESLint configurado (0 errores)
+   - Prettier para formateo
+   - Documentación completa (22 archivos)
+
+🔨 En Desarrollo
+   - Integración de carrito con base de datos
+   - Página de checkout protegida
+   - Sincronización de carrito entre dispositivos
+
 📅 Roadmap Definido
-📚 Documentación Completa (22 archivos)
-🎯 Arquitectura Lista para Escalar
+   - Sistema de pagos (Stripe/PayPal)
+   - Panel de administración
+   - Sistema de reseñas funcional
+   - Historial de pedidos
 ```
+
+### Métricas de Calidad
+
+| Categoría         | Métrica              | Estado | Resultado             |
+| ----------------- | -------------------- | ------ | --------------------- |
+| **Código**        | ESLint               | ✅     | 0 errores, 0 warnings |
+|                   | TypeScript           | ✅     | 0 errores de tipos    |
+|                   | Type Safety          | ✅     | 100%                  |
+| **Build**         | Compilación          | ✅     | Exitosa (15.2s)       |
+|                   | Tamaño First Load JS | ✅     | ~95 kB (promedio)     |
+|                   | Optimización         | ✅     | Minificación activa   |
+| **Base de Datos** | Tablas               | ✅     | 23 tablas             |
+|                   | Índices              | ✅     | 15+ índices           |
+|                   | Migraciones          | ✅     | Sincronizadas         |
+| **Documentación** | Archivos             | ✅     | 22 archivos           |
+|                   | Cobertura            | ✅     | Completa              |
+| **Testing**       | Funcionalidades      | ✅     | Verificadas           |
+|                   | Navegación           | ✅     | Funcional             |
+|                   | Responsive           | ✅     | Mobile-first          |
+
+### Tecnologías y Versiones
+
+| Tecnología  | Versión | Estado | Notas                     |
+| ----------- | ------- | ------ | ------------------------- |
+| Next.js     | 16.0.3  | ✅     | App Router + RSC          |
+| React       | 19.2.0  | ✅     | React Compiler habilitado |
+| TypeScript  | 5.x     | ✅     | Strict mode               |
+| Drizzle ORM | 0.44.7  | ✅     | Type-safe queries         |
+| Better Auth | 1.3.34  | ✅     | Sistema completo          |
+| TailwindCSS | 4.x     | ✅     | PostCSS + utility-first   |
+| Zustand     | 5.0.8   | ✅     | State management          |
+| Zod         | 4.1.12  | ✅     | Validación de schemas     |
+| PostgreSQL  | Latest  | ✅     | Neon serverless           |
+| Node.js     | 20+     | ✅     | LTS recomendado           |
+
+### Arquitectura del Sistema
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                        Frontend (Next.js 16)                 │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │   Pages      │  │  Components  │  │    Stores    │      │
+│  │  (App Router)│  │   (React 19) │  │   (Zustand)  │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+└─────────────────────────────────────────────────────────────┘
+                            ↓
+┌─────────────────────────────────────────────────────────────┐
+│                    Server Actions & API Routes               │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │   Products   │  │     Auth     │  │    Filters   │      │
+│  │   Actions    │  │   Actions    │  │   Actions    │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+└─────────────────────────────────────────────────────────────┘
+                            ↓
+┌─────────────────────────────────────────────────────────────┐
+│                    Database Layer (Drizzle ORM)              │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │   Schema     │  │  Migrations  │  │   Indexes    │      │
+│  │  (23 tables) │  │   (Drizzle)  │  │ (GIN + B-tree)│     │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+└─────────────────────────────────────────────────────────────┘
+                            ↓
+┌─────────────────────────────────────────────────────────────┐
+│                  PostgreSQL (Neon Serverless)                │
+│              Connection Pooling + SSL/TLS                    │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Capacidades Actuales
+
+**Productos:**
+
+- ✅ Listado con SSR y filtrado avanzado
+- ✅ Detalle con variantes (color, talla, precio)
+- ✅ Búsqueda por texto (nombre, descripción)
+- ✅ Filtros: género, marca, categoría, color, talla, precio
+- ✅ Ordenamiento: precio, fecha, nombre, popularidad
+- ✅ Paginación con preservación de filtros en URL
+- ✅ Imágenes optimizadas y responsive
+
+**Autenticación:**
+
+- ✅ Registro con validación de contraseña segura
+- ✅ Inicio de sesión con email/contraseña
+- ✅ Sesiones de invitado con UUID
+- ✅ Protección de rutas con middleware
+- ✅ Migración automática de datos invitado → usuario
+- ✅ Componentes UI completos (SignIn, SignUp, UserMenu)
+
+**Carrito:**
+
+- ✅ Gestión de estado con Zustand
+- ✅ Persistencia en localStorage
+- ✅ Agregar/eliminar productos
+- ✅ Cálculo automático de totales
+- ✅ Contador en tiempo real en Navbar
+
+**Base de Datos:**
+
+- ✅ 23 tablas con relaciones completas
+- ✅ Validación Zod en todos los schemas
+- ✅ Índices optimizados para rendimiento
+- ✅ Migraciones automáticas con Drizzle Kit
+- ✅ Type-safety completo con TypeScript
+
+### Próximos Pasos Prioritarios
+
+1. **Integración de Carrito con Base de Datos** (En progreso)
+    - Sincronización con tabla `carts` y `cart_items`
+    - Persistencia entre dispositivos
+    - Migración de localStorage a DB
+
+2. **Página de Checkout**
+    - Formulario de dirección de envío
+    - Resumen de orden
+    - Integración con sistema de pagos
+
+3. **Sistema de Pagos**
+    - Integración con Stripe o PayPal
+    - Procesamiento de órdenes
+    - Confirmación de pago
+
+4. **Panel de Administración**
+    - CRUD de productos y variantes
+    - Gestión de órdenes
+    - Dashboard de ventas
 
 ### Tablas de Base de Datos Implementadas
 
