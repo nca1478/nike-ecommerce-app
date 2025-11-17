@@ -2,7 +2,10 @@ import Link from 'next/link';
 
 export const HeroSection = () => {
     return (
-        <section className="relative from-gray-100 to-gray-200 overflow-hidden">
+        <section
+            className="relative from-gray-100 to-gray-200 overflow-hidden bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: 'url(/hero-bg.png)' }}
+        >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                     {/* Left Content */}
@@ -53,12 +56,6 @@ export const HeroSection = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-
-            {/* Background silhouettes */}
-            <div className="absolute inset-0 opacity-5 pointer-events-none">
-                <div className="absolute top-10 left-20 text-9xl">👟</div>
-                <div className="absolute bottom-20 right-40 text-9xl">👟</div>
             </div>
         </section>
     );

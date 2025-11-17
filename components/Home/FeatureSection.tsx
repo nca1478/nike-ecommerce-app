@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 export const FeatureSection = () => {
@@ -30,10 +31,11 @@ export const FeatureSection = () => {
                     {/* Right Image */}
                     <div className="relative h-64 lg:h-full min-h-[400px] hidden lg:block">
                         <div className="absolute inset-0 bg-linear-to-br from-orange-300 to-orange-400 transform skew-x-12 origin-top-left"></div>
-                        <img
+                        <Image
                             src="/feature.png"
                             alt="Nike React Presto"
                             className="absolute inset-0 w-full h-full object-contain z-10 p-8"
+                            fill
                         />
                     </div>
                 </div>
