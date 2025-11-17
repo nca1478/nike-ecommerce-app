@@ -1,8 +1,6 @@
 import { Suspense } from 'react';
-import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Heart, ShoppingBag } from 'lucide-react';
-import { CollapsibleSection } from '@/components/CollapsibleSection';
 import { getProduct } from '@/lib/actions/product';
 import {
     VariantProvider,
@@ -15,6 +13,7 @@ import { ProductReviews } from './ProductReviews';
 import { RecommendedProducts } from './RecommendedProducts';
 import { ReviewsSkeleton } from './ReviewsSkeleton';
 import { RecommendedSkeleton } from './RecommendedSkeleton';
+import { CollapsibleSection } from '@/components';
 
 interface ProductPageProps {
     params: Promise<{ id: string }>;
@@ -32,8 +31,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
                         Product Not Found
                     </h1>
                     <p className="text-body text-dark-700 mb-6">
-                        The product you're looking for doesn't exist or has been
-                        removed.
+                        The product you&apos;re looking for doesn&apos;t exist
+                        or has been removed.
                     </p>
                     <Link
                         href="/products"

@@ -1,6 +1,8 @@
 import Link from 'next/link';
-import { Card } from '@/components';
+import { Card, FeatureSection } from '@/components';
 import { getAllProducts } from '@/lib/actions/product';
+import { HeroSection } from '@/components/home/HeroSection';
+import { TrendingSection } from '@/components/home/TrendingSection';
 
 export const dynamic = 'force-dynamic';
 
@@ -8,12 +10,15 @@ export default async function Home() {
     // Fetch latest products from database
     const { products } = await getAllProducts({
         page: 1,
-        limit: 6,
+        limit: 3,
         sortBy: 'latest',
     });
 
     return (
         <div className="min-h-screen bg-light-200">
+            {/* Hero Section */}
+            <HeroSection />
+
             {/* Latest Shoes Section */}
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <h2 className="text-heading-2 font-bold text-dark-900 mb-8">
@@ -48,6 +53,12 @@ export default async function Home() {
                     </div>
                 )}
             </section>
+
+            {/* Trending Now Section */}
+            <TrendingSection />
+
+            {/* Nike React Presto Section */}
+            <FeatureSection />
         </div>
     );
 }

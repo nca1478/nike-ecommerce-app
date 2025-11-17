@@ -1,9 +1,9 @@
 'use client';
 
-import { createContext, useContext, useState, ReactNode, useMemo } from 'react';
-import { ProductGallery } from '@/components/ProductGallery';
+import { createContext, useContext, useState, ReactNode } from 'react';
 import Image from 'next/image';
 import { Check } from 'lucide-react';
+import { ProductGallery } from '@/components';
 
 export interface VariantWithImages {
     colorId: string;
