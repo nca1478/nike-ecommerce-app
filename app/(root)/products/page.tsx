@@ -4,9 +4,7 @@ import Link from 'next/link';
 import { parseFilters, getActiveFilterCount } from '@/lib/utils/query';
 import { getAllProducts } from '@/lib/actions/product';
 import { resolveFilterSlugs } from '@/lib/actions/filters';
-import { Filters } from '@/components/Filters';
-import { Sort } from '@/components/Sort';
-import { Card } from '@/components/Card';
+import { Card, Filters, Sort } from '@/components';
 
 interface ProductsPageProps {
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>;

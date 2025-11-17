@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Card } from '@/components';
 import { getAllProducts } from '@/lib/actions/product';
-import { HeroSection } from '@/components/HeroSection';
+import { HeroSection } from '@/components/home/HeroSection';
 
 export const dynamic = 'force-dynamic';
 

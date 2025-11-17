@@ -36,6 +36,7 @@ export const HeroSection = () => {
 
                         {/* Shoe Image */}
                         <div className="relative z-10">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                                 src="/hero-shoe.png"
                                 alt="Nike Air Jordan"

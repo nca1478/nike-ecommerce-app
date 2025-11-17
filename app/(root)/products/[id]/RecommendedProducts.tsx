@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { Card } from '@/components/Card';
 import { getRecommendedProducts } from '@/lib/actions/product';
+import { Card } from '@/components';
 
 interface RecommendedProductsProps {
     productId: string;
