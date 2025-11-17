@@ -10,6 +10,7 @@ import {
     genders,
     colors,
     sizes,
+    reviews,
 } from '@/lib/db/schema';
 import {
     eq,
@@ -361,7 +362,10 @@ export async function getProduct(
     try {
         // Fetch product with all relations in a single query
         const result = await db.query.products.findFirst({
-            where: eq(products.id, productId),
+            where: and(
+                eq(products.id, productId),
+                eq(products.isPublished, true),
+            ),
             with: {
                 category: true,
                 brand: true,
@@ -435,5 +439,148 @@ export async function getProduct(
     } catch (error) {
         console.error('Error in getProduct:', error);
         throw new Error('Failed to fetch product details');
+    }
+}
+
+export interface ProductReview {
+    id: string;
+    author: string;
+    rating: number;
+    title?: string;
+    content: string;
+    createdAt: string;
+}
+
+/**
+ * Get reviews for a specific product
+ * Returns approved reviews sorted by most recent first
+ */
+export async function getProductReviews(
+    productId: string,
+): Promise<ProductReview[]> {
+    try {
+        // Since the reviews table doesn't have an 'approved' field,
+        // we'll return all reviews for now
+        const reviewsData = await db
+            .select({
+                id: sql<string>`${reviews.id}::text`,
+                userId: sql<string>`${reviews.userId}::text`,
+                rating: reviews.rating,
+                comment: reviews.comment,
+                createdAt: reviews.createdAt,
+            })
+            .from(reviews)
+            .where(eq(reviews.productId, productId))
+            .orderBy(desc(reviews.createdAt))
+            .limit(10);
+
+        // Transform to match the expected format
+        return reviewsData.map((review) => ({
+            id: review.id,
+            author: `User ${review.userId.slice(0, 8)}`, // Anonymize user ID
+            rating: parseInt(review.rating),
+            content: review.comment,
+            createdAt: review.createdAt.toISOString(),
+        }));
+    } catch (error) {
+        console.error('Error in getProductReviews:', error);
+        // Return empty array on error to prevent page crash
+        return [];
+    }
+}
+
+export interface RecommendedProduct {
+    id: string;
+    name: string;
+    price: string;
+    salePrice: string | null;
+    primaryImage: string | null;
+    category: string;
+    brand: string;
+}
+
+/**
+ * Get recommended products based on the current product
+ * Returns products from the same category/brand/gender
+ */
+export async function getRecommendedProducts(
+    productId: string,
+): Promise<RecommendedProduct[]> {
+    try {
+        // First, get the current product to know its category, brand, and gender
+        const currentProduct = await db.query.products.findFirst({
+            where: eq(products.id, productId),
+            columns: {
+                categoryId: true,
+                brandId: true,
+                genderId: true,
+            },
+        });
+
+        if (!currentProduct) {
+            return [];
+        }
+
+        // Get recommended products from same category, brand, or gender
+        const recommendedData = await db
+            .select({
+                id: products.id,
+                name: products.name,
+                categoryId: products.categoryId,
+                brandId: products.brandId,
+                minPrice: sql<string>`(
+                    SELECT MIN(CAST(price AS DECIMAL))::TEXT
+                    FROM ${productVariants}
+                    WHERE ${productVariants.productId} = ${products.id}
+                )`,
+                minSalePrice: sql<string | null>`(
+                    SELECT MIN(CAST(sale_price AS DECIMAL))::TEXT
+                    FROM ${productVariants}
+                    WHERE ${productVariants.productId} = ${products.id}
+                    AND ${productVariants.salePrice} IS NOT NULL
+                )`,
+                primaryImage: sql<string | null>`(
+                    SELECT url
+                    FROM ${productImages}
+                    WHERE ${productImages.productId} = ${products.id}
+                    ORDER BY ${productImages.isPrimary} DESC, ${productImages.sortOrder} ASC
+                    LIMIT 1
+                )`,
+                categoryName: categories.name,
+                brandName: brands.name,
+            })
+            .from(products)
+            .leftJoin(categories, eq(products.categoryId, categories.id))
+            .leftJoin(brands, eq(products.brandId, brands.id))
+            .where(
+                and(
+                    eq(products.isPublished, true),
+                    sql`${products.id} != ${productId}`,
+                    or(
+                        eq(products.categoryId, currentProduct.categoryId),
+                        eq(products.brandId, currentProduct.brandId),
+                        eq(products.genderId, currentProduct.genderId),
+                    ),
+                ),
+            )
+            .orderBy(desc(products.createdAt))
+            .limit(6);
+
+        // Filter out products without valid images and transform
+        return recommendedData
+            .filter((p) => p.primaryImage && p.primaryImage.trim() !== '')
+            .map((p) => ({
+                id: p.id,
+                name: p.name,
+                price: p.minPrice || '0',
+                salePrice: p.minSalePrice,
+                primaryImage: p.primaryImage,
+                category: p.categoryName || 'Uncategorized',
+                brand: p.brandName || 'Unknown',
+            }));
+    } catch (error) {
+        console.error('Error in getRecommendedProducts:', error);
+        // Return empty array on error to prevent page crash
+        return [];
     }
 }
