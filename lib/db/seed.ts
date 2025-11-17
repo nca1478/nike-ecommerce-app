@@ -228,51 +228,69 @@ async function seed() {
         }
 
         console.log('📊 Seeding genders...');
-        const genders = await db
+        let genders = await db
             .insert(schema.genders)
             .values(gendersData)
             .onConflictDoNothing()
             .returning();
+        if (genders.length === 0) {
+            genders = await db.select().from(schema.genders);
+        }
         console.log(`✅ Seeded ${genders.length} genders\n`);
 
         console.log('🎨 Seeding colors...');
-        const colors = await db
+        let colors = await db
             .insert(schema.colors)
             .values(colorsData)
             .onConflictDoNothing()
             .returning();
+        if (colors.length === 0) {
+            colors = await db.select().from(schema.colors);
+        }
         console.log(`✅ Seeded ${colors.length} colors\n`);
 
         console.log('📏 Seeding sizes...');
-        const sizes = await db
+        let sizes = await db
             .insert(schema.sizes)
             .values(sizesData)
             .onConflictDoNothing()
             .returning();
+        if (sizes.length === 0) {
+            sizes = await db.select().from(schema.sizes);
+        }
         console.log(`✅ Seeded ${sizes.length} sizes\n`);
 
         console.log('🏷️  Seeding brands...');
-        const brands = await db
+        let brands = await db
             .insert(schema.brands)
             .values(brandsData)
             .onConflictDoNothing()
             .returning();
+        if (brands.length === 0) {
+            brands = await db.select().from(schema.brands);
+        }
         console.log(`✅ Seeded ${brands.length} brands\n`);
 
         console.log('📁 Seeding categories...');
-        const categories = await db
+        let categories = await db
             .insert(schema.categories)
             .values(categoriesData)
             .onConflictDoNothing()
             .returning();
+        if (categories.length === 0) {
+            categories = await db.select().from(schema.categories);
+        }
         console.log(`✅ Seeded ${categories.length} categories\n`);
 
         console.log('🗂️  Seeding collections...');
-        const collections = await db
+        let collections = await db
             .insert(schema.collections)
             .values(collectionsData)
             .onConflictDoNothing()
             .returning();
+        if (collections.length === 0) {
+            collections = await db.select().from(schema.collections);
+        }
         console.log(`✅ Seeded ${collections.length} collections\n`);
 
         console.log('👟 Seeding products and variants...');
@@ -283,6 +301,20 @@ async function seed() {
                 (c) => c.slug === productData.category,
             )!;
             const gender = genders.find((g) => g.slug === productData.gender)!;
+
+            // Check if product already exists
+            const existingProduct = await db
+                .select()
+                .from(schema.products)
+                .where(eq(schema.products.name, productData.name))
+                .limit(1);
+
+            if (existingProduct.length > 0) {
+                console.log(
+                    `  ⏭️  Skipped existing product: ${productData.name}`,
+                );
+                continue;
+            }
 
             const [product] = await db
                 .insert(schema.products)
