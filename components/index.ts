@@ -12,3 +12,4 @@ export { ColorVariantPicker } from './product/ColorVariantPicker';
 export type { ColorVariant } from './product/ColorVariantPicker';
 export { SizePicker } from './product/SizePicker';
 export { CollapsibleSection } from './product/CollapsibleSection';
+export { FeatureSection } from './home/FeatureSection';

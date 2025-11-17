@@ -55,7 +55,7 @@ export function TrendingSection({
                 {/* Large Featured Item */}
                 <Link
                     href={largeItem.link}
-                    className="lg:col-span-2 relative group overflow-hidden rounded-lg"
+                    className="lg:col-span-2 relative group overflow-hidden"
                 >
                     <div className="relative h-[400px] w-full">
                         <Image
@@ -86,7 +86,7 @@ export function TrendingSection({
                     <Link
                         key={item.id}
                         href={item.link}
-                        className="relative group overflow-hidden rounded-lg"
+                        className="relative group overflow-hidden"
                     >
                         <div className="relative h-[300px] w-full">
                             <Image

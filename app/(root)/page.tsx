@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Card } from '@/components';
+import { Card, FeatureSection } from '@/components';
 import { getAllProducts } from '@/lib/actions/product';
 import { HeroSection } from '@/components/home/HeroSection';
 import { TrendingSection } from '@/components/home/TrendingSection';
@@ -56,6 +56,9 @@ export default async function Home() {
 
             {/* Trending Now Section */}
             <TrendingSection />
+
+            {/* Nike React Presto Section */}
+            <FeatureSection />
         </div>
     );
 }
