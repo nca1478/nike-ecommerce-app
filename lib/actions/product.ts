@@ -564,7 +564,7 @@ export async function getRecommendedProducts(
                 ),
             )
             .orderBy(desc(products.createdAt))
-            .limit(6);
+            .limit(3);
 
         // Filter out products without valid images and transform
         return recommendedData
