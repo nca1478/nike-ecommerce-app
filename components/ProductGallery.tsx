@@ -69,40 +69,9 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
     }
 
     return (
-        <div className="flex gap-4">
-            {/* Thumbnails - Vertical Column on Left */}
-            {validImages.length > 1 && (
-                <div className="flex flex-col gap-2 overflow-y-auto max-h-[600px]">
-                    {validImages.map((image, index) => (
-                        <button
-                            key={index}
-                            onClick={() => setSelectedIndex(index)}
-                            onKeyDown={(e) => handleKeyDown(e, index)}
-                            className={`relative shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-dark-900 cursor-pointer ${
-                                safeSelectedIndex === index
-                                    ? 'border-light-300'
-                                    : 'border-light-300 hover:border-dark-400'
-                            }`}
-                            aria-label={`View image ${index + 1}`}
-                            aria-pressed={safeSelectedIndex === index}
-                        >
-                            <Image
-                                src={image}
-                                alt={`${productName} thumbnail ${index + 1}`}
-                                fill
-                                className="object-cover cursor-pointer"
-                                sizes="64px"
-                            />
-                            {safeSelectedIndex === index && (
-                                <div className="absolute inset-0 border-2 border-dark-900 pointer-events-none" />
-                            )}
-                        </button>
-                    ))}
-                </div>
-            )}
-
+        <div className="flex flex-col lg:flex-row gap-4">
             {/* Main Image */}
-            <div className="flex-1">
+            <div className="flex-1 order-1 lg:order-2">
                 <div
                     className="relative w-full aspect-square bg-light-200 rounded-lg overflow-hidden group outline-none"
                     onKeyDown={handleArrowKeys}
@@ -117,19 +86,19 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                         priority={safeSelectedIndex === 0}
                     />
 
-                    {/* Navigation Arrows */}
+                    {/* Navigation Arrows - Desktop only */}
                     {validImages.length > 1 && (
                         <>
                             <button
                                 onClick={handlePrevious}
-                                className="absolute left-4 top-1/2 -translate-y-1/2 bg-light-100/80 hover:bg-light-100 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-dark-900 cursor-pointer"
+                                className="hidden lg:block absolute left-4 top-1/2 -translate-y-1/2 bg-light-100/80 hover:bg-light-100 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-dark-900 cursor-pointer"
                                 aria-label="Previous image"
                             >
                                 <ChevronLeft className="w-6 h-6 text-dark-900" />
                             </button>
                             <button
                                 onClick={handleNext}
-                                className="absolute right-4 top-1/2 -translate-y-1/2 bg-light-100/80 hover:bg-light-100 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity focus:opacity-100 focus:ring-2 focus:ring-dark-900 cursor-pointer"
+                                className="hidden lg:block absolute right-4 top-1/2 -translate-y-1/2 bg-light-100/80 hover:bg-light-100 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity focus:opacity-100 focus:ring-2 focus:ring-dark-900 cursor-pointer"
                                 aria-label="Next image"
                             >
                                 <ChevronRight className="w-6 h-6 text-dark-900" />
@@ -138,6 +107,66 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                     )}
                 </div>
             </div>
+
+            {/* Thumbnails */}
+            {validImages.length > 1 && (
+                <>
+                    {/* Mobile: Horizontal scrollable below main image */}
+                    <div className="lg:hidden order-2 flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                        {validImages.map((image, index) => (
+                            <button
+                                key={index}
+                                onClick={() => setSelectedIndex(index)}
+                                onKeyDown={(e) => handleKeyDown(e, index)}
+                                className={`relative shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-dark-900 cursor-pointer ${
+                                    safeSelectedIndex === index
+                                        ? 'border-dark-900'
+                                        : 'border-light-300 hover:border-dark-400'
+                                }`}
+                                aria-label={`View image ${index + 1}`}
+                                aria-pressed={safeSelectedIndex === index}
+                            >
+                                <Image
+                                    src={image}
+                                    alt={`${productName} thumbnail ${index + 1}`}
+                                    fill
+                                    className="object-cover cursor-pointer"
+                                    sizes="64px"
+                                />
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Desktop: Vertical column on left */}
+                    <div className="hidden lg:flex flex-col gap-2 overflow-y-auto max-h-[600px] order-1">
+                        {validImages.map((image, index) => (
+                            <button
+                                key={index}
+                                onClick={() => setSelectedIndex(index)}
+                                onKeyDown={(e) => handleKeyDown(e, index)}
+                                className={`relative shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-dark-900 cursor-pointer ${
+                                    safeSelectedIndex === index
+                                        ? 'border-dark-900'
+                                        : 'border-light-300 hover:border-dark-400'
+                                }`}
+                                aria-label={`View image ${index + 1}`}
+                                aria-pressed={safeSelectedIndex === index}
+                            >
+                                <Image
+                                    src={image}
+                                    alt={`${productName} thumbnail ${index + 1}`}
+                                    fill
+                                    className="object-cover cursor-pointer"
+                                    sizes="64px"
+                                />
+                                {safeSelectedIndex === index && (
+                                    <div className="absolute inset-0 border-2 border-dark-900 pointer-events-none" />
+                                )}
+                            </button>
+                        ))}
+                    </div>
+                </>
+            )}
         </div>
     );
 }

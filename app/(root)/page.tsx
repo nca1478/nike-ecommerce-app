@@ -1,10 +1,17 @@
 import Link from 'next/link';
 import { Card } from '@/components';
-import { latestShoes } from '@/data';
+import { getAllProducts } from '@/lib/actions/product';
 
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
+    // Fetch latest products from database
+    const { products } = await getAllProducts({
+        page: 1,
+        limit: 6,
+        sortBy: 'latest',
+    });
+
     return (
         <div className="min-h-screen bg-light-200">
             {/* Latest Shoes Section */}
@@ -13,20 +20,33 @@ export default async function Home() {
                     Latest shoes
                 </h2>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {latestShoes.map((shoe) => (
-                        <Link key={shoe.id} href={`/products/${shoe.id}`}>
-                            <Card
-                                title={shoe.title}
-                                description={shoe.description}
-                                image={shoe.image}
-                                price={shoe.price}
-                                category={shoe.category}
-                                badge={shoe.badge}
-                            />
-                        </Link>
-                    ))}
-                </div>
+                {products.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {products.map((product) => (
+                            <Link
+                                key={product.id}
+                                href={`/products/${product.id}`}
+                            >
+                                <Card
+                                    title={product.name}
+                                    description={product.description}
+                                    image={
+                                        product.primaryImage ||
+                                        '/placeholder-product.jpg'
+                                    }
+                                    price={parseFloat(product.minPrice)}
+                                    category={product.category?.name}
+                                />
+                            </Link>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="text-center py-16">
+                        <p className="text-body text-dark-700">
+                            No products available at the moment.
+                        </p>
+                    </div>
+                )}
             </section>
         </div>
     );
