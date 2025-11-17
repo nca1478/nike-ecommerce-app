@@ -35,7 +35,7 @@ export const HeroSection = () => {
                         </div>
 
                         {/* Shoe Image */}
-                        <div className="relative z-10">
+                        <div className="relative z-10 hidden lg:block">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                                 src="/hero-shoe.png"
