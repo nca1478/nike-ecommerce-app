@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { getCurrentUser } from './actions';
 
 interface User {
@@ -17,24 +17,26 @@ export function useAuth() {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        async function loadUser() {
-            try {
-                const currentUser = await getCurrentUser();
-                setUser(currentUser);
-            } catch (error) {
-                console.error('Error loading user:', error);
-            } finally {
-                setLoading(false);
-            }
+    const loadUser = useCallback(async () => {
+        try {
+            setLoading(true);
+            const currentUser = await getCurrentUser();
+            setUser(currentUser);
+        } catch (error) {
+            console.error('Error loading user:', error);
+        } finally {
+            setLoading(false);
         }
-
-        loadUser();
     }, []);
+
+    useEffect(() => {
+        loadUser();
+    }, [loadUser]);
 
     return {
         user,
         loading,
         isAuthenticated: !!user,
+        refresh: loadUser,
     };
 }

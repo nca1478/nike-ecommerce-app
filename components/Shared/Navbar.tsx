@@ -3,9 +3,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useAuth } from '@/lib/auth/hooks';
+import { signOut } from '@/lib/auth/actions';
+import { useRouter } from 'next/navigation';
 
 export function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const { user, loading, refresh } = useAuth();
+    const router = useRouter();
 
     const navLinks = [
         { href: '/products?gender=men', label: 'Men' },
@@ -14,6 +19,15 @@ export function Navbar() {
         { href: '/collections', label: 'Collections' },
         { href: '/contact', label: 'Contact' },
     ];
+
+    const handleLogout = async () => {
+        const result = await signOut();
+        if (result.success) {
+            await refresh(); // Actualizar el estado del usuario
+            router.push('/');
+            router.refresh();
+        }
+    };
 
     return (
         <nav className="bg-light-100 border-b border-light-300 sticky top-0 z-50">
@@ -46,13 +60,30 @@ export function Navbar() {
 
                     {/* Right Side Actions */}
                     <div className="hidden md:flex items-center space-x-6">
-                        <Link
-                            href="/sign-in"
-                            className="text-dark-900 hover:text-dark-700 transition-colors"
-                            aria-label="Search"
-                        >
-                            Login
-                        </Link>
+                        {!loading && (
+                            <>
+                                {user ? (
+                                    <>
+                                        <span className="text-dark-900 text-sm">
+                                            {user.name || user.email}
+                                        </span>
+                                        <button
+                                            onClick={handleLogout}
+                                            className="text-dark-900 hover:text-dark-700 transition-colors font-medium cursor-pointer"
+                                        >
+                                            Logout
+                                        </button>
+                                    </>
+                                ) : (
+                                    <Link
+                                        href="/sign-in"
+                                        className="text-dark-900 hover:text-dark-700 transition-colors font-medium"
+                                    >
+                                        Login
+                                    </Link>
+                                )}
+                            </>
+                        )}
                         <Link
                             href="/cart"
                             className="text-dark-900 hover:text-dark-700 transition-colors"
@@ -101,12 +132,34 @@ export function Navbar() {
                             </Link>
                         ))}
                         <div className="pt-4 border-t border-light-300 space-y-3">
-                            <Link
-                                href="/sign-in"
-                                className="block w-full text-left py-2 text-dark-900"
-                            >
-                                Login
-                            </Link>
+                            {!loading && (
+                                <>
+                                    {user ? (
+                                        <>
+                                            <div className="py-2 text-dark-900 text-sm">
+                                                {user.name || user.email}
+                                            </div>
+                                            <button
+                                                onClick={() => {
+                                                    handleLogout();
+                                                    setIsMenuOpen(false);
+                                                }}
+                                                className="block w-full text-left py-2 text-dark-900 hover:text-dark-700 transition-colors cursor-pointer"
+                                            >
+                                                Logout
+                                            </button>
+                                        </>
+                                    ) : (
+                                        <Link
+                                            href="/sign-in"
+                                            className="block w-full text-left py-2 text-dark-900 hover:text-dark-700 transition-colors"
+                                            onClick={() => setIsMenuOpen(false)}
+                                        >
+                                            Login
+                                        </Link>
+                                    )}
+                                </>
+                            )}
                             <Link
                                 href="/cart"
                                 className="block py-2 text-dark-900"

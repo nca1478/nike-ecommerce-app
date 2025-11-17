@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { Card, FeatureSection } from '@/components';
 import { getAllProducts } from '@/lib/actions/product';
-import { HeroSection } from '@/components/home/HeroSection';
-import { TrendingSection } from '@/components/home/TrendingSection';
+import { HeroSection } from '@/components/Home/HeroSection';
+import { TrendingSection } from '@/components/Home/TrendingSection';
 
 export const dynamic = 'force-dynamic';
 

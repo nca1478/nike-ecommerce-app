@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Card } from '../ui/Card';
+import { Card } from '../UI/Card';
 
 interface Product {
     id: string;
