@@ -41,7 +41,12 @@ export default function AuthForm({ type, onSubmit }: AuthFormProps) {
             if (result?.success) {
                 router.push('/');
             } else if (result?.error) {
-                toast.error(result.error);
+                if (isSignUp) {
+                    toast.error('Error registering user');
+                    return;
+                } else {
+                    toast.error(result.error);
+                }
             }
         } catch (e) {
             console.log('error', e);
