@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Card } from '@/components';
 import { getAllProducts } from '@/lib/actions/product';
 import { HeroSection } from '@/components/home/HeroSection';
+import { TrendingSection } from '@/components/home/TrendingSection';
 
 export const dynamic = 'force-dynamic';
 
@@ -52,6 +53,9 @@ export default async function Home() {
                     </div>
                 )}
             </section>
+
+            {/* Trending Now Section */}
+            <TrendingSection />
         </div>
     );
 }
