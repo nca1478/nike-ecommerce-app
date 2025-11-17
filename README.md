@@ -33,7 +33,7 @@ Una aplicación de e-commerce moderna y completa construida con Next.js 16, Type
 - **Babel React Compiler 1.0.0** - Compilador experimental de React 19
 - **Lucide React 0.553.0** - Iconos modernos para la interfaz
 
-## � Inicioa Rápido (5 minutos)
+## Instalación y Configuración Rápida
 
 ```bash
 # 1. Clonar e instalar
@@ -52,7 +52,8 @@ npm run db:setup
 npm run dev
 ```
 
-Abre [http://localhost:3000/products](http://localhost:3000/products) para ver el catálogo de productos.
+- Para ver el home [http://localhost:3000](http://localhost:3000)
+- Para ver el catálogo de productos [http://localhost:3000/products](http://localhost:3000/products)
 
 ## 📦 Instalación y Configuración Detallada
 
