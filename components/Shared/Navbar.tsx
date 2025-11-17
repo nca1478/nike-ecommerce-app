@@ -46,12 +46,13 @@ export function Navbar() {
 
                     {/* Right Side Actions */}
                     <div className="hidden md:flex items-center space-x-6">
-                        <button
+                        <Link
+                            href="/sign-in"
                             className="text-dark-900 hover:text-dark-700 transition-colors"
                             aria-label="Search"
                         >
-                            Search
-                        </button>
+                            Login
+                        </Link>
                         <Link
                             href="/cart"
                             className="text-dark-900 hover:text-dark-700 transition-colors"
@@ -100,9 +101,12 @@ export function Navbar() {
                             </Link>
                         ))}
                         <div className="pt-4 border-t border-light-300 space-y-3">
-                            <button className="block w-full text-left py-2 text-dark-900">
-                                Search
-                            </button>
+                            <Link
+                                href="/sign-in"
+                                className="block w-full text-left py-2 text-dark-900"
+                            >
+                                Login
+                            </Link>
                             <Link
                                 href="/cart"
                                 className="block py-2 text-dark-900"
