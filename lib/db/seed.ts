@@ -364,7 +364,7 @@ async function seed() {
 
             for (const color of selectedColors) {
                 for (const size of selectedSizes) {
-                    const sku = `${product.name.replace(/\s+/g, '-').toUpperCase()}-${color.slug.toUpperCase()}-${size.slug.toUpperCase()}`;
+                    const sku = `${product.name.replace(/\s+/g, '-').toLowerCase()}-${color.slug.toLowerCase()}-${size.slug.toLowerCase()}`;
                     const stock = Math.floor(Math.random() * 50) + 10;
 
                     const [variant] = await db
