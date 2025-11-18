@@ -4,9 +4,9 @@ import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { AuthForm, SocialProviders } from '@/components';
 import { signUp } from '@/lib/auth/actions';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 
-export default function SignUpPage() {
+function SignUpContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
     const [isRedirecting, setIsRedirecting] = useState(false);
@@ -81,5 +81,13 @@ export default function SignUpPage() {
                 isLoading={isRedirecting}
             />
         </div>
+    );
+}
+
+export default function SignUpPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <SignUpContent />
+        </Suspense>
     );
 }

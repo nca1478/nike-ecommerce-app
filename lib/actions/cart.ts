@@ -1,14 +1,8 @@
 'use server';
 
 import { db } from '@/lib/db';
-import {
-    carts,
-    cartItems,
-    productVariants,
-    products,
-    productImages,
-} from '@/lib/db/schema';
-import { eq, and, desc } from 'drizzle-orm';
+import { carts, cartItems } from '@/lib/db/schema';
+import { eq, and } from 'drizzle-orm';
 import { getCurrentUser, createGuestSession } from '@/lib/auth/actions';
 import { getGuestSessionCookie } from '@/lib/auth/cookies';
 import { revalidatePath } from 'next/cache';

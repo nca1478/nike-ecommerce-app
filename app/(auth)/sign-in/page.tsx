@@ -4,9 +4,9 @@ import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { AuthForm, SocialProviders } from '@/components';
 import { signIn } from '@/lib/auth/actions';
-import { useEffect, useState } from 'react';
+import { useState, Suspense } from 'react';
 
-export default function SignInPage() {
+function SignInContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
     const [isRedirecting, setIsRedirecting] = useState(false);
@@ -17,7 +17,7 @@ export default function SignInPage() {
     // Mensaje personalizado si viene del checkout
     const isFromCheckout = action === 'checkout';
 
-    const handleSignIn = async (data: any) => {
+    const handleSignIn = async (data: { email: string; password: string }) => {
         const result = await signIn(data);
 
         if (result.success) {
@@ -80,5 +80,13 @@ export default function SignInPage() {
                 </Link>
             </div>
         </div>
+    );
+}
+
+export default function SignInPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <SignInContent />
+        </Suspense>
     );
 }
