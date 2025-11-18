@@ -2,10 +2,23 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 // Rutas que requieren autenticación
-const protectedRoutes = ['/checkout', '/profile', '/orders'];
+const protectedRoutes = ['/profile', '/orders'];
+
+// Rutas públicas que no requieren autenticación (excepciones)
+const publicRoutes = ['/checkout/success'];
 
 export function proxy(request: NextRequest) {
     const { pathname } = request.nextUrl;
+
+    // Verificar si es una ruta pública (excepción)
+    const isPublicRoute = publicRoutes.some((route) =>
+        pathname.startsWith(route),
+    );
+
+    // Si es una ruta pública, permitir acceso sin autenticación
+    if (isPublicRoute) {
+        return NextResponse.next();
+    }
 
     // Verificar si la ruta requiere autenticación
     const isProtectedRoute = protectedRoutes.some((route) =>
