@@ -25,6 +25,11 @@ export function Navbar() {
         const result = await signOut();
         if (result.success) {
             await refresh(); // Actualizar el estado del usuario
+
+            // Limpiar el carrito del store para forzar recarga
+            const { useCartStore } = await import('@/lib/store/cart.store');
+            useCartStore.getState().clearCart();
+
             router.push('/');
             router.refresh();
         }

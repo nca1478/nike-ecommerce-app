@@ -4,6 +4,7 @@ import { useCartStore } from '@/lib/store/cart.store';
 import { useRouter } from 'next/navigation';
 import { isAuthenticated } from '@/lib/auth/actions';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 
 export function CartSummary() {
     const { items } = useCartStore();
@@ -30,7 +31,7 @@ export function CartSummary() {
             router.push('/sign-in?redirect=/cart&action=checkout');
         } else {
             // Por ahora, mostrar mensaje (la página de checkout se implementará después)
-            alert('Checkout functionality coming soon! Your cart is ready.');
+            toast.error('Checkout functionality coming soon!.');
             // TODO: Cuando se implemente checkout, descomentar:
             // router.push('/checkout');
         }

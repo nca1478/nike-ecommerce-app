@@ -5,9 +5,11 @@ import { useCartStore } from '@/lib/store/cart.store';
 import { useEffect } from 'react';
 import { getCart } from '@/lib/actions/cart';
 import Link from 'next/link';
+import { useAuth } from '@/lib/auth/hooks';
 
 export function CartIcon() {
     const { items, setItems } = useCartStore();
+    const { user } = useAuth();
 
     // Calcular total de items reactivamente
     const totalItems = items.reduce((total, item) => total + item.quantity, 0);
@@ -21,7 +23,7 @@ export function CartIcon() {
         };
 
         loadCart();
-    }, [setItems]);
+    }, [setItems, user]); // Recargar cuando cambia el usuario
 
     return (
         <Link
