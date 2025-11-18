@@ -1,16 +1,17 @@
 // Auth
-export { default as AuthForm } from './Auth/AuthForm';
-export { SignInForm } from './Auth/SignInForm';
-export { SignUpForm } from './Auth/SignUpForm';
-export { default as SocialProviders } from './Auth/SocialProviders';
-export { UserMenu } from './Auth/UserMenu';
+export { default as AuthForm } from './auth/AuthForm';
+export { SignInForm } from './auth/SignInForm';
+export { SignUpForm } from './auth/SignUpForm';
+export { default as SocialProviders } from './auth/SocialProviders';
+export { UserMenu } from './auth/UserMenu';
 
 // Cart
 export { AddToCartButton } from './Cart/AddToCartButton';
 export { CartIcon } from './Cart/CartIcon';
 export { CartItem } from './Cart/CartItem';
 export { CartList } from './Cart/CartList';
-export { CartSummary } from './Cart/CartSummary';
+export { default as CartSummary } from './Cart/CartSummary';
+export { default as OrderSuccess } from './Cart/OrderSuccess';
 
 // Home
 export { FeatureSection } from './Home/FeatureSection';
