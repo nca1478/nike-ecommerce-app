@@ -6,7 +6,6 @@ import { useState } from 'react';
 import { useAuth } from '@/lib/auth/hooks';
 import { signOut } from '@/lib/auth/actions';
 import { useRouter } from 'next/navigation';
-import { CartIcon } from '@/components/Cart/CartIcon';
 
 export function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,11 +24,6 @@ export function Navbar() {
         const result = await signOut();
         if (result.success) {
             await refresh(); // Actualizar el estado del usuario
-
-            // Limpiar el carrito del store para forzar recarga
-            const { useCartStore } = await import('@/lib/store/cart.store');
-            useCartStore.getState().clearCart();
-
             router.push('/');
             router.refresh();
         }
@@ -90,7 +84,12 @@ export function Navbar() {
                                 )}
                             </>
                         )}
-                        <CartIcon />
+                        <Link
+                            href="/cart"
+                            className="text-dark-900 hover:text-dark-700 transition-colors"
+                        >
+                            My Cart (2)
+                        </Link>
                     </div>
 
                     {/* Mobile Menu Button */}
@@ -161,9 +160,13 @@ export function Navbar() {
                                     )}
                                 </>
                             )}
-                            <div className="py-2">
-                                <CartIcon />
-                            </div>
+                            <Link
+                                href="/cart"
+                                className="block py-2 text-dark-900"
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                My Cart (2)
+                            </Link>
                         </div>
                     </div>
                 </div>

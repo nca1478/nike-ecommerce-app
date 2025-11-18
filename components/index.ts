@@ -13,8 +13,3 @@ export type { ColorVariant } from './Product/ColorVariantPicker';
 export { SizePicker } from './Product/SizePicker';
 export { CollapsibleSection } from './Product/CollapsibleSection';
 export { FeatureSection } from './Home/FeatureSection';
-export { CartIcon } from './Cart/CartIcon';
-export { CartItem } from './Cart/CartItem';
-export { CartList } from './Cart/CartList';
-export { CartSummary } from './Cart/CartSummary';
-export { AddToCartButton } from './Cart/AddToCartButton';

@@ -249,29 +249,17 @@ export async function getGuestSession(): Promise<
  */
 export async function mergeGuestCartWithUserCart(
     guestSessionToken: string,
-    userId: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    userId: string, // Se usará cuando se implemente el esquema del carrito
 ): Promise<ActionResult> {
     try {
-        // Buscar invitado por sessionToken
-        const guestRecord = await db.query.guest.findFirst({
-            where: eq(guest.sessionToken, guestSessionToken),
-        });
-
-        if (!guestRecord) {
-            await deleteGuestSessionCookie();
-            return {
-                success: true,
-            };
-        }
-
-        // Importar función de migración de carrito
-        const { mergeGuestCartToUser } = await import('@/lib/actions/cart');
-
-        // Migrar carrito
-        await mergeGuestCartToUser(guestRecord.id, userId);
+        // TODO: Implementar lógica de migración de carrito
+        // Esta función será implementada cuando se cree el esquema del carrito
+        // El parámetro _userId se usará para asociar el carrito con el usuario
+        // Por ahora, solo eliminamos la sesión de invitado
 
         // Eliminar sesión de invitado de la BD
-        await db.delete(guest).where(eq(guest.id, guestRecord.id));
+        await db.delete(guest).where(eq(guest.sessionToken, guestSessionToken));
 
         // Eliminar cookie de invitado
         await deleteGuestSessionCookie();

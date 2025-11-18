@@ -46,7 +46,7 @@ export function VariantProvider({
     );
 }
 
-export function useVariant() {
+function useVariant() {
     const context = useContext(VariantContext);
     if (!context) {
         throw new Error('useVariant must be used within VariantProvider');

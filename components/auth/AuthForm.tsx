@@ -16,16 +16,10 @@ interface AuthFormProps {
         data?: { userId: string };
         error?: string;
     }>;
-    isLoading?: boolean;
 }
 
-export default function AuthForm({
-    type,
-    onSubmit,
-    isLoading = false,
-}: AuthFormProps) {
+export default function AuthForm({ type, onSubmit }: AuthFormProps) {
     const [showPassword, setShowPassword] = useState(false);
-    const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter();
     const isSignUp = type === 'sign-up';
 
@@ -37,8 +31,6 @@ export default function AuthForm({
         const password = formData.get('password') as string;
         const name = formData.get('fullName') as string;
 
-        setIsSubmitting(true);
-
         try {
             const result = await onSubmit({
                 email,
@@ -47,24 +39,18 @@ export default function AuthForm({
             });
 
             if (result?.success) {
-                // La redirección se maneja en la página padre
-                toast.success(
-                    isSignUp
-                        ? 'Account created successfully!'
-                        : 'Signed in successfully!',
-                );
+                router.push('/');
             } else if (result?.error) {
                 if (isSignUp) {
                     toast.error('Error registering user');
+                    return;
                 } else {
                     toast.error(result.error);
                 }
-                setIsSubmitting(false);
             }
         } catch (e) {
             console.log('error', e);
             toast.error('An unexpected error occurred. Please try again.');
-            setIsSubmitting(false);
         }
     };
 
@@ -142,14 +128,9 @@ export default function AuthForm({
 
             <button
                 type="submit"
-                disabled={isSubmitting || isLoading}
-                className="w-full rounded-full bg-dark-900 py-3.5 text-body-medium font-medium text-light-100 transition-colors hover:bg-dark-700 focus:outline-none focus:ring-2 focus:ring-dark-900 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                className="w-full rounded-full bg-dark-900 py-3.5 text-body-medium font-medium text-light-100 transition-colors hover:bg-dark-700 focus:outline-none focus:ring-2 focus:ring-dark-900 focus:ring-offset-2 cursor-pointer"
             >
-                {isSubmitting || isLoading
-                    ? 'Processing...'
-                    : isSignUp
-                      ? 'Sign Up'
-                      : 'Sign In'}
+                {isSignUp ? 'Sign Up' : 'Sign In'}
             </button>
 
             {isSignUp && (
