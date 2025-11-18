@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 interface AuthFormProps {
     type: 'sign-in' | 'sign-up';
@@ -37,9 +38,19 @@ export default function AuthForm({ type, onSubmit }: AuthFormProps) {
                 ...(isSignUp && { name }),
             });
 
-            if (result?.success) router.push('/');
+            if (result?.success) {
+                router.push('/');
+            } else if (result?.error) {
+                if (isSignUp) {
+                    toast.error('Error registering user');
+                    return;
+                } else {
+                    toast.error(result.error);
+                }
+            }
         } catch (e) {
             console.log('error', e);
+            toast.error('An unexpected error occurred. Please try again.');
         }
     };
 
