@@ -121,7 +121,7 @@ export function Footer() {
                                     clipRule="evenodd"
                                 />
                             </svg>
-                            <span>Croatia</span>
+                            <span>Venezuela</span>
                             <span className="ml-4">
                                 © 2025 Nike, Inc. All Rights Reserved
                             </span>

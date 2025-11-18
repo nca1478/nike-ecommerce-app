@@ -42,7 +42,7 @@ export default function AuthLayout({
                 </div>
 
                 <p className="text-caption text-light-400">
-                    © 2024 Nike. All rights reserved.
+                    © 2025 Nike. All rights reserved.
                 </p>
             </div>
 
