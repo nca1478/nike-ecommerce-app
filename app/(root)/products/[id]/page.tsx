@@ -1,19 +1,20 @@
 import { Suspense } from 'react';
 import Link from 'next/link';
-import { Heart, ShoppingBag } from 'lucide-react';
 import { getProduct } from '@/lib/actions/product';
 import {
     VariantProvider,
     ProductGalleryClient,
     ColorVariantPickerClient,
     VariantWithImages,
+    useVariant,
 } from './ProductVariantManager';
-import { SizePickerWithStock, SizeOption } from './SizePickerWithStock';
+import { SizeOption } from './SizePickerWithStock';
 import { ProductReviews } from './ProductReviews';
 import { RecommendedProducts } from './RecommendedProducts';
 import { ReviewsSkeleton } from './ReviewsSkeleton';
 import { RecommendedSkeleton } from './RecommendedSkeleton';
 import { CollapsibleSection } from '@/components';
+import { ProductActionsWrapper } from './ProductActionsWrapper';
 
 interface ProductPageProps {
     params: Promise<{ id: string }>;
@@ -216,38 +217,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                 </div>
                             )}
 
-                            {/* Size Selector */}
-                            {sizes.length > 0 && (
-                                <div className="mb-6">
-                                    <div className="flex items-center justify-between mb-3">
-                                        <h3 className="text-body-medium text-dark-900">
-                                            Select Size
-                                        </h3>
-                                        <Link
-                                            href="#"
-                                            className="text-caption text-dark-700 hover:text-dark-900 underline focus:outline-none focus:ring-2 focus:ring-dark-900 rounded"
-                                        >
-                                            Size Guide
-                                        </Link>
-                                    </div>
-                                    <SizePickerWithStock sizes={sizes} />
-                                </div>
-                            )}
-
-                            {/* Action Buttons */}
-                            <div className="mb-8 space-y-3">
-                                <button className="w-full bg-dark-900 text-light-100 py-4 rounded-full text-body-medium font-medium hover:bg-dark-700 transition-colors focus:outline-none focus:ring-2 focus:ring-dark-900 focus:ring-offset-2 cursor-pointer">
-                                    <span className="flex items-center justify-center gap-2">
-                                        <ShoppingBag className="w-5 h-5" />
-                                        Add to Bag
-                                    </span>
-                                </button>
-                                <button className="w-full bg-light-100 text-dark-900 py-4 rounded-full text-body-medium font-medium border-2 border-dark-900 hover:bg-light-200 transition-colors focus:outline-none focus:ring-2 focus:ring-dark-900 focus:ring-offset-2 cursor-pointer">
-                                    <span className="flex items-center justify-center gap-2">
-                                        <Heart className="w-5 h-5" />
-                                        Favourite
-                                    </span>
-                                </button>
+                            {/* Product Actions (Size Selector + Add to Cart) */}
+                            <div className="mb-8">
+                                <ProductActionsWrapper
+                                    productName={product.name}
+                                    productImage={
+                                        colorVariants[0]?.images[0] || ''
+                                    }
+                                    category={product.category.name}
+                                    sizes={sizes}
+                                    variants={product.variants}
+                                />
                             </div>
 
                             {/* Product Description */}
