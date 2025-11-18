@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
 interface AuthFormProps {
@@ -26,7 +25,6 @@ export default function AuthForm({
 }: AuthFormProps) {
     const [showPassword, setShowPassword] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const router = useRouter();
     const isSignUp = type === 'sign-up';
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

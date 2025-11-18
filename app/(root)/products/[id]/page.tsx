@@ -6,7 +6,6 @@ import {
     ProductGalleryClient,
     ColorVariantPickerClient,
     VariantWithImages,
-    useVariant,
 } from './ProductVariantManager';
 import { SizeOption } from './SizePickerWithStock';
 import { ProductReviews } from './ProductReviews';

@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useContext, createContext } from 'react';
+import { useState } from 'react';
 import { Heart } from 'lucide-react';
 import { AddToCartButton } from '@/components';
-import { SizePickerWithStock, SizeOption } from './SizePickerWithStock';
+import { SizeOption } from './SizePickerWithStock';
 import Link from 'next/link';
 
 interface ProductVariant {
