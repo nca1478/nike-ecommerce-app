@@ -20,15 +20,19 @@ export function CartSummary() {
     const total = subtotal + deliveryFee;
 
     const handleCheckout = async () => {
+        if (subtotal === 0) return;
+
         setIsChecking(true);
         const authenticated = await isAuthenticated();
 
         if (!authenticated) {
-            // Redirigir a login/registro
-            router.push('/auth?redirect=/cart');
+            // Redirigir a login/registro con parámetro de redirección
+            router.push('/sign-in?redirect=/cart&action=checkout');
         } else {
-            // Proceder al checkout
-            router.push('/checkout');
+            // Por ahora, mostrar mensaje (la página de checkout se implementará después)
+            alert('Checkout functionality coming soon! Your cart is ready.');
+            // TODO: Cuando se implemente checkout, descomentar:
+            // router.push('/checkout');
         }
         setIsChecking(false);
     };

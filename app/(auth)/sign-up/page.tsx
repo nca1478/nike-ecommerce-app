@@ -1,20 +1,41 @@
 'use client';
 
 import Link from 'next/link';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { AuthForm, SocialProviders } from '@/components';
 import { signUp } from '@/lib/auth/actions';
+import { useState } from 'react';
 
 export default function SignUpPage() {
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const [isRedirecting, setIsRedirecting] = useState(false);
+
+    const redirect = searchParams.get('redirect') || '/';
+    const action = searchParams.get('action');
+
+    // Mensaje personalizado si viene del checkout
+    const isFromCheckout = action === 'checkout';
+
     const handleSignUp = async (data: {
         email: string;
         password: string;
         name?: string;
     }) => {
-        return signUp({
+        const result = await signUp({
             email: data.email,
             password: data.password,
             name: data.name || 'Usuario',
         });
+
+        if (result.success) {
+            setIsRedirecting(true);
+            // Redirigir después de registro exitoso
+            router.push(redirect);
+            router.refresh();
+        }
+
+        return result;
     };
 
     return (
@@ -23,17 +44,21 @@ export default function SignUpPage() {
                 <p className="text-caption text-dark-700">
                     Already have an account?{' '}
                     <Link
-                        href="/sign-in"
+                        href={`/sign-in${redirect !== '/' ? `?redirect=${redirect}` : ''}`}
                         className="font-medium text-dark-900 underline hover:no-underline"
                     >
                         Sign In
                     </Link>
                 </p>
                 <h2 className="text-heading-3 font-bold text-dark-900">
-                    Join Nike Today!
+                    {isFromCheckout
+                        ? 'Create Account to Continue'
+                        : 'Join Nike Today!'}
                 </h2>
                 <p className="text-body text-dark-700">
-                    Create your account to start your fitness journey
+                    {isFromCheckout
+                        ? 'Create your account to complete your purchase'
+                        : 'Create your account to start your fitness journey'}
                 </p>
             </div>
 
@@ -50,7 +75,11 @@ export default function SignUpPage() {
                 </div>
             </div>
 
-            <AuthForm type="sign-up" onSubmit={handleSignUp} />
+            <AuthForm
+                type="sign-up"
+                onSubmit={handleSignUp}
+                isLoading={isRedirecting}
+            />
         </div>
     );
 }
