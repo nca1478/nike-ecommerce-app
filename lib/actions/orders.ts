@@ -164,14 +164,23 @@ interface OrderItemWithDetails {
     color: string;
 }
 
+interface Address {
+    line1: string;
+    line2?: string | null;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+}
+
 interface OrderWithDetails {
     id: string;
     userId: string;
     status: string;
     totalAmount: string;
     createdAt: Date;
-    shippingAddress: unknown;
-    billingAddress: unknown;
+    shippingAddress: Address;
+    billingAddress: Address;
 }
 
 /**
@@ -316,13 +325,25 @@ export async function getOrder(identifier: string): Promise<
     }
 }
 
+interface OrderItemForList {
+    id: string;
+    quantity: string;
+    priceAtPurchase: string;
+    productVariant: {
+        product: {
+            name: string;
+            images: Array<{ url: string }>;
+        };
+    };
+}
+
 interface UserOrder {
     id: string;
     userId: string;
     status: string;
     totalAmount: string;
     createdAt: Date;
-    items: unknown[];
+    items: OrderItemForList[];
 }
 
 /**
