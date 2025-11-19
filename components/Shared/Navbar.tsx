@@ -70,6 +70,12 @@ export function Navbar() {
                             <>
                                 {user ? (
                                     <>
+                                        <Link
+                                            href="/orders"
+                                            className="text-dark-900 hover:text-dark-700 transition-colors font-medium"
+                                        >
+                                            Mis Pedidos
+                                        </Link>
                                         <span className="text-dark-900 text-sm">
                                             {user.name || user.email}
                                         </span>
@@ -137,6 +143,15 @@ export function Navbar() {
                                 <>
                                     {user ? (
                                         <>
+                                            <Link
+                                                href="/orders"
+                                                className="block w-full text-left py-2 text-dark-900 hover:text-dark-700 transition-colors"
+                                                onClick={() =>
+                                                    setIsMenuOpen(false)
+                                                }
+                                            >
+                                                Mis Pedidos
+                                            </Link>
                                             <div className="py-2 text-dark-900 text-sm">
                                                 {user.name || user.email}
                                             </div>
