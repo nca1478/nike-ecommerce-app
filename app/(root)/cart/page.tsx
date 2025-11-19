@@ -1,5 +1,5 @@
 import { CartList } from '@/components/Cart/CartList';
-import { CartSummary } from '@/components/Cart/CartSummary';
+import CartSummary from '@/components/Cart/CartSummary';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

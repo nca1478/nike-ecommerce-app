@@ -4,9 +4,9 @@ Una aplicación de e-commerce moderna y completa construida con Next.js 16, Type
 
 ## 🎯 Estado Actual del Proyecto
 
-**Versión:** 1.0.0 MVP  
-**Estado:** ✅ **Listo para Producción (MVP)**  
-**Última actualización:** Noviembre 2025
+**Versión:** 1.1.0 MVP + Stripe  
+**Estado:** ✅ **Listo para Producción (MVP con Pagos)**  
+**Última actualización:** 18 de Noviembre, 2025
 
 ### ✅ Completado
 
@@ -16,14 +16,19 @@ Una aplicación de e-commerce moderna y completa construida con Next.js 16, Type
 - Páginas de listado y detalle de productos (SSR)
 - Búsqueda, ordenamiento y paginación
 - Carrito de compras con persistencia
+- **Sistema de pagos con Stripe Checkout** ✨ **NUEVO**
+- **Webhook de Stripe para confirmación de pagos** ✨ **NUEVO**
+- **Página de confirmación de pedidos** ✨ **NUEVO**
+- **Sistema de reintentos inteligente** ✨ **NUEVO**
+- **Creación automática de pedidos** ✨ **NUEVO**
 - Optimizaciones de rendimiento (índices, React Compiler)
-- Documentación completa (22 archivos)
+- Documentación completa (32 archivos)
 
 ### 🔨 En Desarrollo
 
-- Integración de carrito con base de datos
-- Página de checkout protegida
-- Sistema de pagos (Stripe/PayPal)
+- Historial de pedidos del usuario
+- Panel de administración
+- Notificaciones por email de confirmación de pedidos
 
 ### 📈 Métricas de Calidad
 
@@ -48,6 +53,15 @@ Una aplicación de e-commerce moderna y completa construida con Next.js 16, Type
 - **Neon PostgreSQL** - Base de datos serverless con pooling de conexiones
 - **Drizzle ORM 0.44.7** - ORM type-safe con inferencia de tipos
 - **Drizzle Kit 0.31.6** - Herramientas de migración y gestión de schemas
+
+### Pagos & Checkout
+
+- **Stripe** - Procesamiento de pagos seguro con Stripe Checkout hosted
+- **Webhooks** - Confirmación automática de pagos con verificación de firma HMAC
+- **Sistema de Reintentos** - Búsqueda inteligente de pedidos con 3 intentos y 1s delay
+- **Fallback Inteligente** - Muestra detalles desde Stripe si el webhook tarda
+- **Validación de Imágenes** - Validación automática de URLs antes de enviar a Stripe
+- **Manejo de Precios** - Precios en céntimos para precisión matemática
 
 ### Estado & Autenticación
 
@@ -110,13 +124,49 @@ DATABASE_URL=postgresql://user:password@host/database?sslmode=require&channel_bi
 # Better Auth Configuration
 BETTER_AUTH_SECRET=your_secret_key_here
 BETTER_AUTH_URL=http://localhost:3000
+
+# Stripe Configuration
+STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key
+STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
 ```
 
-**Generar un secreto seguro:**
+**Generar un secreto seguro para Better Auth:**
 
 ```bash
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
+
+**Obtener claves de Stripe:**
+
+1. Crea una cuenta en [Stripe Dashboard](https://dashboard.stripe.com/register)
+2. Ve a **Developers > API keys**
+3. Copia:
+    - **Secret key** → `STRIPE_SECRET_KEY`
+    - **Publishable key** → `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
+
+**Configurar Webhook de Stripe (Desarrollo):**
+
+```bash
+# Instalar Stripe CLI
+# macOS
+brew install stripe/stripe-cli/stripe
+
+# Windows
+scoop install stripe
+
+# Linux
+wget https://github.com/stripe/stripe-cli/releases/download/v1.19.4/stripe_1.19.4_linux_x86_64.tar.gz
+tar -xvf stripe_1.19.4_linux_x86_64.tar.gz
+
+# Login
+stripe login
+
+# Escuchar webhooks (esto te dará el webhook secret)
+stripe listen --forward-to localhost:3000/api/stripe
+```
+
+Copia el **webhook signing secret** que aparece y añádelo como `STRIPE_WEBHOOK_SECRET`.
 
 ### 3. Configurar Base de Datos
 
@@ -463,21 +513,33 @@ nike-ecommerce-app/
 │   │   │   └── page.tsx
 │   │   └── layout.tsx          # Layout para páginas de auth
 │   ├── (root)/                  # Grupo de rutas principales
+│   │   ├── cart/               # Página del carrito
+│   │   │   └── page.tsx
+│   │   ├── checkout/           # Flujo de checkout
+│   │   │   └── success/        # Página de éxito
+│   │   │       └── page.tsx
 │   │   ├── page.tsx            # Página principal (catálogo)
 │   │   └── layout.tsx          # Layout con Navbar y Footer
 │   ├── actions/                 # Server Actions
 │   │   └── products.ts         # Acciones para productos
 │   ├── api/                     # API Routes
-│   │   └── auth/[...all]/      # Endpoints de Better Auth
+│   │   ├── auth/[...all]/      # Endpoints de Better Auth
+│   │   └── stripe/             # Webhook de Stripe
+│   │       └── route.ts        # Handler de eventos de Stripe
 │   ├── layout.tsx               # Layout raíz con fuentes Geist
 │   ├── globals.css              # Estilos globales con Tailwind
 │   └── favicon.ico              # Favicon de la app
 │
 ├── components/                   # Componentes React
-│   ├── auth/                    # Componentes de autenticación
+│   ├── Auth/                    # Componentes de autenticación
 │   │   ├── SignInForm.tsx      # Formulario de inicio de sesión
 │   │   ├── SignUpForm.tsx      # Formulario de registro
 │   │   └── UserMenu.tsx        # Menú de usuario autenticado
+│   ├── Cart/                    # Componentes del carrito
+│   │   ├── CartSummary.tsx     # Resumen con botón de checkout
+│   │   ├── CartList.tsx        # Lista de items del carrito
+│   │   ├── CartItem.tsx        # Item individual del carrito
+│   │   └── OrderSuccess.tsx    # Confirmación de pedido exitoso
 │   ├── AuthForm.tsx             # Componente base de formularios
 │   ├── Card.tsx                 # Componente de tarjeta reutilizable
 │   ├── Footer.tsx               # Footer de la aplicación
@@ -489,7 +551,12 @@ nike-ecommerce-app/
 ├── lib/                         # Lógica de negocio y utilidades
 │   ├── actions/                 # Server Actions
 │   │   ├── product.ts          # Acciones de productos (getAllProducts, getProduct)
-│   │   └── filters.ts          # Resolución de slugs a UUIDs para filtros
+│   │   ├── filters.ts          # Resolución de slugs a UUIDs para filtros
+│   │   ├── checkout.ts         # Crear sesión de Stripe Checkout
+│   │   ├── orders.ts           # Crear y obtener pedidos
+│   │   └── cart.ts             # Gestión del carrito
+│   ├── stripe/                  # Integración de Stripe
+│   │   └── client.ts           # Cliente de Stripe inicializado
 │   ├── auth/                    # Sistema de autenticación completo
 │   │   ├── actions.ts          # Server Actions (signUp, signIn, signOut)
 │   │   ├── validation.ts       # Esquemas Zod de validación
@@ -628,6 +695,113 @@ nike-ecommerce-app/
 - Agregar productos con incremento de cantidad
 - Cálculo automático de totales
 - Eliminar productos del carrito
+
+### ✅ Sistema de Pagos con Stripe
+
+**Integración Completa de Stripe Checkout:**
+
+- **Checkout Seguro**: Redirección a Stripe Checkout hosted
+- **Soporte Multi-Usuario**: Funciona para usuarios autenticados e invitados
+- **Validación de Imágenes**: Validación automática de URLs de productos
+- **Webhook Seguro**: Verificación de firma de Stripe para confirmación de pagos
+- **Creación Automática de Pedidos**: Los pedidos se crean automáticamente después del pago
+- **Sistema de Reintentos**: Búsqueda inteligente de pedidos con 3 intentos y 1s de delay
+- **Fallback Inteligente**: Si el webhook tarda, muestra detalles desde Stripe
+- **Página de Confirmación**: Página de éxito con detalles completos del pedido
+- **Vaciado Automático**: El carrito se vacía automáticamente después del pago exitoso
+
+**Características Técnicas:**
+
+- Validación de UUID vs payment_intent para búsqueda eficiente
+- Manejo de precios en céntimos para precisión
+- Metadata de sesión para vincular pagos con carritos
+- Logging completo para debugging
+- Manejo de errores graceful con mensajes amigables
+- Type-safety completo con TypeScript
+
+**Flujo de Checkout:**
+
+```
+1. Usuario en carrito → Click "Checkout"
+2. createStripeCheckoutSession() → Valida y crea sesión
+3. Redirige a Stripe Checkout → Usuario completa pago
+4. Stripe envía webhook → Verifica firma y crea pedido
+5. Redirige a /checkout/success → Muestra confirmación
+6. Sistema de reintentos → Busca pedido (3 intentos)
+7. Muestra OrderSuccess → Detalles completos del pedido
+```
+
+**Documentación:**
+
+- [Integración Completa](./docs/STRIPE_INTEGRATION.md) - Documentación técnica (45 min)
+- [Setup Rápido](./docs/STRIPE_SETUP_QUICK.md) - Configuración rápida (15 min)
+- [Ejemplos de Uso](./docs/STRIPE_USAGE_EXAMPLES.md) - Ejemplos prácticos (20 min)
+- [Checklist](./docs/STRIPE_CHECKLIST.md) - Lista de verificación (5 min)
+- [Mejoras Finales](./docs/STRIPE_FINAL_IMPROVEMENTS.md) - Optimizaciones implementadas
+- [Resumen](./docs/STRIPE_IMPLEMENTATION_SUMMARY.md) - Resumen ejecutivo
+
+**Configuración para Desarrollo:**
+
+```bash
+# 1. Instalar Stripe CLI
+brew install stripe/stripe-cli/stripe  # macOS
+# o visita: https://stripe.com/docs/stripe-cli
+
+# 2. Login en Stripe
+stripe login
+
+# 3. Escuchar webhooks localmente
+stripe listen --forward-to localhost:3000/api/stripe
+
+# 4. En otra terminal, iniciar la app
+npm run dev
+
+# 5. Probar con tarjeta de prueba
+# Número: 4242 4242 4242 4242
+# Fecha: Cualquier fecha futura
+# CVC: Cualquier 3 dígitos
+```
+
+**Configuración para Producción:**
+
+1. **Cambiar a claves de producción:**
+
+    ```env
+    STRIPE_SECRET_KEY=sk_live_...
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_...
+    ```
+
+2. **Configurar webhook en Stripe Dashboard:**
+    - Ve a **Developers > Webhooks**
+    - Añade endpoint: `https://tu-dominio.com/api/stripe`
+    - Selecciona eventos:
+        - `checkout.session.completed`
+        - `payment_intent.payment_failed`
+        - `payment_intent.succeeded`
+    - Copia el **Signing secret** → `STRIPE_WEBHOOK_SECRET`
+
+3. **Actualizar base URL:**
+    ```env
+    NEXT_PUBLIC_BASE_URL=https://tu-dominio.com
+    ```
+
+**Tarjetas de Prueba:**
+
+```
+✅ Éxito:                    4242 4242 4242 4242
+❌ Fallo:                    4000 0000 0000 0002
+🔐 Requiere autenticación:   4000 0025 0000 3155
+```
+
+**Verificar Integración:**
+
+```bash
+# Ver logs de webhooks en tiempo real
+stripe listen --forward-to localhost:3000/api/stripe
+
+# Probar un webhook manualmente
+stripe trigger checkout.session.completed
+```
 
 ### ✅ Base de Datos Completa
 
@@ -818,12 +992,16 @@ export async function getAllProducts() {
 - [x] Búsqueda de productos
 - [x] Paginación de resultados
 - [x] Ordenamiento múltiple (precio, fecha, nombre)
+- [x] Carrito de compras con persistencia ✅
+- [x] Checkout con Stripe ✅
+- [x] Confirmación de pedidos ✅
 - [ ] Implementación completa de wishlist
-- [ ] Historial de pedidos
+- [ ] Historial de pedidos del usuario
 - [ ] Seguimiento de envíos
 - [ ] Sistema de reseñas funcional
 - [ ] Aplicación de cupones de descuento
 - [ ] Gestión de direcciones de usuario
+- [ ] Notificaciones por email
 
 **Administración:**
 
@@ -838,10 +1016,16 @@ export async function getAllProducts() {
 
 **Pagos:**
 
-- [ ] Integración con Stripe/PayPal
-- [ ] Múltiples métodos de pago
-- [ ] Cálculo de impuestos y envío
-- [ ] Procesamiento de órdenes
+- [x] Integración con Stripe Checkout ✅
+- [x] Webhook seguro con verificación de firma ✅
+- [x] Creación automática de pedidos ✅
+- [x] Página de confirmación de pedidos ✅
+- [ ] Integración con PayPal
+- [ ] Múltiples métodos de pago (tarjeta, transferencia, etc.)
+- [ ] Cálculo dinámico de impuestos por región
+- [ ] Cálculo de envío por ubicación
+- [ ] Sistema de reembolsos
+- [ ] Facturación automática
 
 **Optimizaciones:**
 
@@ -900,6 +1084,15 @@ export async function getAllProducts() {
 - [Guía de Inicio Rápido](./docs/QUICK_START.md) - 5 minutos
 - [Visión General del Sistema](./docs/SYSTEM_OVERVIEW.md) - Diagramas y arquitectura
 
+**Pagos con Stripe:**
+
+- [Integración Completa](./docs/STRIPE_INTEGRATION.md) - Documentación técnica completa
+- [Setup Rápido](./docs/STRIPE_SETUP_QUICK.md) - Configuración en 15 minutos
+- [Ejemplos de Uso](./docs/STRIPE_USAGE_EXAMPLES.md) - Código de ejemplo
+- [Checklist](./docs/STRIPE_CHECKLIST.md) - Lista de verificación
+- [Mejoras Finales](./docs/STRIPE_FINAL_IMPROVEMENTS.md) - Optimizaciones
+- [Resumen de Implementación](./docs/STRIPE_IMPLEMENTATION_SUMMARY.md) - Resumen ejecutivo
+
 ### Documentación Externa
 
 - [Next.js 16 Documentation](https://nextjs.org/docs)
@@ -907,6 +1100,10 @@ export async function getAllProducts() {
 - [Drizzle ORM Documentation](https://orm.drizzle.team)
 - [Neon PostgreSQL Documentation](https://neon.tech/docs)
 - [Better Auth Documentation](https://better-auth.com)
+- [Stripe Documentation](https://stripe.com/docs)
+- [Stripe Checkout Guide](https://stripe.com/docs/payments/checkout)
+- [Stripe Webhooks](https://stripe.com/docs/webhooks)
+- [Stripe Testing](https://stripe.com/docs/testing)
 - [Zustand Documentation](https://zustand-demo.pmnd.rs)
 - [TailwindCSS 4 Documentation](https://tailwindcss.com/docs)
 - [Zod Documentation](https://zod.dev)
@@ -948,7 +1145,32 @@ npm run db:generate
 npm run db:push
 ```
 
-Para más detalles, consulta la [Guía de Migración](./docs/MIGRATION_GUIDE.md) sección Troubleshooting.
+**Problemas con Stripe:**
+
+```bash
+# Webhook no funciona
+# Verifica que Stripe CLI está corriendo
+stripe listen --forward-to localhost:3000/api/stripe
+
+# Error: "No signature provided"
+# Verifica que STRIPE_WEBHOOK_SECRET esté configurado
+echo $STRIPE_WEBHOOK_SECRET
+
+# Pedido no se crea después del pago
+# 1. Verifica los logs del webhook en Stripe Dashboard
+# 2. Asegúrate de que el endpoint /api/stripe es accesible
+# 3. Verifica que los eventos estén configurados correctamente
+
+# Error: "Invalid signature"
+# El webhook secret es incorrecto
+# Usa Stripe CLI para desarrollo local
+stripe listen --forward-to localhost:3000/api/stripe
+```
+
+Para más detalles, consulta:
+
+- [Guía de Migración](./docs/MIGRATION_GUIDE.md) - Troubleshooting general
+- [Stripe Integration](./docs/STRIPE_INTEGRATION.md) - Troubleshooting de Stripe
 
 ## � Contriibución
 
@@ -1240,9 +1462,9 @@ Este proyecto es privado y está destinado únicamente para fines educativos y d
 
 ---
 
-**Nike E-commerce App** - Construido con ❤️ usando Next.js 16, React 19, TypeScript y las mejores prácticas de desarrollo moderno.
+**Nike E-commerce App** - Construido con ❤️ usando Next.js 16, React 19, TypeScript, Stripe y las mejores prácticas de desarrollo moderno.
 
-**Versión:** 1.0.0 MVP  
-**Última actualización:** Noviembre 2025  
-**Branch actual:** product-actions  
+**Versión:** 1.1.0 MVP + Stripe  
+**Última actualización:** 18 de Noviembre, 2025  
+**Estado:** ✅ Listo para Producción con Sistema de Pagos Completo  
 **Estado:** ✅ Sistema de Productos Completo - Listo para Integración

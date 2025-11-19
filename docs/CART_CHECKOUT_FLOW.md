@@ -258,6 +258,7 @@ La migración del carrito de invitado a usuario ocurre automáticamente en:
     - Botón deshabilitado si subtotal es 0
 
 2. **Estado de carga**
+
     ```tsx
     {
         isChecking ? 'Processing...' : 'Proceed to Checkout';
@@ -277,6 +278,7 @@ La migración del carrito de invitado a usuario ocurre automáticamente en:
     - Mantiene parámetro de redirección entre Sign In/Sign Up
 
 2. **Estado de carga**
+
     ```tsx
     isLoading = { isRedirecting };
     ```

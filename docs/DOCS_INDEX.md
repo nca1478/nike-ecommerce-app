@@ -135,6 +135,85 @@ Ejemplo completo de integración del carrito con autenticación.
 
 ---
 
+### 💳 [STRIPE_INTEGRATION.md](./STRIPE_INTEGRATION.md)
+
+**Tiempo: 30-45 minutos**
+
+Documentación completa de la integración de Stripe Checkout.
+
+**Contenido:**
+
+- Arquitectura de pagos
+- Configuración de Stripe
+- Flujo completo de checkout
+- Webhook handler
+- Seguridad y validación
+- Manejo de precios
+- Testing y troubleshooting
+
+**Ideal para:** Implementar pagos con Stripe.
+
+---
+
+### ⚡ [STRIPE_SETUP_QUICK.md](./STRIPE_SETUP_QUICK.md)
+
+**Tiempo: 10-15 minutos**
+
+Guía rápida para configurar Stripe en desarrollo.
+
+**Contenido:**
+
+- Instalación de dependencias
+- Configuración de variables de entorno
+- Obtener claves de Stripe
+- Configurar webhook local
+- Tarjetas de prueba
+- Verificación rápida
+
+**Ideal para:** Configuración rápida de Stripe.
+
+---
+
+### 📖 [STRIPE_USAGE_EXAMPLES.md](./STRIPE_USAGE_EXAMPLES.md)
+
+**Tiempo: 20 minutos**
+
+Ejemplos prácticos de uso de Stripe.
+
+**Contenido:**
+
+- Componentes de checkout
+- Server actions
+- Webhook handlers
+- Página de éxito
+- Fusión de carritos
+- Testing
+- Best practices
+
+**Ideal para:** Implementar funcionalidades específicas.
+
+---
+
+### ✅ [STRIPE_CHECKLIST.md](./STRIPE_CHECKLIST.md)
+
+**Tiempo: 5 minutos**
+
+Checklist completo de implementación de Stripe.
+
+**Contenido:**
+
+- Instalación y configuración
+- Server actions
+- Componentes UI
+- Webhook
+- Testing
+- Producción
+- Monitoreo
+
+**Ideal para:** Seguimiento de implementación de pagos.
+
+---
+
 ## 📘 Documentación General
 
 ### 📄 [README.md](./README.md)
@@ -179,25 +258,36 @@ Documentación general del proyecto Nike E-commerce.
 1. [CART_INTEGRATION_EXAMPLE.md](./CART_INTEGRATION_EXAMPLE.md)
 2. [AUTH_SETUP.md](./AUTH_SETUP.md)
 
+#### � Quier o integrar pagos
+
+1. [STRIPE_SETUP_QUICK.md](./STRIPE_SETUP_QUICK.md)
+2. [STRIPE_INTEGRATION.md](./STRIPE_INTEGRATION.md)
+3. [STRIPE_USAGE_EXAMPLES.md](./STRIPE_USAGE_EXAMPLES.md)
+
 #### 🐛 Tengo problemas
 
 1. [MIGRATION_GUIDE.md](./MIGRATION_GUIDE.md) → Sección Troubleshooting
 2. [AUTH_SETUP.md](./AUTH_SETUP.md) → Sección Troubleshooting
+3. [STRIPE_INTEGRATION.md](./STRIPE_INTEGRATION.md) → Sección Troubleshooting
 
 ---
 
 ## 📊 Comparación de Documentos
 
-| Documento                   | Tiempo | Nivel      | Propósito                  |
-| --------------------------- | ------ | ---------- | -------------------------- |
-| QUICK_START.md              | 5 min  | Básico     | Inicio rápido              |
-| CHECKLIST.md                | 2 min  | Básico     | Seguimiento                |
-| README.md                   | 5 min  | Básico     | Visión general             |
-| SYSTEM_OVERVIEW.md          | 10 min | Intermedio | Arquitectura visual        |
-| IMPLEMENTATION_SUMMARY.md   | 10 min | Intermedio | Resumen técnico            |
-| AUTH_SETUP.md               | 20 min | Avanzado   | Documentación completa     |
-| MIGRATION_GUIDE.md          | 60 min | Avanzado   | Implementación paso a paso |
-| CART_INTEGRATION_EXAMPLE.md | 30 min | Avanzado   | Integración especializada  |
+| Documento                   | Tiempo | Nivel      | Propósito                   |
+| --------------------------- | ------ | ---------- | --------------------------- |
+| QUICK_START.md              | 5 min  | Básico     | Inicio rápido               |
+| CHECKLIST.md                | 2 min  | Básico     | Seguimiento                 |
+| README.md                   | 5 min  | Básico     | Visión general              |
+| STRIPE_SETUP_QUICK.md       | 15 min | Básico     | Setup rápido de Stripe      |
+| STRIPE_CHECKLIST.md         | 5 min  | Básico     | Checklist de Stripe         |
+| SYSTEM_OVERVIEW.md          | 10 min | Intermedio | Arquitectura visual         |
+| IMPLEMENTATION_SUMMARY.md   | 10 min | Intermedio | Resumen técnico             |
+| STRIPE_USAGE_EXAMPLES.md    | 20 min | Intermedio | Ejemplos de Stripe          |
+| AUTH_SETUP.md               | 20 min | Avanzado   | Documentación completa      |
+| MIGRATION_GUIDE.md          | 60 min | Avanzado   | Implementación paso a paso  |
+| CART_INTEGRATION_EXAMPLE.md | 30 min | Avanzado   | Integración especializada   |
+| STRIPE_INTEGRATION.md       | 45 min | Avanzado   | Integración completa Stripe |
 
 ---
 
@@ -266,8 +356,16 @@ Documentación general del proyecto Nike E-commerce.
 **Integración con carrito**
 → [CART_INTEGRATION_EXAMPLE.md](./CART_INTEGRATION_EXAMPLE.md)
 
+**Integración de pagos con Stripe**
+→ [STRIPE_SETUP_QUICK.md](./STRIPE_SETUP_QUICK.md) → Setup rápido
+→ [STRIPE_INTEGRATION.md](./STRIPE_INTEGRATION.md) → Documentación completa
+
+**Ejemplos de código de Stripe**
+→ [STRIPE_USAGE_EXAMPLES.md](./STRIPE_USAGE_EXAMPLES.md)
+
 **Problemas y errores**
 → [MIGRATION_GUIDE.md](./MIGRATION_GUIDE.md) → Sección "Troubleshooting"
+→ [STRIPE_INTEGRATION.md](./STRIPE_INTEGRATION.md) → Sección "Troubleshooting"
 
 **Arquitectura del sistema**
 → [SYSTEM_OVERVIEW.md](./SYSTEM_OVERVIEW.md)
@@ -306,10 +404,14 @@ Marca los documentos que ya has leído:
 - [ ] AUTH_SETUP.md
 - [ ] MIGRATION_GUIDE.md
 - [ ] CART_INTEGRATION_EXAMPLE.md
+- [ ] STRIPE_SETUP_QUICK.md
+- [ ] STRIPE_INTEGRATION.md
+- [ ] STRIPE_USAGE_EXAMPLES.md
+- [ ] STRIPE_CHECKLIST.md
 - [ ] DOCS_INDEX.md (este archivo)
 
 ---
 
-**Última actualización:** 15 de Noviembre, 2025
-**Versión del sistema:** 1.0.0 MVP
-**Estado:** ✅ Completo y listo para implementar
+**Última actualización:** 18 de Noviembre, 2025
+**Versión del sistema:** 1.1.0 MVP + Stripe
+**Estado:** ✅ Completo con integración de pagos

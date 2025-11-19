@@ -2,18 +2,18 @@ import { Suspense } from 'react';
 import Link from 'next/link';
 import { getProduct } from '@/lib/actions/product';
 import {
-    VariantProvider,
-    ProductGalleryClient,
+    CollapsibleSection,
     ColorVariantPickerClient,
+    ProductActionsWrapper,
+    ProductGalleryClient,
+    ProductReviews,
+    RecommendedProducts,
+    RecommendedSkeleton,
+    ReviewsSkeleton,
+    SizeOption,
+    VariantProvider,
     VariantWithImages,
-} from './ProductVariantManager';
-import { SizeOption } from './SizePickerWithStock';
-import { ProductReviews } from './ProductReviews';
-import { RecommendedProducts } from './RecommendedProducts';
-import { ReviewsSkeleton } from './ReviewsSkeleton';
-import { RecommendedSkeleton } from './RecommendedSkeleton';
-import { CollapsibleSection } from '@/components';
-import { ProductActionsWrapper } from './ProductActionsWrapper';
+} from '@/components';
 
 interface ProductPageProps {
     params: Promise<{ id: string }>;
