@@ -22,7 +22,7 @@ export default function RootLayout({
         <html lang="en">
             <body className={`${jost.className} antialiased`}>
                 {children}
-                <Toaster position="top-right" />
+                <Toaster position="top-center" />
             </body>
         </html>
     );

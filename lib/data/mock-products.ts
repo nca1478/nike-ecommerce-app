@@ -215,6 +215,7 @@ export const filterOptions = {
         { label: 'Men', value: 'men' },
         { label: 'Women', value: 'women' },
         { label: 'Kids', value: 'kids' },
+        { label: 'Unisex', value: 'unisex' },
     ],
     sizes: [
         { label: '6', value: '6' },

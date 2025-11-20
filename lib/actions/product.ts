@@ -584,3 +584,60 @@ export async function getRecommendedProducts(
         return [];
     }
 }
+
+export interface FooterProduct {
+    id: string;
+    name: string;
+    slug: string;
+}
+
+export interface FooterSection {
+    title: string;
+    links: Array<{ label: string; href: string }>;
+}
+
+/**
+ * Get featured products grouped by gender for footer navigation
+ * Returns up to 4 products per gender category
+ */
+export async function getFooterProducts(): Promise<FooterSection[]> {
+    try {
+        // Get all genders
+        const gendersData = await db.select().from(genders);
+
+        const sections: FooterSection[] = [];
+
+        // For each gender, get top 4 products
+        for (const gender of gendersData) {
+            const productsData = await db
+                .select({
+                    id: products.id,
+                    name: products.name,
+                })
+                .from(products)
+                .where(
+                    and(
+                        eq(products.genderId, gender.id),
+                        eq(products.isPublished, true),
+                    ),
+                )
+                .orderBy(desc(products.createdAt))
+                .limit(4);
+
+            if (productsData.length > 0) {
+                sections.push({
+                    title: gender.label,
+                    links: productsData.map((p) => ({
+                        label: p.name,
+                        href: `/products/${p.id}`,
+                    })),
+                });
+            }
+        }
+
+        return sections;
+    } catch (error) {
+        console.error('Error in getFooterProducts:', error);
+        return [];
+    }
+}

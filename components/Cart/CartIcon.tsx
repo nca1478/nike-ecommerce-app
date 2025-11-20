@@ -28,9 +28,9 @@ export function CartIcon() {
     return (
         <Link
             href="/cart"
-            className="relative flex items-center gap-2 hover:text-dark-700 transition-colors"
+            className="relative flex items-center gap-2 hover:text-dark-700 transition-colors whitespace-nowrap"
         >
-            <ShoppingBag className="w-6 h-6" />
+            <ShoppingBag className="w-6 h-6 shrink-0" />
             <span className="text-body-medium">
                 My Cart {totalItems > 0 && `(${totalItems})`}
             </span>
