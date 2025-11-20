@@ -1,47 +1,9 @@
-'use client';
-
 import Image from 'next/image';
 import Link from 'next/link';
+import { getFooterProducts, type FooterSection } from '@/lib/actions/product';
 
-export function Footer() {
-    const footerSections = [
-        {
-            title: 'Featured',
-            links: [
-                { label: 'Air Force 1', href: '/products/air-force-1' },
-                { label: 'Huarache', href: '/products/huarache' },
-                { label: 'Air Max 90', href: '/products/air-max-90' },
-                { label: 'Air Max 95', href: '/products/air-max-95' },
-            ],
-        },
-        {
-            title: 'Shoes',
-            links: [
-                { label: 'All Shoes', href: '/shoes' },
-                { label: 'Custom Shoes', href: '/shoes/custom' },
-                { label: 'Jordan Shoes', href: '/shoes/jordan' },
-                { label: 'Running Shoes', href: '/shoes/running' },
-            ],
-        },
-        {
-            title: 'Clothing',
-            links: [
-                { label: 'All Clothing', href: '/clothing' },
-                { label: 'Modest Wear', href: '/clothing/modest' },
-                { label: 'Hoodies & Pullovers', href: '/clothing/hoodies' },
-                { label: 'Shirts & Tops', href: '/clothing/shirts' },
-            ],
-        },
-        {
-            title: "Kids'",
-            links: [
-                { label: 'Infant & Toddler Shoes', href: '/kids/infant' },
-                { label: "Kids' Shoes", href: '/kids/shoes' },
-                { label: "Kids' Jordan Shoes", href: '/kids/jordan' },
-                { label: "Kids' Basketball Shoes", href: '/kids/basketball' },
-            ],
-        },
-    ];
+export async function Footer() {
+    const footerSections: FooterSection[] = await getFooterProducts();
 
     const socialLinks = [
         { icon: '/x.svg', href: 'https://twitter.com/nike', label: 'Twitter' },
