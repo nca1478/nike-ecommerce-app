@@ -20,10 +20,10 @@ export async function Footer() {
     ];
 
     const legalLinks = [
-        { label: 'Guides', href: '/guides' },
-        { label: 'Terms of Sale', href: '/terms-of-sale' },
-        { label: 'Terms of Use', href: '/terms-of-use' },
-        { label: 'Nike Privacy Policy', href: '/privacy-policy' },
+        { label: 'Guides', href: '/legal/guides' },
+        { label: 'Terms of Sale', href: '/legal/terms-of-sale' },
+        { label: 'Terms of Use', href: '/legal/terms-of-use' },
+        { label: 'Nike Privacy Policy', href: '/legal/privacy-policy' },
     ];
 
     return (
