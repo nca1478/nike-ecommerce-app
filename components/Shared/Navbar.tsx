@@ -17,8 +17,7 @@ export function Navbar() {
         { href: '/products?gender=men', label: 'Men' },
         { href: '/products?gender=women', label: 'Women' },
         { href: '/products?gender=kids', label: 'Kids' },
-        { href: '/collections', label: 'Collections' },
-        { href: '/contact', label: 'Contact' },
+        { href: '/products?gender=unisex', label: 'Unisex' },
     ];
 
     const handleLogout = async () => {
