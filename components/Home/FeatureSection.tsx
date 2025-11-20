@@ -22,7 +22,7 @@ export const FeatureSection = () => {
                         </p>
                         <Link
                             href="/products"
-                            className="inline-block bg-dark-900 text-white px-8 py-3 rounded-full font-semibold hover:bg-dark-800 transition-colors"
+                            className="inline-block bg-dark-900 text-white px-8 py-3 rounded-full font-semibold hover:bg-dark-700 transition-colors duration-300"
                         >
                             Shop Now
                         </Link>
