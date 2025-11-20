@@ -1,12 +1,15 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useCartStore } from '@/lib/store/cart.store';
 import { createStripeCheckoutSession } from '@/lib/actions/checkout';
+import { isAuthenticated } from '@/lib/auth/actions';
 import { ShoppingBag, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function CartSummary() {
+    const router = useRouter();
     const { getTotalItems, getSubtotal } = useCartStore();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -25,10 +28,23 @@ export default function CartSummary() {
         setIsLoading(true);
 
         try {
+            // Verificar si el usuario está autenticado
+            const authenticated = await isAuthenticated();
+
+            if (!authenticated) {
+                // Redirigir a sign-in con parámetros de redirección
+                toast.error('Please sign in to complete your purchase');
+                router.push('/sign-in?redirect=/cart&action=checkout');
+                setIsLoading(false);
+                return;
+            }
+
+            // Usuario autenticado - proceder con Stripe
             const result = await createStripeCheckoutSession();
 
             if (!result.success || !result.data) {
                 toast.error(result.error || 'Error processing payment');
+                setIsLoading(false);
                 return;
             }
 
@@ -37,7 +53,6 @@ export default function CartSummary() {
         } catch (error) {
             console.error('Error en checkout:', error);
             toast.error('Error processing payment');
-        } finally {
             setIsLoading(false);
         }
     };
