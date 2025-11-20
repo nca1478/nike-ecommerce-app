@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useAuth } from '@/lib/auth/hooks';
 import { signOut } from '@/lib/auth/actions';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { CartIcon } from '@/components/Cart/CartIcon';
 
 export function Navbar() {
@@ -13,13 +13,20 @@ export function Navbar() {
     const [searchQuery, setSearchQuery] = useState('');
     const { user, loading, refresh } = useAuth();
     const router = useRouter();
+    const searchParams = useSearchParams();
 
     const navLinks = [
-        { href: '/products?gender=men', label: 'Men' },
-        { href: '/products?gender=women', label: 'Women' },
-        { href: '/products?gender=kids', label: 'Kids' },
-        { href: '/products?gender=unisex', label: 'Unisex' },
+        { href: '/products?gender=men', label: 'Men', gender: 'men' },
+        { href: '/products?gender=women', label: 'Women', gender: 'women' },
+        { href: '/products?gender=kids', label: 'Kids', gender: 'kids' },
+        { href: '/products?gender=unisex', label: 'Unisex', gender: 'unisex' },
     ];
+
+    const currentGender = searchParams.get('gender');
+
+    const isActiveLink = (gender: string) => {
+        return currentGender === gender;
+    };
 
     const handleLogout = async () => {
         const result = await signOut();
@@ -104,7 +111,11 @@ export function Navbar() {
                                     <Link
                                         key={link.href}
                                         href={link.href}
-                                        className="text-dark-900 hover:text-dark-700 transition-colors text-base font-medium px-2 py-1 hover:border-b-2 hover:border-dark-900"
+                                        className={`text-dark-900 hover:text-dark-700 transition-colors text-base font-medium px-2 py-1 border-b-2 ${
+                                            isActiveLink(link.gender)
+                                                ? 'border-dark-900'
+                                                : 'border-transparent hover:border-dark-900'
+                                        }`}
                                     >
                                         {link.label}
                                     </Link>
@@ -201,7 +212,11 @@ export function Navbar() {
                             <Link
                                 key={link.href}
                                 href={link.href}
-                                className="block py-2 text-dark-900 hover:text-dark-700 transition-colors font-medium"
+                                className={`block py-2 text-dark-900 hover:text-dark-700 transition-colors font-medium ${
+                                    isActiveLink(link.gender)
+                                        ? 'border-l-4 border-dark-900 pl-3'
+                                        : ''
+                                }`}
                                 onClick={() => setIsMenuOpen(false)}
                             >
                                 {link.label}
