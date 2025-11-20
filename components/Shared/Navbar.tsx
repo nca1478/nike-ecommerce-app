@@ -42,6 +42,7 @@ export function Navbar() {
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         if (searchQuery.trim()) {
+            setIsMenuOpen(false);
             router.push(
                 `/products?search=${encodeURIComponent(searchQuery.trim())}`,
             );
@@ -53,7 +54,7 @@ export function Navbar() {
             {/* Top Bar */}
             <div className="bg-light-200 border-b border-light-300">
                 <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-end h-9 text-xs">
+                    <div className="flex items-center justify-end h-9 text-sm">
                         <div className="flex items-center space-x-4">
                             {!loading && (
                                 <>
@@ -257,7 +258,10 @@ export function Navbar() {
                                     )}
                                 </>
                             )}
-                            <div className="py-2">
+                            <div
+                                className="py-2"
+                                onClick={() => setIsMenuOpen(false)}
+                            >
                                 <CartIcon />
                             </div>
                         </div>
