@@ -82,21 +82,23 @@ export function Navbar() {
             {/* Main Navigation */}
             <div className="border-b border-light-300">
                 <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between h-16">
-                        {/* Logo */}
-                        <Link href="/" className="shrink-0">
-                            <Image
-                                src="/logo.svg"
-                                alt="Nike Logo"
-                                width={60}
-                                height={22}
-                                className="h-6 w-auto invert"
-                                priority
-                            />
-                        </Link>
+                    <div className="flex items-center h-16">
+                        {/* Logo - Fixed width */}
+                        <div className="w-[200px] shrink-0">
+                            <Link href="/" className="inline-block">
+                                <Image
+                                    src="/logo.svg"
+                                    alt="Nike Logo"
+                                    width={60}
+                                    height={22}
+                                    className="h-6 w-auto invert"
+                                    priority
+                                />
+                            </Link>
+                        </div>
 
                         {/* Center Navigation - Desktop */}
-                        <div className="hidden lg:flex items-center justify-center flex-1 mx-8">
+                        <div className="hidden lg:flex items-center justify-center flex-1">
                             <div className="flex items-center space-x-6">
                                 {navLinks.map((link) => (
                                     <Link
@@ -110,8 +112,8 @@ export function Navbar() {
                             </div>
                         </div>
 
-                        {/* Right Side Actions */}
-                        <div className="hidden md:flex items-center space-x-4">
+                        {/* Right Side Actions - Fixed width to match logo */}
+                        <div className="hidden md:flex items-center justify-end space-x-4 w-[200px] lg:w-[280px] shrink-0">
                             {/* Search Bar */}
                             <form onSubmit={handleSearch} className="relative">
                                 <div className="relative">
@@ -145,7 +147,7 @@ export function Navbar() {
                         {/* Mobile Menu Button */}
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            className="md:hidden p-2 rounded-md text-dark-900 hover:bg-light-200"
+                            className="md:hidden ml-auto p-2 rounded-md text-dark-900 hover:bg-light-200"
                             aria-label="Toggle menu"
                         >
                             <svg
