@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Package, ChevronRight } from 'lucide-react';
 import { OrderStatusBadge } from './OrderStatusBadge';
+import { useI18n } from '@/lib/i18n';
 
 interface OrderItem {
     id: string;
@@ -30,21 +31,23 @@ interface OrdersListProps {
 }
 
 export function OrdersList({ orders }: OrdersListProps) {
+    const { t } = useI18n();
+
     if (orders.length === 0) {
         return (
             <div className="text-center py-16">
                 <Package className="w-16 h-16 mx-auto text-gray-300 mb-4" />
                 <h2 className="text-xl font-semibold mb-2">
-                    No tienes pedidos aún
+                    {t.orders.noOrders}
                 </h2>
                 <p className="text-gray-600 mb-6">
-                    Cuando realices tu primera compra, aparecerá aquí
+                    {t.orders.noOrdersDescription}
                 </p>
                 <Link
                     href="/products"
                     className="inline-block bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800 transition-colors"
                 >
-                    Explorar Productos
+                    {t.orders.exploreProducts}
                 </Link>
             </div>
         );
@@ -108,7 +111,8 @@ export function OrdersList({ orders }: OrdersListProps) {
                                 <div className="flex items-start justify-between mb-2">
                                     <div>
                                         <p className="text-sm text-gray-500 mb-1">
-                                            Pedido #{order.id.slice(0, 8)}
+                                            {t.orders.orderNumber} #
+                                            {order.id.slice(0, 8)}
                                         </p>
                                         <h3 className="font-semibold text-lg mb-1">
                                             {firstItem?.productVariant.product
@@ -119,8 +123,8 @@ export function OrdersList({ orders }: OrdersListProps) {
                                         <p className="text-sm text-gray-600">
                                             {totalItems}{' '}
                                             {totalItems === 1
-                                                ? 'artículo'
-                                                : 'artículos'}
+                                                ? t.orders.item
+                                                : t.orders.items}
                                         </p>
                                     </div>
                                     <ChevronRight className="w-5 h-5 text-gray-400 shrink-0" />
@@ -141,7 +145,7 @@ export function OrdersList({ orders }: OrdersListProps) {
 
                                 <div className="mt-4 pt-4 border-t border-gray-100">
                                     <p className="text-lg font-semibold">
-                                        Total: ${calculatedTotal}
+                                        {t.orders.total}: ${calculatedTotal}
                                     </p>
                                 </div>
                             </div>
