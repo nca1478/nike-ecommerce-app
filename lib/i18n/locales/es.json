@@ -199,7 +199,10 @@
         "needHelpDescription": "Contáctanos si tienes alguna pregunta sobre tu pedido",
         "contactSupport": "Contactar soporte",
         "orderNotFound": "Pedido no encontrado",
-        "orderNotFoundDescription": "No se pudo encontrar el pedido solicitado"
+        "orderNotFoundDescription": "No se pudo encontrar el pedido solicitado",
+        "downloading": "Descargando...",
+        "invoiceDownloaded": "Factura descargada correctamente",
+        "errorDownloadingInvoice": "Error al descargar la factura"
     },
     "footer": {
         "location": "Venezuela",

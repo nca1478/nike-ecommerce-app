@@ -199,7 +199,10 @@
         "needHelpDescription": "Contact us if you have any questions about your order",
         "contactSupport": "Contact support",
         "orderNotFound": "Order not found",
-        "orderNotFoundDescription": "The requested order could not be found"
+        "orderNotFoundDescription": "The requested order could not be found",
+        "downloading": "Downloading...",
+        "invoiceDownloaded": "Invoice downloaded successfully",
+        "errorDownloadingInvoice": "Error downloading invoice"
     },
     "footer": {
         "location": "Venezuela",

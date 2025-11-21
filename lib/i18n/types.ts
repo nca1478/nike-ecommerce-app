@@ -202,6 +202,9 @@ export interface Translations {
         contactSupport: string;
         orderNotFound: string;
         orderNotFoundDescription: string;
+        downloading: string;
+        invoiceDownloaded: string;
+        errorDownloadingInvoice: string;
     };
     footer: {
         location: string;
