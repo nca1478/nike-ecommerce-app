@@ -143,8 +143,11 @@ export function Navbar() {
                             </div>
                         </div>
 
-                        {/* Right Side Actions - Fixed width to match logo */}
-                        <div className="hidden md:flex items-center justify-end space-x-2 w-[200px] lg:w-[320px] shrink-0">
+                        {/* Right Side Actions */}
+                        <div
+                            className="hidden md:flex items-center justify-end space-x-1 lg:space-x-2 shrink-0"
+                            style={{ width: '200px' }}
+                        >
                             {/* Search Bar */}
                             <form onSubmit={handleSearch} className="relative">
                                 <div className="relative">
@@ -156,10 +159,10 @@ export function Navbar() {
                                         }
                                         onBlur={() => setSearchQuery('')}
                                         placeholder={t.nav.search}
-                                        className="w-36 lg:w-44 pl-10 pr-4 py-2 bg-light-200 rounded-full text-sm text-dark-900 placeholder-dark-500 focus:outline-none focus:ring-2 focus:ring-dark-900 transition-all"
+                                        className="w-28 lg:w-32 pl-9 pr-3 py-1.5 bg-light-200 rounded-full text-sm text-dark-900 placeholder-dark-500 focus:outline-none focus:ring-2 focus:ring-dark-900 transition-all"
                                     />
                                     <svg
-                                        className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-dark-700"
+                                        className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-700"
                                         fill="none"
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
