@@ -1,5 +1,8 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { useI18n } from '@/lib/i18n';
 
 interface TrendingItem {
     id: string;
@@ -14,41 +17,43 @@ interface TrendingSectionProps {
     items?: TrendingItem[];
 }
 
-const defaultItems: TrendingItem[] = [
-    {
-        id: '1',
-        title: 'REACT PRESTO',
-        description: 'With React foam for the most comfortable Presto ever.',
-        image: '/trending-1.png',
-        link: '/trending-1.png',
-        size: 'large',
-    },
-    {
-        id: '2',
-        title: 'Summer Must-Haves: Air Max Dia',
-        image: '/trending-2.png',
-        link: '/trending-2.png',
-        size: 'small',
-    },
-    {
-        id: '3',
-        title: 'Air Jordan 11 Retro Low LE',
-        image: '/trending-3.png',
-        link: '/trending-3.png',
-        size: 'small',
-    },
-];
+export function TrendingSection({ items }: TrendingSectionProps) {
+    const { t } = useI18n();
 
-export function TrendingSection({
-    items = defaultItems,
-}: TrendingSectionProps) {
-    const largeItem = items.find((item) => item.size === 'large') || items[0];
-    const smallItems = items.filter((item) => item.size === 'small');
+    const defaultItems: TrendingItem[] = [
+        {
+            id: '1',
+            title: t.home.trending.reactPresto,
+            description: t.home.trending.reactPrestoDesc,
+            image: '/trending-1.png',
+            link: '/trending-1.png',
+            size: 'large',
+        },
+        {
+            id: '2',
+            title: t.home.trending.summerMustHaves,
+            image: '/trending-2.png',
+            link: '/trending-2.png',
+            size: 'small',
+        },
+        {
+            id: '3',
+            title: t.home.trending.airJordan,
+            image: '/trending-3.png',
+            link: '/trending-3.png',
+            size: 'small',
+        },
+    ];
+
+    const displayItems = items || defaultItems;
+    const largeItem =
+        displayItems.find((item) => item.size === 'large') || displayItems[0];
+    const smallItems = displayItems.filter((item) => item.size === 'small');
 
     return (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <h2 className="text-heading-2 font-bold text-dark-900 mb-8">
-                Trending Now
+                {t.home.trendingNow}
             </h2>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -75,7 +80,7 @@ export function TrendingSection({
                                 href="/products"
                                 className="inline-block bg-white text-dark-900 px-6 py-2 rounded-full font-medium cursor-pointer hover:bg-dark-900 hover:text-white transition-colors duration-300"
                             >
-                                Shop Now
+                                {t.home.shopNow}
                             </Link>
                         </div>
                     </div>
