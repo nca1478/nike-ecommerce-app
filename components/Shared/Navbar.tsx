@@ -55,15 +55,27 @@ export function Navbar() {
             <div className="bg-light-200 border-b border-light-300">
                 <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-end h-9 text-sm">
-                        <div className="flex items-center space-x-4">
+                        <div className="flex items-center space-x-3">
                             {!loading && (
                                 <>
                                     {user ? (
-                                        <>
+                                        <div className="flex items-center space-x-3">
                                             <span className="text-dark-900 font-medium">
                                                 Hi,{' '}
                                                 {user.name ||
                                                     user.email?.split('@')[0]}
+                                            </span>
+                                            <span className="text-dark-500">
+                                                |
+                                            </span>
+                                            <Link
+                                                href="/orders"
+                                                className="text-dark-900 hover:text-dark-700 transition-colors"
+                                            >
+                                                My Orders
+                                            </Link>
+                                            <span className="text-dark-500">
+                                                |
                                             </span>
                                             <button
                                                 onClick={handleLogout}
@@ -71,7 +83,7 @@ export function Navbar() {
                                             >
                                                 Logout
                                             </button>
-                                        </>
+                                        </div>
                                     ) : (
                                         <Link
                                             href="/sign-in"
@@ -237,6 +249,15 @@ export function Navbar() {
                                                 {user.name ||
                                                     user.email?.split('@')[0]}
                                             </div>
+                                            <Link
+                                                href="/orders"
+                                                className="block w-full text-left py-2 text-dark-900 hover:text-dark-700 transition-colors"
+                                                onClick={() =>
+                                                    setIsMenuOpen(false)
+                                                }
+                                            >
+                                                My Orders
+                                            </Link>
                                             <button
                                                 onClick={() => {
                                                     handleLogout();
