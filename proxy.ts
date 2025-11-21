@@ -26,10 +26,17 @@ export function proxy(request: NextRequest) {
     );
 
     // Verificar si hay sesión de autenticación
-    // Buscar tanto 'auth_session' como 'auth.session_token' por compatibilidad
+    // Buscar todas las posibles variantes de cookies de sesión
+    const allCookies = request.cookies.getAll();
     const authSession =
         request.cookies.get('auth_session') ||
-        request.cookies.get('auth.session_token');
+        request.cookies.get('auth.session_token') ||
+        request.cookies.get('better-auth.session_token') ||
+        // En producción, better-auth puede usar el prefijo completo
+        allCookies.find(
+            (cookie) =>
+                cookie.name.includes('session') && cookie.name.includes('auth'),
+        );
 
     // Si es una ruta protegida y no hay sesión, redirigir a login
     if (isProtectedRoute && !authSession) {
