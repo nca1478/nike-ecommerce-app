@@ -70,7 +70,7 @@ export function Sort() {
         <div className="relative" ref={dropdownRef}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="flex items-center gap-2 px-4 py-2 text-body-medium text-dark-900 border border-light-400 rounded hover:border-dark-700 transition-colors bg-light-100"
+                className="flex items-center gap-2 px-4 py-2 text-body-medium text-dark-900 border border-light-400 rounded hover:border-dark-700 transition-colors bg-light-100 cursor-pointer"
                 aria-label="Sort products"
                 aria-expanded={isOpen}
             >
@@ -89,7 +89,7 @@ export function Sort() {
                         <button
                             key={option.value}
                             onClick={() => handleSortChange(option.value)}
-                            className={`w-full px-4 py-3 text-left text-body transition-colors ${
+                            className={`w-full px-4 py-3 text-left text-body transition-colors cursor-pointer ${
                                 selectedSort === option.value
                                     ? 'bg-dark-900 text-light-100'
                                     : 'text-dark-900 hover:bg-light-200'
