@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Jost } from 'next/font/google';
 import { Toaster } from 'react-hot-toast';
+import { I18nProvider } from '@/lib/i18n';
 import './globals.css';
 
 const jost = Jost({
@@ -19,10 +20,12 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="es">
             <body className={`${jost.className} antialiased`}>
-                {children}
-                <Toaster position="top-center" />
+                <I18nProvider>
+                    {children}
+                    <Toaster position="top-center" />
+                </I18nProvider>
             </body>
         </html>
     );
