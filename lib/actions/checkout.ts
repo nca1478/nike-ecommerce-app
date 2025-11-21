@@ -95,6 +95,17 @@ export async function createStripeCheckoutSession(): Promise<
             };
         }
 
+        // Calcular subtotal
+        const subtotal = cart.items.reduce((sum, item) => {
+            const variant = item.productVariant;
+            const price = variant.salePrice || variant.price;
+            return sum + parseFloat(price) * parseInt(item.quantity);
+        }, 0);
+
+        // Calcular shipping y tax
+        const shipping = subtotal > 100 ? 0 : 10;
+        const tax = subtotal * 0.08; // 8% de impuestos
+
         // Construir line items para Stripe
         const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] =
             cart.items.map((item) => {
@@ -123,6 +134,34 @@ export async function createStripeCheckoutSession(): Promise<
                     quantity: parseInt(item.quantity),
                 };
             });
+
+        // Agregar shipping como line item si aplica
+        if (shipping > 0) {
+            lineItems.push({
+                price_data: {
+                    currency: 'usd',
+                    product_data: {
+                        name: 'Shipping & Handling',
+                        description: 'Delivery fee',
+                    },
+                    unit_amount: Math.round(shipping * 100),
+                },
+                quantity: 1,
+            });
+        }
+
+        // Agregar tax como line item
+        lineItems.push({
+            price_data: {
+                currency: 'usd',
+                product_data: {
+                    name: 'Tax',
+                    description: 'Estimated tax (8%)',
+                },
+                unit_amount: Math.round(tax * 100),
+            },
+            quantity: 1,
+        });
 
         // Crear sesión de Stripe
         const session = await stripe.checkout.sessions.create({
