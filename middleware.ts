@@ -7,7 +7,7 @@ const protectedRoutes = ['/profile', '/orders'];
 // Rutas públicas que no requieren autenticación (excepciones)
 const publicRoutes = ['/checkout/success'];
 
-export function proxy(request: NextRequest) {
+export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
     // Verificar si es una ruta pública (excepción)
@@ -30,16 +30,13 @@ export function proxy(request: NextRequest) {
 
     // Si es una ruta protegida y no hay sesión, redirigir a login
     if (isProtectedRoute && !authSession) {
-        const url = new URL('/auth/signin', request.url);
+        const url = new URL('/sign-in', request.url);
         url.searchParams.set('redirect', pathname);
         return NextResponse.redirect(url);
     }
 
     // Si está autenticado y trata de acceder a signin/signup, redirigir a home
-    if (
-        authSession &&
-        (pathname === '/auth/signin' || pathname === '/auth/signup')
-    ) {
+    if (authSession && (pathname === '/sign-in' || pathname === '/sign-up')) {
         return NextResponse.redirect(new URL('/', request.url));
     }
 
