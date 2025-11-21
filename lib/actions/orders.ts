@@ -68,12 +68,19 @@ export async function createOrder(
             };
         }
 
-        // Calcular total
-        const totalAmount = cart.items.reduce((sum, item) => {
+        // Calcular subtotal
+        const subtotal = cart.items.reduce((sum, item) => {
             const price =
                 item.productVariant.salePrice || item.productVariant.price;
             return sum + parseFloat(price) * parseInt(item.quantity);
         }, 0);
+
+        // Calcular shipping y tax (igual que en checkout)
+        const shipping = subtotal > 100 ? 0 : 10;
+        const tax = subtotal * 0.08; // 8% de impuestos
+
+        // Calcular total incluyendo shipping y tax
+        const totalAmount = subtotal + shipping + tax;
 
         // Crear dirección temporal (en producción, esto vendría del formulario de checkout)
         // Por ahora, usamos una dirección por defecto

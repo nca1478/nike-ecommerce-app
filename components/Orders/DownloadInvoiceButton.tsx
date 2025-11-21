@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Download } from 'lucide-react';
 import { toast } from 'react-hot-toast';
+import { generateInvoicePDF } from '@/lib/utils/generateInvoicePDF';
 
 interface DownloadInvoiceButtonProps {
     orderId: string;
@@ -22,18 +23,12 @@ export function DownloadInvoiceButton({
             const response = await fetch(`/api/orders/${orderId}/invoice`);
 
             if (!response.ok) {
-                throw new Error('Error al generar la factura');
+                throw new Error('Error al obtener datos de la factura');
             }
 
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `factura-${orderNumber}.pdf`;
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
+            const data = await response.json();
+
+            await generateInvoicePDF(data, orderNumber);
 
             toast.success('Factura descargada correctamente');
         } catch (error) {
