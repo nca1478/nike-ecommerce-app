@@ -1,14 +1,14 @@
-import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { getCurrentUser } from '@/lib/auth/actions';
 import { getOrder } from '@/lib/actions/orders';
 import { OrderDetails } from '@/components/Orders/OrderDetails';
+import { OrderNotFound } from '@/components/Orders/OrderDetailPageContent';
 
 export const dynamic = 'force-dynamic';
 
 export const metadata = {
-    title: 'Detalle del Pedido | Nike Store',
-    description: 'Información detallada de tu pedido',
+    title: 'Order Details | Nike Store',
+    description: 'Detailed information about your order',
 };
 
 interface OrderDetailPageProps {
@@ -30,22 +30,7 @@ export default async function OrderDetailPage({
     const result = await getOrder(orderId);
 
     if (!result.success || !result.data) {
-        return (
-            <div className="container mx-auto px-4 py-16">
-                <div className="text-center">
-                    <h1 className="text-2xl font-bold mb-4">
-                        Pedido no encontrado
-                    </h1>
-                    <p className="text-gray-600 mb-6">{result.error}</p>
-                    <Link
-                        href="/orders"
-                        className="text-blue-600 hover:underline"
-                    >
-                        Volver a mis pedidos
-                    </Link>
-                </div>
-            </div>
-        );
+        return <OrderNotFound error={result.error} />;
     }
 
     // Verificar que el pedido pertenece al usuario

@@ -187,7 +187,19 @@
         "thankYou": "Gracias por tu compra. Tu pedido ha sido procesado exitosamente.",
         "continueShopping": "Seguir Comprando",
         "viewMyOrders": "Ver Mis Pedidos",
-        "inTransit": "En Camino"
+        "inTransit": "En Camino",
+        "backToOrders": "Volver a mis pedidos",
+        "placedOn": "Realizado el",
+        "products": "Productos",
+        "quantity": "Cantidad",
+        "each": "c/u",
+        "shippingAddress": "Dirección de Envío",
+        "summary": "Resumen",
+        "needHelp": "¿Necesitas ayuda?",
+        "needHelpDescription": "Contáctanos si tienes alguna pregunta sobre tu pedido",
+        "contactSupport": "Contactar soporte",
+        "orderNotFound": "Pedido no encontrado",
+        "orderNotFoundDescription": "No se pudo encontrar el pedido solicitado"
     },
     "footer": {
         "location": "Venezuela",

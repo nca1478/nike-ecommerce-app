@@ -190,6 +190,18 @@ export interface Translations {
         continueShopping: string;
         viewMyOrders: string;
         inTransit: string;
+        backToOrders: string;
+        placedOn: string;
+        products: string;
+        quantity: string;
+        each: string;
+        shippingAddress: string;
+        summary: string;
+        needHelp: string;
+        needHelpDescription: string;
+        contactSupport: string;
+        orderNotFound: string;
+        orderNotFoundDescription: string;
     };
     footer: {
         location: string;

@@ -187,7 +187,19 @@
         "thankYou": "Thank you for your purchase. Your order has been processed successfully.",
         "continueShopping": "Continue Shopping",
         "viewMyOrders": "View My Orders",
-        "inTransit": "In Transit"
+        "inTransit": "In Transit",
+        "backToOrders": "Back to my orders",
+        "placedOn": "Placed on",
+        "products": "Products",
+        "quantity": "Quantity",
+        "each": "each",
+        "shippingAddress": "Shipping Address",
+        "summary": "Summary",
+        "needHelp": "Need help?",
+        "needHelpDescription": "Contact us if you have any questions about your order",
+        "contactSupport": "Contact support",
+        "orderNotFound": "Order not found",
+        "orderNotFoundDescription": "The requested order could not be found"
     },
     "footer": {
         "location": "Venezuela",
