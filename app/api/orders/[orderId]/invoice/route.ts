@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getCurrentUser } from '@/lib/auth/actions';
 import { getOrder } from '@/lib/actions/orders';
-import { generateInvoicePDF } from '@/lib/utils/pdf';
 
 export async function GET(
     request: NextRequest,
@@ -35,24 +34,19 @@ export async function GET(
             );
         }
 
-        // Generar PDF
-        const pdfBuffer = await generateInvoicePDF(
-            result.data.order,
-            result.data.items,
-            user,
-        );
-
-        // Retornar PDF
-        return new NextResponse(pdfBuffer as BodyInit, {
-            headers: {
-                'Content-Type': 'application/pdf',
-                'Content-Disposition': `attachment; filename="factura-${orderId.slice(0, 8)}.pdf"`,
+        // Retornar los datos para generar el PDF en el cliente
+        return NextResponse.json({
+            order: result.data.order,
+            items: result.data.items,
+            user: {
+                name: user.name,
+                email: user.email,
             },
         });
     } catch (error) {
-        console.error('Error al generar factura:', error);
+        console.error('Error al obtener datos de factura:', error);
         return NextResponse.json(
-            { error: 'Error al generar la factura' },
+            { error: 'Error al obtener datos de la factura' },
             { status: 500 },
         );
     }
