@@ -36,7 +36,7 @@ export const auth = betterAuth({
                 attributes: {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === 'production',
-                    sameSite: 'strict',
+                    sameSite: 'lax', // Cambiado de 'strict' a 'lax' para producción
                     path: '/',
                     maxAge: 60 * 60 * 24 * 7,
                 },

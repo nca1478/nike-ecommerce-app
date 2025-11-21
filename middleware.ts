@@ -26,7 +26,10 @@ export function middleware(request: NextRequest) {
     );
 
     // Verificar si hay sesión de autenticación
-    const authSession = request.cookies.get('auth_session');
+    // Buscar tanto 'auth_session' como 'auth.session_token' por compatibilidad
+    const authSession =
+        request.cookies.get('auth_session') ||
+        request.cookies.get('auth.session_token');
 
     // Si es una ruta protegida y no hay sesión, redirigir a login
     if (isProtectedRoute && !authSession) {

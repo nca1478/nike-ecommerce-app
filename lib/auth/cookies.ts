@@ -15,7 +15,7 @@ export interface CookieOptions {
 const defaultCookieOptions: CookieOptions = {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    sameSite: 'lax', // Cambiado de 'strict' a 'lax' para mejor compatibilidad
     path: '/',
     maxAge: COOKIE_MAX_AGE,
 };
