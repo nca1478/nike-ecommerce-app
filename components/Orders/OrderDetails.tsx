@@ -46,7 +46,9 @@ export function OrderDetails({ order, items }: OrderDetailsProps) {
         (sum, item) => sum + item.price * item.quantity,
         0,
     );
-    const tax = subtotal * 0.1; // 10% de impuesto
+    const shipping = subtotal > 100 ? 0 : 10;
+    const tax = subtotal * 0.08; // 8% de impuesto
+    const calculatedTotal = (subtotal + shipping + tax).toFixed(2);
 
     return (
         <div className="max-w-5xl mx-auto">
@@ -178,7 +180,15 @@ export function OrderDetails({ order, items }: OrderDetailsProps) {
                             </div>
                             <div className="flex justify-between text-gray-700">
                                 <span>Envío</span>
-                                <span className="text-green-600">Gratis</span>
+                                <span
+                                    className={
+                                        shipping === 0 ? 'text-green-600' : ''
+                                    }
+                                >
+                                    {shipping === 0
+                                        ? 'Gratis'
+                                        : `$${shipping.toFixed(2)}`}
+                                </span>
                             </div>
                             <div className="flex justify-between text-gray-700">
                                 <span>Impuestos</span>
@@ -187,7 +197,7 @@ export function OrderDetails({ order, items }: OrderDetailsProps) {
                             <div className="pt-3 border-t border-gray-200">
                                 <div className="flex justify-between text-lg font-bold">
                                     <span>Total</span>
-                                    <span>${order.totalAmount}</span>
+                                    <span>${calculatedTotal}</span>
                                 </div>
                             </div>
                         </div>
