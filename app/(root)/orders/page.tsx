@@ -3,6 +3,8 @@ import { getCurrentUser } from '@/lib/auth/actions';
 import { getUserOrders } from '@/lib/actions/orders';
 import { OrdersList } from '@/components/Orders/OrdersList';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
     title: 'Mis Pedidos | Nike Store',
     description: 'Historial de pedidos y seguimiento de envíos',
