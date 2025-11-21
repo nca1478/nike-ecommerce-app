@@ -119,6 +119,23 @@ export interface Translations {
         newest: string;
         priceHighToLow: string;
         priceLowToHigh: string;
+        colors: {
+            white: string;
+            black: string;
+            red: string;
+            blue: string;
+            green: string;
+            yellow: string;
+            orange: string;
+            pink: string;
+            grey: string;
+        };
+        priceRanges: {
+            under50: string;
+            '50to100': string;
+            '100to150': string;
+            over150: string;
+        };
     };
     cart: {
         title: string;

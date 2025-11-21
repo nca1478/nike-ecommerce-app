@@ -116,7 +116,24 @@
         "featured": "Featured",
         "newest": "Newest",
         "priceHighToLow": "Price: High to Low",
-        "priceLowToHigh": "Price: Low to High"
+        "priceLowToHigh": "Price: Low to High",
+        "colors": {
+            "white": "White",
+            "black": "Black",
+            "red": "Red",
+            "blue": "Blue",
+            "green": "Green",
+            "yellow": "Yellow",
+            "orange": "Orange",
+            "pink": "Pink",
+            "grey": "Grey"
+        },
+        "priceRanges": {
+            "under50": "Under $50",
+            "50to100": "$50 - $100",
+            "100to150": "$100 - $150",
+            "over150": "Over $150"
+        }
     },
     "cart": {
         "title": "Shopping Cart",

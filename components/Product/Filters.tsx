@@ -138,7 +138,7 @@ export function Filters() {
             <div className="border-b border-light-300 pb-4">
                 <button
                     onClick={() => toggleSection(section)}
-                    className="flex items-center justify-between w-full py-3 text-body-medium text-dark-900 hover:text-dark-700 transition-colors"
+                    className="flex items-center justify-between w-full py-3 text-body-medium text-dark-900 hover:text-dark-700 transition-colors cursor-pointer"
                 >
                     <span>{title}</span>
                     {expandedSections[section] ? (
@@ -155,11 +155,19 @@ export function Filters() {
     }
 
     function FilterContent() {
+        // Gender options with translations
+        const genderOptions = [
+            { label: t.nav.men, value: 'men' },
+            { label: t.nav.women, value: 'women' },
+            { label: t.nav.kids, value: 'kids' },
+            { label: t.nav.unisex, value: 'unisex' },
+        ];
+
         return (
             <div className="space-y-4">
                 {/* Gender Filter */}
                 <FilterSection title={t.products.gender} section="gender">
-                    {filterOptions.genders.map((option) => (
+                    {genderOptions.map((option) => (
                         <label
                             key={option.value}
                             className="flex items-center gap-3 cursor-pointer group"
@@ -192,7 +200,7 @@ export function Filters() {
                                 onClick={() =>
                                     handleFilterToggle('size', option.value)
                                 }
-                                className={`px-3 py-2 text-body border rounded transition-all ${
+                                className={`px-3 py-2 text-body border rounded transition-all cursor-pointer ${
                                     isFilterActive(
                                         filters,
                                         'size',
@@ -211,72 +219,100 @@ export function Filters() {
                 {/* Color Filter */}
                 <FilterSection title={t.products.color} section="color">
                     <div className="grid grid-cols-3 gap-3">
-                        {filterOptions.colors.map((option) => (
-                            <button
-                                key={option.value}
-                                onClick={() =>
-                                    handleFilterToggle('color', option.value)
-                                }
-                                className="flex flex-col items-center gap-2 group"
-                                title={option.label}
-                            >
-                                <div
-                                    className={`w-10 h-10 rounded-full border-2 transition-all ${
-                                        isFilterActive(
-                                            filters,
+                        {filterOptions.colors.map((option) => {
+                            // Get translated color name
+                            const translatedLabel =
+                                t.products.colors[
+                                    option.value as keyof typeof t.products.colors
+                                ] || option.label;
+
+                            return (
+                                <button
+                                    key={option.value}
+                                    onClick={() =>
+                                        handleFilterToggle(
                                             'color',
                                             option.value,
                                         )
-                                            ? 'border-dark-900 scale-110'
-                                            : 'border-light-400 group-hover:border-dark-700'
-                                    }`}
-                                    style={{ backgroundColor: option.hex }}
-                                />
-                                <span className="text-footnote text-dark-700 group-hover:text-dark-900">
-                                    {option.label}
-                                </span>
-                            </button>
-                        ))}
+                                    }
+                                    className="flex flex-col items-center gap-2 group cursor-pointer"
+                                    title={translatedLabel}
+                                >
+                                    <div
+                                        className={`w-10 h-10 rounded-full border-2 transition-all ${
+                                            isFilterActive(
+                                                filters,
+                                                'color',
+                                                option.value,
+                                            )
+                                                ? 'border-dark-900 scale-110'
+                                                : 'border-light-400 group-hover:border-dark-700'
+                                        }`}
+                                        style={{ backgroundColor: option.hex }}
+                                    />
+                                    <span className="text-footnote text-dark-700 group-hover:text-dark-900">
+                                        {translatedLabel}
+                                    </span>
+                                </button>
+                            );
+                        })}
                     </div>
                 </FilterSection>
 
                 {/* Price Range Filter */}
                 <FilterSection title={t.products.price} section="price">
-                    {filterOptions.priceRanges.map((range) => (
-                        <label
-                            key={range.label}
-                            className="flex items-center gap-3 cursor-pointer group"
-                        >
-                            <input
-                                type="checkbox"
-                                checked={
-                                    filters.minPrice === range.min.toString() &&
-                                    filters.maxPrice === range.max.toString()
-                                }
-                                onChange={() => {
-                                    const newFilters = {
-                                        ...filters,
-                                        minPrice: range.min.toString(),
-                                        maxPrice: range.max.toString(),
-                                    };
-                                    setFilters(newFilters);
-                                    updateURL(newFilters);
-                                    // Close mobile drawer after selecting price range
-                                    setIsOpen(false);
-                                }}
-                                className="w-5 h-5 rounded border-light-400 text-dark-900 focus:ring-2 focus:ring-dark-900 focus:ring-offset-2 cursor-pointer"
-                            />
-                            <span className="text-body text-dark-700 group-hover:text-dark-900 transition-colors">
-                                {range.label}
-                            </span>
-                        </label>
-                    ))}
+                    {filterOptions.priceRanges.map((range) => {
+                        // Get translated price range label
+                        let translatedLabel = range.label;
+                        if (range.min === 0 && range.max === 50) {
+                            translatedLabel = t.products.priceRanges.under50;
+                        } else if (range.min === 50 && range.max === 100) {
+                            translatedLabel = t.products.priceRanges['50to100'];
+                        } else if (range.min === 100 && range.max === 150) {
+                            translatedLabel =
+                                t.products.priceRanges['100to150'];
+                        } else if (range.min === 150 && range.max === 999999) {
+                            translatedLabel = t.products.priceRanges.over150;
+                        }
+
+                        return (
+                            <label
+                                key={range.label}
+                                className="flex items-center gap-3 cursor-pointer group"
+                            >
+                                <input
+                                    type="checkbox"
+                                    checked={
+                                        filters.minPrice ===
+                                            range.min.toString() &&
+                                        filters.maxPrice ===
+                                            range.max.toString()
+                                    }
+                                    onChange={() => {
+                                        const newFilters = {
+                                            ...filters,
+                                            minPrice: range.min.toString(),
+                                            maxPrice: range.max.toString(),
+                                        };
+                                        setFilters(newFilters);
+                                        updateURL(newFilters);
+                                        // Close mobile drawer after selecting price range
+                                        setIsOpen(false);
+                                    }}
+                                    className="w-5 h-5 rounded border-light-400 text-dark-900 focus:ring-2 focus:ring-dark-900 focus:ring-offset-2 cursor-pointer"
+                                />
+                                <span className="text-body text-dark-700 group-hover:text-dark-900 transition-colors">
+                                    {translatedLabel}
+                                </span>
+                            </label>
+                        );
+                    })}
                 </FilterSection>
 
                 {/* Clear Filters */}
                 <button
                     onClick={handleClearAll}
-                    className="w-full py-3 text-body-medium text-dark-900 border border-dark-900 rounded hover:bg-dark-900 hover:text-light-100 transition-colors"
+                    className="w-full py-3 text-body-medium text-dark-900 border border-dark-900 rounded hover:bg-dark-900 hover:text-light-100 transition-colors cursor-pointer"
                 >
                     {t.products.clearAllFilters}
                 </button>
