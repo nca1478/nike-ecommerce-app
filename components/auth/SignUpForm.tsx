@@ -3,11 +3,13 @@
 import { useState } from 'react';
 import { signUp } from '@/lib/auth/actions';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useI18n } from '@/lib/i18n';
 
 export function SignUpForm() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const redirectTo = searchParams.get('redirect') || '/';
+    const { t } = useI18n();
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -27,10 +29,10 @@ export function SignUpForm() {
                 router.push(redirectTo);
                 router.refresh();
             } else {
-                setError(result.error || 'Error al crear la cuenta');
+                setError(result.error || t.auth.signUpError);
             }
         } catch {
-            setError('Error inesperado al crear la cuenta');
+            setError(t.auth.unexpectedError);
         } finally {
             setLoading(false);
         }
@@ -43,7 +45,7 @@ export function SignUpForm() {
                     htmlFor="name"
                     className="block text-sm font-medium mb-2"
                 >
-                    Nombre (opcional)
+                    {t.auth.nameOptional}
                 </label>
                 <input
                     id="name"
@@ -51,7 +53,7 @@ export function SignUpForm() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black"
-                    placeholder="Tu nombre"
+                    placeholder={t.auth.namePlaceholder}
                 />
             </div>
 
@@ -60,7 +62,7 @@ export function SignUpForm() {
                     htmlFor="email"
                     className="block text-sm font-medium mb-2"
                 >
-                    Email
+                    {t.auth.email}
                 </label>
                 <input
                     id="email"
@@ -69,7 +71,7 @@ export function SignUpForm() {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black"
-                    placeholder="tu@email.com"
+                    placeholder={t.auth.emailPlaceholder}
                 />
             </div>
 
@@ -78,7 +80,7 @@ export function SignUpForm() {
                     htmlFor="password"
                     className="block text-sm font-medium mb-2"
                 >
-                    Contraseña
+                    {t.auth.password}
                 </label>
                 <input
                     id="password"
@@ -87,11 +89,10 @@ export function SignUpForm() {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black"
-                    placeholder="••••••••"
+                    placeholder={t.auth.passwordPlaceholder}
                 />
                 <p className="text-xs text-gray-500 mt-1">
-                    Mínimo 8 caracteres, incluye mayúsculas, minúsculas y
-                    números
+                    {t.auth.passwordRequirements}
                 </p>
             </div>
 
@@ -106,7 +107,7 @@ export function SignUpForm() {
                 disabled={loading}
                 className="w-full bg-black text-white py-3 rounded-lg font-medium hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-                {loading ? 'Creando cuenta...' : 'Crear Cuenta'}
+                {loading ? t.auth.creatingAccount : t.auth.createAccount}
             </button>
         </form>
     );
