@@ -50,12 +50,16 @@ export function Filters() {
         const newFilters = toggleFilter(filters, key, value);
         setFilters(newFilters);
         updateURL(newFilters);
+        // Close mobile drawer after selecting a filter
+        setIsOpen(false);
     };
 
     const handleClearAll = () => {
         const cleared = clearAllFilters();
         setFilters(cleared);
         updateURL(cleared);
+        // Close mobile drawer after clearing filters
+        setIsOpen(false);
     };
 
     const toggleSection = (section: keyof typeof expandedSections) => {
@@ -70,7 +74,7 @@ export function Filters() {
             {/* Mobile Filter Button */}
             <button
                 onClick={() => setIsOpen(true)}
-                className="lg:hidden fixed bottom-6 right-6 z-40 bg-dark-900 text-light-100 p-4 rounded-full shadow-lg hover:bg-dark-700 transition-colors"
+                className="lg:hidden fixed bottom-6 right-6 z-40 bg-dark-900 text-light-100 p-4 rounded-full shadow-lg hover:bg-dark-700 transition-colors cursor-pointer"
                 aria-label="Open filters"
             >
                 <SlidersHorizontal className="w-6 h-6" />
@@ -255,6 +259,8 @@ export function Filters() {
                                     };
                                     setFilters(newFilters);
                                     updateURL(newFilters);
+                                    // Close mobile drawer after selecting price range
+                                    setIsOpen(false);
                                 }}
                                 className="w-5 h-5 rounded border-light-400 text-dark-900 focus:ring-2 focus:ring-dark-900 focus:ring-offset-2 cursor-pointer"
                             />

@@ -53,10 +53,7 @@ export function TrendingSection({
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Large Featured Item */}
-                <Link
-                    href={largeItem.link}
-                    className="lg:col-span-2 relative group overflow-hidden"
-                >
+                <div className="lg:col-span-2 relative group overflow-hidden">
                     <div className="relative h-[400px] w-full">
                         <Image
                             src={largeItem.link}
@@ -74,12 +71,15 @@ export function TrendingSection({
                                     {largeItem.description}
                                 </p>
                             )}
-                            <button className="bg-white text-dark-900 px-6 py-2 rounded-full font-medium hover:bg-light-100 transition-colors">
+                            <Link
+                                href="/products"
+                                className="inline-block bg-white text-dark-900 px-6 py-2 rounded-full font-medium cursor-pointer hover:bg-dark-900 hover:text-white transition-colors duration-300"
+                            >
                                 Shop Now
-                            </button>
+                            </Link>
                         </div>
                     </div>
-                </Link>
+                </div>
 
                 {/* Small Items Grid */}
                 {smallItems.map((item) => (
