@@ -12,10 +12,12 @@ import {
     type FilterParams,
 } from '@/lib/utils/query';
 import { filterOptions } from '@/lib/data/mock-products';
+import { useI18n } from '@/lib/i18n';
 
 export function Filters() {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const { t } = useI18n();
     // Initialize filters from URL directly
     const [filters, setFilters] = useState<FilterParams>(() =>
         parseFilters(searchParams.toString()),
@@ -97,7 +99,7 @@ export function Filters() {
                 <div className="p-6">
                     <div className="flex items-center justify-between mb-6">
                         <h2 className="text-heading-3 font-medium text-dark-900">
-                            Filters
+                            {t.products.filters}
                         </h2>
                         <button
                             onClick={() => setIsOpen(false)}
@@ -115,7 +117,7 @@ export function Filters() {
             <aside className="hidden lg:block w-64 shrink-0">
                 <div className="sticky top-24">
                     <h2 className="text-heading-3 font-medium text-dark-900 mb-6">
-                        Filters
+                        {t.products.filters}
                     </h2>
                     <FilterContent />
                 </div>
@@ -156,7 +158,7 @@ export function Filters() {
         return (
             <div className="space-y-4">
                 {/* Gender Filter */}
-                <FilterSection title="Gender" section="gender">
+                <FilterSection title={t.products.gender} section="gender">
                     {filterOptions.genders.map((option) => (
                         <label
                             key={option.value}
@@ -182,7 +184,7 @@ export function Filters() {
                 </FilterSection>
 
                 {/* Size Filter */}
-                <FilterSection title="Size" section="size">
+                <FilterSection title={t.products.size} section="size">
                     <div className="grid grid-cols-3 gap-2">
                         {filterOptions.sizes.map((option) => (
                             <button
@@ -207,7 +209,7 @@ export function Filters() {
                 </FilterSection>
 
                 {/* Color Filter */}
-                <FilterSection title="Color" section="color">
+                <FilterSection title={t.products.color} section="color">
                     <div className="grid grid-cols-3 gap-3">
                         {filterOptions.colors.map((option) => (
                             <button
@@ -239,7 +241,7 @@ export function Filters() {
                 </FilterSection>
 
                 {/* Price Range Filter */}
-                <FilterSection title="Shop By Price" section="price">
+                <FilterSection title={t.products.price} section="price">
                     {filterOptions.priceRanges.map((range) => (
                         <label
                             key={range.label}
@@ -276,7 +278,7 @@ export function Filters() {
                     onClick={handleClearAll}
                     className="w-full py-3 text-body-medium text-dark-900 border border-dark-900 rounded hover:bg-dark-900 hover:text-light-100 transition-colors"
                 >
-                    Clear All Filters
+                    {t.products.clearAllFilters}
                 </button>
             </div>
         );
