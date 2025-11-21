@@ -103,6 +103,22 @@ export interface Translations {
         recommended: string;
         noReviews: string;
         beFirst: string;
+        filterApplied: string;
+        filtersApplied: string;
+        noProductsFound: string;
+        adjustFilters: string;
+        previous: string;
+        next: string;
+        pageOf: string;
+        search: string;
+        brand: string;
+        category: string;
+        from: string;
+        upTo: string;
+        featured: string;
+        newest: string;
+        priceHighToLow: string;
+        priceLowToHigh: string;
     };
     cart: {
         title: string;
