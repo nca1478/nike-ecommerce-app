@@ -7,6 +7,8 @@ import { useAuth } from '@/lib/auth/hooks';
 import { signOut } from '@/lib/auth/actions';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { CartIcon } from '@/components/Cart/CartIcon';
+import { LanguageSwitcher } from './LanguageSwitcher';
+import { useI18n } from '@/lib/i18n';
 
 export function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,12 +16,17 @@ export function Navbar() {
     const { user, loading, refresh } = useAuth();
     const router = useRouter();
     const searchParams = useSearchParams();
+    const { t } = useI18n();
 
     const navLinks = [
-        { href: '/products?gender=men', label: 'Men', gender: 'men' },
-        { href: '/products?gender=women', label: 'Women', gender: 'women' },
-        { href: '/products?gender=kids', label: 'Kids', gender: 'kids' },
-        { href: '/products?gender=unisex', label: 'Unisex', gender: 'unisex' },
+        { href: '/products?gender=men', label: t.nav.men, gender: 'men' },
+        { href: '/products?gender=women', label: t.nav.women, gender: 'women' },
+        { href: '/products?gender=kids', label: t.nav.kids, gender: 'kids' },
+        {
+            href: '/products?gender=unisex',
+            label: t.nav.unisex,
+            gender: 'unisex',
+        },
     ];
 
     const currentGender = searchParams.get('gender');
@@ -61,7 +68,7 @@ export function Navbar() {
                                     {user ? (
                                         <div className="flex items-center space-x-3">
                                             <span className="text-dark-900 font-medium">
-                                                Hi,{' '}
+                                                {t.nav.hi},{' '}
                                                 {user.name ||
                                                     user.email?.split('@')[0]}
                                             </span>
@@ -72,7 +79,7 @@ export function Navbar() {
                                                 href="/orders"
                                                 className="text-dark-900 hover:text-dark-700 transition-colors"
                                             >
-                                                My Orders
+                                                {t.nav.myOrders}
                                             </Link>
                                             <span className="text-dark-500">
                                                 |
@@ -81,7 +88,7 @@ export function Navbar() {
                                                 onClick={handleLogout}
                                                 className="text-dark-900 hover:text-dark-700 transition-colors cursor-pointer"
                                             >
-                                                Logout
+                                                {t.nav.logout}
                                             </button>
                                         </div>
                                     ) : (
@@ -89,7 +96,7 @@ export function Navbar() {
                                             href="/sign-in"
                                             className="text-dark-900 hover:text-dark-700 transition-colors"
                                         >
-                                            Sign In
+                                            {t.nav.signIn}
                                         </Link>
                                     )}
                                 </>
@@ -137,7 +144,7 @@ export function Navbar() {
                         </div>
 
                         {/* Right Side Actions - Fixed width to match logo */}
-                        <div className="hidden md:flex items-center justify-end space-x-4 w-[200px] lg:w-[280px] shrink-0">
+                        <div className="hidden md:flex items-center justify-end space-x-2 w-[200px] lg:w-[320px] shrink-0">
                             {/* Search Bar */}
                             <form onSubmit={handleSearch} className="relative">
                                 <div className="relative">
@@ -148,8 +155,8 @@ export function Navbar() {
                                             setSearchQuery(e.target.value)
                                         }
                                         onBlur={() => setSearchQuery('')}
-                                        placeholder="Search"
-                                        className="w-44 lg:w-52 pl-10 pr-4 py-2 bg-light-200 rounded-full text-sm text-dark-900 placeholder-dark-500 focus:outline-none focus:ring-2 focus:ring-dark-900 transition-all"
+                                        placeholder={t.nav.search}
+                                        className="w-36 lg:w-44 pl-10 pr-4 py-2 bg-light-200 rounded-full text-sm text-dark-900 placeholder-dark-500 focus:outline-none focus:ring-2 focus:ring-dark-900 transition-all"
                                     />
                                     <svg
                                         className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-dark-700"
@@ -164,6 +171,9 @@ export function Navbar() {
                                     </svg>
                                 </div>
                             </form>
+
+                            {/* Language Switcher */}
+                            <LanguageSwitcher />
 
                             {/* Cart Icon */}
                             <CartIcon />
@@ -206,7 +216,7 @@ export function Navbar() {
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 onBlur={() => setSearchQuery('')}
-                                placeholder="Search"
+                                placeholder={t.nav.search}
                                 className="w-full pl-10 pr-4 py-2 bg-light-200 rounded-full text-sm text-dark-900 placeholder-dark-500 focus:outline-none focus:ring-2 focus:ring-dark-900"
                             />
                             <svg
@@ -245,7 +255,7 @@ export function Navbar() {
                                     {user ? (
                                         <>
                                             <div className="py-2 text-dark-900 text-sm font-medium">
-                                                Hi,{' '}
+                                                {t.nav.hi},{' '}
                                                 {user.name ||
                                                     user.email?.split('@')[0]}
                                             </div>
@@ -256,7 +266,7 @@ export function Navbar() {
                                                     setIsMenuOpen(false)
                                                 }
                                             >
-                                                My Orders
+                                                {t.nav.myOrders}
                                             </Link>
                                             <button
                                                 onClick={() => {
@@ -265,7 +275,7 @@ export function Navbar() {
                                                 }}
                                                 className="block w-full text-left py-2 text-dark-900 hover:text-dark-700 transition-colors cursor-pointer"
                                             >
-                                                Logout
+                                                {t.nav.logout}
                                             </button>
                                         </>
                                     ) : (
@@ -274,11 +284,14 @@ export function Navbar() {
                                             className="block w-full text-left py-2 text-dark-900 hover:text-dark-700 transition-colors"
                                             onClick={() => setIsMenuOpen(false)}
                                         >
-                                            Sign In
+                                            {t.nav.signIn}
                                         </Link>
                                     )}
                                 </>
                             )}
+                            <div className="py-2">
+                                <LanguageSwitcher />
+                            </div>
                             <div
                                 className="py-2"
                                 onClick={() => setIsMenuOpen(false)}
