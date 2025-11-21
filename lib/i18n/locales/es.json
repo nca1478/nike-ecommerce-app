@@ -162,6 +162,7 @@
     },
     "orders": {
         "title": "Mis Pedidos",
+        "description": "Revisa el estado de tus pedidos y realiza seguimiento de envíos",
         "orderNumber": "Pedido",
         "date": "Fecha",
         "status": "Estado",

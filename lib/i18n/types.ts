@@ -164,6 +164,7 @@ export interface Translations {
     };
     orders: {
         title: string;
+        description: string;
         orderNumber: string;
         date: string;
         status: string;
