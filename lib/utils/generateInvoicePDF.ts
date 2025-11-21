@@ -63,8 +63,9 @@ export async function generateInvoicePDF(
         (sum: number, item: OrderItem) => sum + item.price * item.quantity,
         0,
     );
-    const tax = subtotal * 0.1;
-    const total = parseFloat(order.totalAmount);
+    const shipping = subtotal > 100 ? 0 : 10;
+    const tax = subtotal * 0.08; // 8% de impuestos
+    const total = subtotal + shipping + tax;
 
     let yPos = 20;
 
@@ -192,12 +193,16 @@ export async function generateInvoicePDF(
     yPos += 6;
 
     doc.text('Envio:', 130, yPos);
-    doc.setTextColor(74, 222, 128);
-    doc.text('Gratis', 175, yPos, { align: 'right' });
-    doc.setTextColor(0, 0, 0);
+    if (shipping === 0) {
+        doc.setTextColor(74, 222, 128);
+        doc.text('Gratis', 175, yPos, { align: 'right' });
+        doc.setTextColor(0, 0, 0);
+    } else {
+        doc.text(`$${shipping.toFixed(2)}`, 175, yPos, { align: 'right' });
+    }
     yPos += 6;
 
-    doc.text('Impuestos (10%):', 130, yPos);
+    doc.text('Impuestos (8%):', 130, yPos);
     doc.text(`$${tax.toFixed(2)}`, 175, yPos, { align: 'right' });
     yPos += 8;
 
