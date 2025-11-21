@@ -66,7 +66,7 @@ export function AddToCartButton({
         <button
             onClick={handleAddToCart}
             disabled={disabled || isAdding}
-            className={`w-full bg-dark-900 text-light-100 py-4 rounded-full text-body-medium font-medium hover:bg-dark-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${className}`}
+            className={`w-full bg-dark-900 text-light-100 py-4 rounded-full text-body-medium font-medium hover:bg-dark-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer ${className}`}
         >
             <ShoppingBag className="w-5 h-5" />
             {isAdding ? 'Adding...' : 'Add to Cart'}

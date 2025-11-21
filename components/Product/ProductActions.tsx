@@ -107,7 +107,7 @@ export function ProductActions({
                 <button className="w-full bg-light-100 text-dark-900 py-4 rounded-full text-body-medium font-medium border-2 border-dark-900 hover:bg-light-200 transition-colors focus:outline-none focus:ring-2 focus:ring-dark-900 focus:ring-offset-2 cursor-pointer">
                     <span className="flex items-center justify-center gap-2">
                         <Heart className="w-5 h-5" />
-                        Favourite
+                        Favorite
                     </span>
                 </button>
             </div>
