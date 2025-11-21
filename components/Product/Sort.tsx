@@ -4,19 +4,31 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { parseFilters, stringifyFilters } from '@/lib/utils/query';
-import { sortOptions } from '@/lib/data/mock-products';
+import { useI18n } from '@/lib/i18n';
 
 export function Sort() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const { t } = useI18n();
 
     // Derive selected sort from URL params
     const selectedSort = useMemo(() => {
         const filters = parseFilters(searchParams.toString());
         return filters.sort || 'featured';
     }, [searchParams]);
+
+    // Sort options with translations
+    const sortOptions = useMemo(
+        () => [
+            { label: t.products.featured, value: 'featured' },
+            { label: t.products.newest, value: 'newest' },
+            { label: t.products.priceHighToLow, value: 'price_desc' },
+            { label: t.products.priceLowToHigh, value: 'price_asc' },
+        ],
+        [t],
+    );
 
     // Close dropdown when clicking outside
     useEffect(() => {
@@ -52,7 +64,7 @@ export function Sort() {
 
     const selectedLabel =
         sortOptions.find((opt) => opt.value === selectedSort)?.label ||
-        'Featured';
+        t.products.featured;
 
     return (
         <div className="relative" ref={dropdownRef}>
@@ -62,7 +74,9 @@ export function Sort() {
                 aria-label="Sort products"
                 aria-expanded={isOpen}
             >
-                <span className="hidden sm:inline text-dark-700">Sort By:</span>
+                <span className="hidden sm:inline text-dark-700">
+                    {t.products.sortBy}:
+                </span>
                 <span>{selectedLabel}</span>
                 <ChevronDown
                     className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180' : ''}`}
