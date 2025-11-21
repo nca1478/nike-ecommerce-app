@@ -1,0 +1,241 @@
+export type Locale = 'en' | 'es';
+
+export interface Translations {
+    common: {
+        loading: string;
+        error: string;
+        success: string;
+        cancel: string;
+        confirm: string;
+        save: string;
+        delete: string;
+        edit: string;
+        search: string;
+        filter: string;
+        sort: string;
+        clear: string;
+        apply: string;
+        close: string;
+        back: string;
+        next: string;
+        previous: string;
+        viewAll: string;
+        learnMore: string;
+    };
+    nav: {
+        men: string;
+        women: string;
+        kids: string;
+        unisex: string;
+        signIn: string;
+        logout: string;
+        myOrders: string;
+        hi: string;
+        search: string;
+    };
+    auth: {
+        signIn: string;
+        signUp: string;
+        email: string;
+        password: string;
+        name: string;
+        nameOptional: string;
+        createAccount: string;
+        alreadyHaveAccount: string;
+        dontHaveAccount: string;
+        signingIn: string;
+        creatingAccount: string;
+        emailPlaceholder: string;
+        passwordPlaceholder: string;
+        namePlaceholder: string;
+        passwordRequirements: string;
+        signInError: string;
+        signUpError: string;
+        unexpectedError: string;
+    };
+    home: {
+        hero: {
+            badge: string;
+            title: string;
+            titleLine2: string;
+            description: string;
+            cta: string;
+        };
+        latestShoes: string;
+        noProducts: string;
+        trendingNow: string;
+        shopNow: string;
+        feature: {
+            badge: string;
+            title: string;
+            titleLine2: string;
+            description: string;
+            cta: string;
+        };
+        trending: {
+            reactPresto: string;
+            reactPrestoDesc: string;
+            summerMustHaves: string;
+            airJordan: string;
+        };
+    };
+    products: {
+        title: string;
+        filters: string;
+        gender: string;
+        size: string;
+        color: string;
+        price: string;
+        clearAllFilters: string;
+        sortBy: string;
+        latest: string;
+        priceAsc: string;
+        priceDesc: string;
+        selectSize: string;
+        sizeGuide: string;
+        pleaseSelectSize: string;
+        outOfStock: string;
+        addToCart: string;
+        favorite: string;
+        productDetails: string;
+        delivery: string;
+        reviews: string;
+        recommended: string;
+        noReviews: string;
+        beFirst: string;
+    };
+    cart: {
+        title: string;
+        myCart: string;
+        empty: string;
+        emptyDescription: string;
+        continueShopping: string;
+        summary: string;
+        subtotal: string;
+        shipping: string;
+        tax: string;
+        total: string;
+        checkout: string;
+        free: string;
+        securePayment: string;
+        processing: string;
+        remove: string;
+        quantity: string;
+        size: string;
+        color: string;
+        addedToCart: string;
+        removedFromCart: string;
+        cartIsEmpty: string;
+        pleaseSignIn: string;
+        errorProcessing: string;
+    };
+    orders: {
+        title: string;
+        orderNumber: string;
+        date: string;
+        status: string;
+        total: string;
+        items: string;
+        item: string;
+        noOrders: string;
+        noOrdersDescription: string;
+        exploreProducts: string;
+        orderDetails: string;
+        orderStatus: string;
+        confirmed: string;
+        preparing: string;
+        shipped: string;
+        delivered: string;
+        cancelled: string;
+        orderItems: string;
+        downloadInvoice: string;
+        reorder: string;
+        trackOrder: string;
+        orderConfirmed: string;
+        thankYou: string;
+        continueShopping: string;
+        viewMyOrders: string;
+        inTransit: string;
+    };
+    footer: {
+        location: string;
+        copyright: string;
+        guides: string;
+        termsOfSale: string;
+        termsOfUse: string;
+        privacyPolicy: string;
+    };
+    checkout: {
+        title: string;
+        shippingAddress: string;
+        paymentMethod: string;
+        reviewOrder: string;
+        placeOrder: string;
+        processing: string;
+    };
+    legal: {
+        backToHome: string;
+        guides: {
+            title: string;
+            sizeGuide: {
+                title: string;
+                description: string;
+                howToMeasure: string;
+                step1: string;
+                step2: string;
+                step3: string;
+                step4: string;
+            };
+            careInstructions: {
+                title: string;
+                description: string;
+                generalTips: string;
+                tip1: string;
+                tip2: string;
+                tip3: string;
+                tip4: string;
+            };
+            shippingReturns: {
+                title: string;
+                description: string;
+                returnProcess: string;
+                step1: string;
+                step2: string;
+                step3: string;
+                step4: string;
+            };
+            productTechnology: {
+                title: string;
+                description: string;
+            };
+        };
+        termsOfSale: {
+            title: string;
+            lastUpdated: string;
+            intro: string;
+            section1: { title: string; content: string };
+            section2: { title: string; content: string };
+            section3: { title: string; content: string };
+            section4: { title: string; content: string };
+        };
+        termsOfUse: {
+            title: string;
+            lastUpdated: string;
+            intro: string;
+            section1: { title: string; content: string };
+            section2: { title: string; content: string };
+            section3: { title: string; content: string };
+            section4: { title: string; content: string };
+        };
+        privacyPolicy: {
+            title: string;
+            lastUpdated: string;
+            intro: string;
+            section1: { title: string; content: string };
+            section2: { title: string; content: string };
+            section3: { title: string; content: string };
+            section4: { title: string; content: string };
+            section5: { title: string; content: string };
+        };
+    };
+}

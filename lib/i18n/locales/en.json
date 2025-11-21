@@ -1,0 +1,278 @@
+{
+    "common": {
+        "loading": "Loading...",
+        "error": "Error",
+        "success": "Success",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "save": "Save",
+        "delete": "Delete",
+        "edit": "Edit",
+        "search": "Search",
+        "filter": "Filter",
+        "sort": "Sort",
+        "clear": "Clear",
+        "apply": "Apply",
+        "close": "Close",
+        "back": "Back",
+        "next": "Next",
+        "previous": "Previous",
+        "viewAll": "View All",
+        "learnMore": "Learn More"
+    },
+    "nav": {
+        "men": "Men",
+        "women": "Women",
+        "kids": "Kids",
+        "unisex": "Unisex",
+        "signIn": "Sign In",
+        "logout": "Logout",
+        "myOrders": "My Orders",
+        "hi": "Hi",
+        "search": "Search"
+    },
+    "auth": {
+        "signIn": "Sign In",
+        "signUp": "Sign Up",
+        "email": "Email",
+        "password": "Password",
+        "name": "Name",
+        "nameOptional": "Name (optional)",
+        "createAccount": "Create Account",
+        "alreadyHaveAccount": "Already have an account?",
+        "dontHaveAccount": "Don't have an account?",
+        "signingIn": "Signing in...",
+        "creatingAccount": "Creating account...",
+        "emailPlaceholder": "your@email.com",
+        "passwordPlaceholder": "••••••••",
+        "namePlaceholder": "Your name",
+        "passwordRequirements": "Minimum 8 characters, includes uppercase, lowercase and numbers",
+        "signInError": "Error signing in",
+        "signUpError": "Error creating account",
+        "unexpectedError": "Unexpected error"
+    },
+    "home": {
+        "hero": {
+            "badge": "Bold & Sporty",
+            "title": "Style That Moves",
+            "titleLine2": "With You.",
+            "description": "Not just style. Not just comfort. Footwear that effortlessly moves with your every step.",
+            "cta": "Find Your Shoe"
+        },
+        "latestShoes": "Latest shoes",
+        "noProducts": "No products available at the moment.",
+        "trendingNow": "Trending Now",
+        "shopNow": "Shop Now",
+        "feature": {
+            "badge": "Bold & Sporty",
+            "title": "NIKE REACT",
+            "titleLine2": "PRESTO BY YOU",
+            "description": "Take advantage of brand new, proprietary cushioning technology with a fresh pair of Nike react shoes.",
+            "cta": "Shop Now"
+        },
+        "trending": {
+            "reactPresto": "REACT PRESTO",
+            "reactPrestoDesc": "With React foam for the most comfortable Presto ever.",
+            "summerMustHaves": "Summer Must-Haves: Air Max Dia",
+            "airJordan": "Air Jordan 11 Retro Low LE"
+        }
+    },
+    "products": {
+        "title": "Products",
+        "filters": "Filters",
+        "gender": "Gender",
+        "size": "Size",
+        "color": "Color",
+        "price": "Shop By Price",
+        "clearAllFilters": "Clear All Filters",
+        "sortBy": "Sort By",
+        "latest": "Latest",
+        "priceAsc": "Price: Low to High",
+        "priceDesc": "Price: High to Low",
+        "selectSize": "Select Size",
+        "sizeGuide": "Size Guide",
+        "pleaseSelectSize": "Please select a size",
+        "outOfStock": "This size is currently out of stock",
+        "addToCart": "Add to Cart",
+        "favorite": "Favorite",
+        "productDetails": "Product Details",
+        "delivery": "Delivery & Returns",
+        "reviews": "Reviews",
+        "recommended": "You Might Also Like",
+        "noReviews": "No reviews yet",
+        "beFirst": "Be the first to review this product"
+    },
+    "cart": {
+        "title": "Shopping Cart",
+        "myCart": "My Cart",
+        "empty": "Your cart is empty",
+        "emptyDescription": "Add some products to get started",
+        "continueShopping": "Continue Shopping",
+        "summary": "Summary",
+        "subtotal": "Subtotal",
+        "shipping": "Estimated Delivery & Handling",
+        "tax": "Estimated Tax",
+        "total": "Total",
+        "checkout": "Checkout",
+        "free": "Free",
+        "securePayment": "Secure payment powered by Stripe",
+        "processing": "Processing...",
+        "remove": "Remove",
+        "quantity": "Quantity",
+        "size": "Size",
+        "color": "Color",
+        "addedToCart": "Added to cart",
+        "removedFromCart": "Removed from cart",
+        "cartIsEmpty": "Your cart is empty",
+        "pleaseSignIn": "Please sign in to complete your purchase",
+        "errorProcessing": "Error processing payment"
+    },
+    "orders": {
+        "title": "My Orders",
+        "orderNumber": "Order",
+        "date": "Date",
+        "status": "Status",
+        "total": "Total",
+        "items": "items",
+        "item": "item",
+        "noOrders": "You don't have any orders yet",
+        "noOrdersDescription": "When you make your first purchase, it will appear here",
+        "exploreProducts": "Explore Products",
+        "orderDetails": "Order Details",
+        "orderStatus": "Order Status",
+        "confirmed": "Confirmed",
+        "preparing": "Preparing",
+        "shipped": "Shipped",
+        "delivered": "Delivered",
+        "cancelled": "Cancelled",
+        "orderItems": "Order Items",
+        "downloadInvoice": "Download Invoice",
+        "reorder": "Reorder",
+        "trackOrder": "Track Order",
+        "orderConfirmed": "Order confirmed!",
+        "thankYou": "Thank you for your purchase. Your order has been processed successfully.",
+        "continueShopping": "Continue Shopping",
+        "viewMyOrders": "View My Orders",
+        "inTransit": "In Transit"
+    },
+    "footer": {
+        "location": "Venezuela",
+        "copyright": "© 2025 Nike, Inc. All Rights Reserved",
+        "guides": "Guides",
+        "termsOfSale": "Terms of Sale",
+        "termsOfUse": "Terms of Use",
+        "privacyPolicy": "Nike Privacy Policy"
+    },
+    "legal": {
+        "backToHome": "← Back to Home",
+        "guides": {
+            "title": "Nike Guides",
+            "sizeGuide": {
+                "title": "Size Guide",
+                "description": "Finding the perfect fit is essential for comfort and performance. Use our comprehensive size charts to determine your ideal Nike shoe size.",
+                "howToMeasure": "How to Measure Your Feet",
+                "step1": "Place your foot on a flat surface",
+                "step2": "Measure from heel to longest toe in centimeters",
+                "step3": "Compare with our size chart",
+                "step4": "If between sizes, we recommend sizing up"
+            },
+            "careInstructions": {
+                "title": "Care Instructions",
+                "description": "Proper care extends the life of your Nike products. Follow these guidelines to keep your shoes looking fresh.",
+                "generalTips": "General Care Tips",
+                "tip1": "Clean with a soft brush and mild soap",
+                "tip2": "Air dry at room temperature",
+                "tip3": "Avoid direct heat or sunlight",
+                "tip4": "Store in a cool, dry place"
+            },
+            "shippingReturns": {
+                "title": "Shipping & Returns",
+                "description": "We offer free standard shipping on orders over $50 and easy returns within 30 days of purchase.",
+                "returnProcess": "Return Process",
+                "step1": "Initiate return from your account",
+                "step2": "Print the prepaid shipping label",
+                "step3": "Pack items in original packaging",
+                "step4": "Drop off at any carrier location"
+            },
+            "productTechnology": {
+                "title": "Product Technology",
+                "description": "Learn about Nike's innovative technologies designed to enhance your performance and comfort."
+            }
+        },
+        "termsOfSale": {
+            "title": "Terms of Sale",
+            "lastUpdated": "Last updated: January 1, 2025",
+            "intro": "These Terms of Sale govern your purchase of products from Nike, Inc. By placing an order, you agree to these terms.",
+            "section1": {
+                "title": "1. Acceptance of Terms",
+                "content": "By placing an order through our website, you agree to be bound by these Terms of Sale. If you do not agree to these terms, please do not place an order."
+            },
+            "section2": {
+                "title": "2. Pricing and Payment",
+                "content": "All prices are in US dollars and include applicable taxes. We reserve the right to change prices at any time. Payment must be made at the time of purchase."
+            },
+            "section3": {
+                "title": "3. Shipping and Delivery",
+                "content": "We ship to addresses within Venezuela. Delivery times vary based on location. We are not responsible for delays caused by the carrier."
+            },
+            "section4": {
+                "title": "4. Returns and Refunds",
+                "content": "We accept returns within 30 days of purchase. Items must be unworn and in original packaging. Refunds will be processed within 5-7 business days."
+            }
+        },
+        "termsOfUse": {
+            "title": "Terms of Use",
+            "lastUpdated": "Last updated: January 1, 2025",
+            "intro": "Welcome to Nike. These Terms of Use govern your access to and use of our website and services.",
+            "section1": {
+                "title": "1. Use of Website",
+                "content": "You may use our website for lawful purposes only. You must not use the site in any way that may damage, disable, or impair the site."
+            },
+            "section2": {
+                "title": "2. User Accounts",
+                "content": "You are responsible for maintaining the confidentiality of your account and password. You agree to notify us immediately of any unauthorized use of your account."
+            },
+            "section3": {
+                "title": "3. Intellectual Property",
+                "content": "All content on this website, including text, graphics, logos, and images, is owned by Nike, Inc. and protected by copyright laws."
+            },
+            "section4": {
+                "title": "4. Limitation of Liability",
+                "content": "Nike shall not be liable for any indirect, incidental, or consequential damages arising from the use of our website or products."
+            }
+        },
+        "privacyPolicy": {
+            "title": "Nike Privacy Policy",
+            "lastUpdated": "Last updated: January 1, 2025",
+            "intro": "At Nike, we take your privacy seriously. This Privacy Policy explains how we collect, use, and protect your personal information.",
+            "section1": {
+                "title": "1. Information We Collect",
+                "content": "We collect information you provide directly to us, such as your name, email address, shipping address, and payment information when you place an order."
+            },
+            "section2": {
+                "title": "2. How We Use Your Information",
+                "content": "We use your information to process orders, improve our services, communicate with you, and personalize your shopping experience."
+            },
+            "section3": {
+                "title": "3. Information Sharing",
+                "content": "We do not sell your personal information to third parties. We may share information with service providers who help us operate our business."
+            },
+            "section4": {
+                "title": "4. Data Security",
+                "content": "We implement security measures to protect your personal information. However, no method of transmission over the Internet is 100% secure."
+            },
+            "section5": {
+                "title": "5. Your Rights",
+                "content": "You have the right to access, correct, or delete your personal information. Contact us if you wish to exercise these rights."
+            }
+        }
+    },
+    "checkout": {
+        "title": "Checkout",
+        "shippingAddress": "Shipping Address",
+        "paymentMethod": "Payment Method",
+        "reviewOrder": "Review Order",
+        "placeOrder": "Place Order",
+        "processing": "Processing..."
+    }
+}
