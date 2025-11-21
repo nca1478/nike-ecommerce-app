@@ -60,6 +60,18 @@ export function OrdersList({ orders }: OrdersListProps) {
                     0,
                 );
 
+                // Calcular el total correcto (subtotal + shipping + tax)
+                const subtotal = order.items.reduce((sum, item) => {
+                    return (
+                        sum +
+                        parseFloat(item.priceAtPurchase) *
+                            parseInt(item.quantity)
+                    );
+                }, 0);
+                const shipping = subtotal > 100 ? 0 : 10;
+                const tax = subtotal * 0.08;
+                const calculatedTotal = (subtotal + shipping + tax).toFixed(2);
+
                 return (
                     <Link
                         key={order.id}
@@ -129,7 +141,7 @@ export function OrdersList({ orders }: OrdersListProps) {
 
                                 <div className="mt-4 pt-4 border-t border-gray-100">
                                     <p className="text-lg font-semibold">
-                                        Total: ${order.totalAmount}
+                                        Total: ${calculatedTotal}
                                     </p>
                                 </div>
                             </div>
