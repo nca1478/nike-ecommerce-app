@@ -48,7 +48,7 @@ export function DownloadInvoiceButton({
         <button
             onClick={handleDownload}
             disabled={isDownloading}
-            className="w-full flex items-center justify-center gap-2 bg-white text-black border-2 border-black px-6 py-3 rounded-full hover:bg-gray-50 transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-2 bg-white text-black border-2 border-black px-6 py-3 rounded-full hover:bg-gray-50 transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed cursor-pointer"
         >
             <Download className="w-5 h-5" />
             {isDownloading ? 'Descargando...' : 'Descargar Factura'}

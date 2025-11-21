@@ -52,7 +52,7 @@ export function ReorderButton({ items }: ReorderButtonProps) {
         <button
             onClick={handleReorder}
             disabled={isLoading}
-            className="w-full flex items-center justify-center gap-2 bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-2 bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed cursor-pointer"
         >
             <ShoppingCart className="w-5 h-5" />
             {isLoading ? 'Procesando...' : 'Volver a Pedir'}
