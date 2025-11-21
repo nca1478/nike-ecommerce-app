@@ -3,6 +3,8 @@ import { stripe } from '@/lib/stripe/client';
 import { getOrder } from '@/lib/actions/orders';
 import OrderSuccess from '@/components/Cart/OrderSuccess';
 
+export const dynamic = 'force-dynamic';
+
 interface PageProps {
     searchParams: Promise<{
         session_id?: string;
