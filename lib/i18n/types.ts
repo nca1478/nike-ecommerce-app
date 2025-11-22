@@ -52,6 +52,37 @@ export interface Translations {
         signInError: string;
         signUpError: string;
         unexpectedError: string;
+        welcomeBack: string;
+        signInToContinue: string;
+        signInToContinueJourney: string;
+        signInToCompletePurchase: string;
+        orSignInWith: string;
+        forgotPassword: string;
+        joinNikeToday: string;
+        createAccountToContinue: string;
+        createAccountToStart: string;
+        createAccountToCompletePurchase: string;
+        orSignUpWith: string;
+        continueWithGoogle: string;
+        continueWithApple: string;
+        enterYourName: string;
+        minimumCharacters: string;
+        showPassword: string;
+        hidePassword: string;
+        processing: string;
+        accountCreatedSuccess: string;
+        signedInSuccess: string;
+        errorRegisteringUser: string;
+        unexpectedErrorTryAgain: string;
+        bySigningUpAgree: string;
+        termsOfService: string;
+        and: string;
+        privacyPolicy: string;
+        justDoIt: string;
+        joinMillions: string;
+        copyright: string;
+        invalidCredentials: string;
+        emailAlreadyExists: string;
     };
     home: {
         hero: {
