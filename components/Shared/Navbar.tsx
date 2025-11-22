@@ -159,7 +159,7 @@ export function Navbar() {
                                         }
                                         onBlur={() => setSearchQuery('')}
                                         placeholder={t.nav.search}
-                                        className="w-28 lg:w-32 pl-9 pr-3 py-1.5 bg-light-200 rounded-full text-sm text-dark-900 placeholder-dark-500 focus:outline-none focus:ring-2 focus:ring-dark-900 transition-all"
+                                        className="w-28 lg:w-32 focus:w-52 pl-9 pr-3 py-1.5 bg-light-200 rounded-full text-sm text-dark-900 placeholder-dark-500 focus:outline-none focus:ring-2 focus:ring-dark-900 transition-all duration-300 ease-in-out"
                                     />
                                     <svg
                                         className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-700"
