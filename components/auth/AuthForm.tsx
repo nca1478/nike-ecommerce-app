@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { useI18n } from '@/lib/i18n';
 
 interface AuthFormProps {
     type: 'sign-in' | 'sign-up';
@@ -23,6 +24,7 @@ export default function AuthForm({
     onSubmit,
     isLoading = false,
 }: AuthFormProps) {
+    const { t } = useI18n();
     const [showPassword, setShowPassword] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const isSignUp = type === 'sign-up';
@@ -48,20 +50,42 @@ export default function AuthForm({
                 // La redirección se maneja en la página padre
                 toast.success(
                     isSignUp
-                        ? 'Account created successfully!'
-                        : 'Signed in successfully!',
+                        ? t.auth.accountCreatedSuccess
+                        : t.auth.signedInSuccess,
                 );
             } else if (result?.error) {
-                if (isSignUp) {
-                    toast.error('Error registering user');
-                } else {
-                    toast.error(result.error);
+                // Traducir mensajes de error comunes
+                let errorMessage = result.error;
+
+                if (
+                    errorMessage
+                        .toLowerCase()
+                        .includes('invalid email or password') ||
+                    errorMessage
+                        .toLowerCase()
+                        .includes('invalid credentials') ||
+                    errorMessage
+                        .toLowerCase()
+                        .includes('credenciales inválidas')
+                ) {
+                    errorMessage = t.auth.invalidCredentials;
+                } else if (
+                    errorMessage
+                        .toLowerCase()
+                        .includes('email already exists') ||
+                    errorMessage.toLowerCase().includes('user already exists')
+                ) {
+                    errorMessage = t.auth.emailAlreadyExists;
+                } else if (isSignUp) {
+                    errorMessage = t.auth.errorRegisteringUser;
                 }
+
+                toast.error(errorMessage);
                 setIsSubmitting(false);
             }
         } catch (e) {
             console.log('error', e);
-            toast.error('An unexpected error occurred. Please try again.');
+            toast.error(t.auth.unexpectedErrorTryAgain);
             setIsSubmitting(false);
         }
     };
@@ -74,13 +98,13 @@ export default function AuthForm({
                         htmlFor="fullName"
                         className="block text-caption font-medium text-dark-900"
                     >
-                        Name
+                        {t.auth.name}
                     </label>
                     <input
                         type="text"
                         id="fullName"
                         name="fullName"
-                        placeholder="Enter your name"
+                        placeholder={t.auth.enterYourName}
                         className="w-full rounded-lg border border-light-300 bg-light-100 px-4 py-3 text-body text-dark-900 placeholder:text-dark-500 focus:border-dark-900 focus:outline-none focus:ring-1 focus:ring-dark-900"
                         required
                     />
@@ -92,13 +116,13 @@ export default function AuthForm({
                     htmlFor="email"
                     className="block text-caption font-medium text-dark-900"
                 >
-                    Email
+                    {t.auth.email}
                 </label>
                 <input
                     type="email"
                     id="email"
                     name="email"
-                    placeholder="johndoe@gmail.com"
+                    placeholder={t.auth.emailPlaceholder}
                     className="w-full rounded-lg border border-light-300 bg-light-100 px-4 py-3 text-body text-dark-900 placeholder:text-dark-500 focus:border-dark-900 focus:outline-none focus:ring-1 focus:ring-dark-900"
                     required
                 />
@@ -109,14 +133,14 @@ export default function AuthForm({
                     htmlFor="password"
                     className="block text-caption font-medium text-dark-900"
                 >
-                    Password
+                    {t.auth.password}
                 </label>
                 <div className="relative">
                     <input
                         type={showPassword ? 'text' : 'password'}
                         id="password"
                         name="password"
-                        placeholder="minimum 8 characters"
+                        placeholder={t.auth.minimumCharacters}
                         className="w-full rounded-lg border border-light-300 bg-light-100 px-4 py-3 pr-12 text-body text-dark-900 placeholder:text-dark-500 focus:border-dark-900 focus:outline-none focus:ring-1 focus:ring-dark-900"
                         required
                         minLength={8}
@@ -126,7 +150,9 @@ export default function AuthForm({
                         onClick={() => setShowPassword(!showPassword)}
                         className="absolute right-4 top-1/2 -translate-y-1/2 text-dark-700 hover:text-dark-900"
                         aria-label={
-                            showPassword ? 'Hide password' : 'Show password'
+                            showPassword
+                                ? t.auth.hidePassword
+                                : t.auth.showPassword
                         }
                     >
                         {showPassword ? (
@@ -144,27 +170,27 @@ export default function AuthForm({
                 className="w-full rounded-full bg-dark-900 py-3.5 text-body-medium font-medium text-light-100 transition-colors hover:bg-dark-700 focus:outline-none focus:ring-2 focus:ring-dark-900 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
                 {isSubmitting || isLoading
-                    ? 'Processing...'
+                    ? t.auth.processing
                     : isSignUp
-                      ? 'Sign Up'
-                      : 'Sign In'}
+                      ? t.auth.signUp
+                      : t.auth.signIn}
             </button>
 
             {isSignUp && (
                 <p className="text-center text-footnote text-dark-700">
-                    By signing up, you agree to our{' '}
+                    {t.auth.bySigningUpAgree}{' '}
                     <a
                         href="#"
                         className="text-dark-900 underline hover:no-underline"
                     >
-                        Terms of Service
+                        {t.auth.termsOfService}
                     </a>{' '}
-                    and{' '}
+                    {t.auth.and}{' '}
                     <a
                         href="#"
                         className="text-dark-900 underline hover:no-underline"
                     >
-                        Privacy Policy
+                        {t.auth.privacyPolicy}
                     </a>
                 </p>
             )}

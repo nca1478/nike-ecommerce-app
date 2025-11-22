@@ -5,8 +5,10 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { AuthForm, SocialProviders } from '@/components';
 import { signIn } from '@/lib/auth/actions';
 import { useState, Suspense } from 'react';
+import { useI18n } from '@/lib/i18n';
 
 function SignInContent() {
+    const { t } = useI18n();
     const searchParams = useSearchParams();
     const router = useRouter();
     const [isRedirecting, setIsRedirecting] = useState(false);
@@ -34,21 +36,23 @@ function SignInContent() {
         <div className="space-y-8">
             <div className="space-y-2 text-center">
                 <p className="text-caption text-dark-700">
-                    Don&apos;t have an account?{' '}
+                    {t.auth.dontHaveAccount}{' '}
                     <Link
                         href={`/sign-up${redirect !== '/' ? `?redirect=${redirect}` : ''}`}
                         className="font-medium text-dark-900 underline hover:no-underline"
                     >
-                        Sign Up
+                        {t.auth.signUp}
                     </Link>
                 </p>
                 <h2 className="text-heading-3 font-bold text-dark-900">
-                    {isFromCheckout ? 'Sign in to Continue' : 'Welcome Back!'}
+                    {isFromCheckout
+                        ? t.auth.signInToContinue
+                        : t.auth.welcomeBack}
                 </h2>
                 <p className="text-body text-dark-700">
                     {isFromCheckout
-                        ? 'Please sign in to complete your purchase'
-                        : 'Sign in to continue your fitness journey'}
+                        ? t.auth.signInToCompletePurchase
+                        : t.auth.signInToContinueJourney}
                 </p>
             </div>
 
@@ -60,7 +64,7 @@ function SignInContent() {
                 </div>
                 <div className="relative flex justify-center text-caption">
                     <span className="bg-light-200 px-4 text-dark-700">
-                        Or sign in with
+                        {t.auth.orSignInWith}
                     </span>
                 </div>
             </div>
@@ -76,16 +80,21 @@ function SignInContent() {
                     href="#"
                     className="text-caption text-dark-900 underline hover:no-underline"
                 >
-                    Forgot your password?
+                    {t.auth.forgotPassword}
                 </Link>
             </div>
         </div>
     );
 }
 
+function LoadingFallback() {
+    const { t } = useI18n();
+    return <div>{t.common.loading}</div>;
+}
+
 export default function SignInPage() {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<LoadingFallback />}>
             <SignInContent />
         </Suspense>
     );

@@ -1,17 +1,16 @@
-import type { Metadata } from 'next';
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
-
-export const metadata: Metadata = {
-    title: 'Nike - Authentication',
-    description: 'Sign in or create your Nike account',
-};
+import { useI18n } from '@/lib/i18n';
 
 export default function AuthLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const { t } = useI18n();
+
     return (
         <div className="flex min-h-screen">
             {/* Left side - Brand section */}
@@ -27,11 +26,10 @@ export default function AuthLayout({
                         />
                     </Link>
                     <h1 className="mb-6 text-heading-2 font-bold leading-tight text-light-100">
-                        Just Do It
+                        {t.auth.justDoIt}
                     </h1>
                     <p className="max-w-md text-lead text-light-300">
-                        Join millions of athletes and fitness enthusiasts who
-                        trust Nike for their performance needs.
+                        {t.auth.joinMillions}
                     </p>
                 </div>
 
@@ -42,7 +40,7 @@ export default function AuthLayout({
                 </div>
 
                 <p className="text-caption text-light-400">
-                    © 2025 Nike. All rights reserved.
+                    {t.auth.copyright}
                 </p>
             </div>
 
