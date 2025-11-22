@@ -221,7 +221,38 @@
         "currentStatus": "Estado actual",
         "orderCancelled": "Este pedido ha sido cancelado",
         "andMore": "y",
-        "more": "más"
+        "more": "más",
+        "invoice": {
+            "title": "FACTURA",
+            "number": "No",
+            "date": "Fecha",
+            "status": "Estado",
+            "billedTo": "Facturado a",
+            "shippingAddressLabel": "Dirección de Envío",
+            "productsTitle": "Productos",
+            "product": "Producto",
+            "details": "Detalles",
+            "qty": "Cant.",
+            "price": "Precio",
+            "total": "Total",
+            "subtotal": "Subtotal",
+            "shipping": "Envío",
+            "tax": "Impuestos",
+            "taxRate": "Impuestos (8%)",
+            "grandTotal": "TOTAL",
+            "free": "Gratis",
+            "thankYouMessage": "Gracias por tu compra en Nike Store",
+            "supportMessage": "Para cualquier consulta, contáctanos en support@nikestore.com",
+            "validInvoice": "Este documento es una factura válida",
+            "customer": "Cliente",
+            "statuses": {
+                "pending": "Pendiente",
+                "paid": "Pagado",
+                "shipped": "Enviado",
+                "delivered": "Entregado",
+                "cancelled": "Cancelado"
+            }
+        }
     },
     "footer": {
         "location": "Venezuela",
