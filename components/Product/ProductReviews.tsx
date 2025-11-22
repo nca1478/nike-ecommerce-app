@@ -9,9 +9,9 @@ interface Review {
     id: string;
     rating: number;
     author: string;
-    title: string | null;
+    title?: string;
     content: string;
-    createdAt: Date;
+    createdAt: string;
 }
 
 interface ProductReviewsProps {

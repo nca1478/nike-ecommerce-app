@@ -211,58 +211,58 @@ export function Navbar() {
             {/* Mobile Menu */}
             {isMenuOpen && (
                 <div className="md:hidden border-b border-light-300 bg-light-100">
-                    <div className="px-4 pt-4 pb-4 space-y-4">
-                        {/* Mobile Search, Language Switcher and Cart */}
-                        <div className="flex items-center gap-2">
-                            <form
-                                onSubmit={handleSearch}
-                                className="relative flex-1"
-                            >
-                                <input
-                                    type="text"
-                                    value={searchQuery}
-                                    onChange={(e) =>
-                                        setSearchQuery(e.target.value)
-                                    }
-                                    onBlur={() => setSearchQuery('')}
-                                    placeholder={t.nav.search}
-                                    className="w-full pl-10 pr-4 py-2 bg-light-200 rounded-full text-sm text-dark-900 placeholder-dark-500 focus:outline-none focus:ring-2 focus:ring-dark-900"
-                                />
-                                <svg
-                                    className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-dark-700"
-                                    fill="none"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                >
-                                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                </svg>
-                            </form>
-                            {/* Language Switcher */}
-                            <LanguageSwitcher />
-                            {/* Cart Icon */}
+                    <div className="px-6 py-6">
+                        {/* Actions Row - Top */}
+                        <div className="flex items-center justify-between mb-4">
                             <div onClick={() => setIsMenuOpen(false)}>
                                 <CartIcon />
                             </div>
+                            <LanguageSwitcher />
                         </div>
 
-                        {/* Mobile Navigation Links */}
-                        {navLinks.map((link) => (
-                            <Link
-                                key={link.href}
-                                href={link.href}
-                                className={`block py-2 text-dark-900 hover:text-dark-700 transition-colors font-medium ${
-                                    isActiveLink(link.gender)
-                                        ? 'border-l-4 border-dark-900 pl-3'
-                                        : ''
-                                }`}
-                                onClick={() => setIsMenuOpen(false)}
+                        {/* Mobile Search */}
+                        <form
+                            onSubmit={handleSearch}
+                            className="relative w-full mb-6"
+                        >
+                            <input
+                                type="text"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                onBlur={() => setSearchQuery('')}
+                                placeholder={t.nav.search}
+                                className="w-full pl-12 pr-4 py-3.5 bg-light-200 rounded-lg text-base text-dark-900 placeholder-dark-500 focus:outline-none focus:ring-2 focus:ring-dark-900 focus:bg-white transition-all"
+                            />
+                            <svg
+                                className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-dark-700"
+                                fill="none"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
                             >
-                                {link.label}
-                            </Link>
-                        ))}
+                                <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </form>
+
+                        {/* Mobile Navigation Links */}
+                        <nav className="space-y-0">
+                            {navLinks.map((link) => (
+                                <Link
+                                    key={link.href}
+                                    href={link.href}
+                                    className={`block py-4 text-dark-900 transition-all font-semibold text-xl border-b border-light-300 last:border-b-0 ${
+                                        isActiveLink(link.gender)
+                                            ? 'text-dark-900'
+                                            : 'text-dark-600'
+                                    }`}
+                                    onClick={() => setIsMenuOpen(false)}
+                                >
+                                    {link.label}
+                                </Link>
+                            ))}
+                        </nav>
                     </div>
                 </div>
             )}

@@ -1,12 +1,6 @@
 'use client';
 
-import {
-    createContext,
-    useContext,
-    useState,
-    useEffect,
-    ReactNode,
-} from 'react';
+import { createContext, useContext, useState, ReactNode } from 'react';
 import { Locale, Translations } from './types';
 import en from './locales/en.json';
 import es from './locales/es.json';
@@ -55,15 +49,9 @@ function setLocaleToCookie(locale: Locale) {
 }
 
 export function I18nProvider({ children }: { children: ReactNode }) {
-    const [locale, setLocaleState] = useState<Locale>('es');
-    const [mounted, setMounted] = useState(false);
-
-    // Cargar el idioma de la cookie al montar
-    useEffect(() => {
-        const savedLocale = getLocaleFromCookie();
-        setLocaleState(savedLocale);
-        setMounted(true);
-    }, []);
+    const [locale, setLocaleState] = useState<Locale>(() =>
+        getLocaleFromCookie(),
+    );
 
     const setLocale = (newLocale: Locale) => {
         setLocaleState(newLocale);
@@ -79,11 +67,6 @@ export function I18nProvider({ children }: { children: ReactNode }) {
         setLocale,
         t: translations[locale],
     };
-
-    // Evitar flash de contenido sin traducir
-    if (!mounted) {
-        return null;
-    }
 
     return (
         <I18nContext.Provider value={value}>{children}</I18nContext.Provider>
