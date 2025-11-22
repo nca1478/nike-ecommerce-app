@@ -1,4 +1,5 @@
 import { jsPDF } from 'jspdf';
+import type { Translations } from '@/lib/i18n/types';
 
 interface OrderItem {
     productName: string;
@@ -36,21 +37,17 @@ interface InvoiceData {
     user: User;
 }
 
-const getStatusLabel = (status: string): string => {
-    const labels: Record<string, string> = {
-        pending: 'Pendiente',
-        paid: 'Pagado',
-        shipped: 'Enviado',
-        delivered: 'Entregado',
-        cancelled: 'Cancelado',
-    };
-    return labels[status] || status;
-};
-
 export async function generateInvoicePDF(
     data: InvoiceData,
     orderNumber: string,
+    translations: Translations,
+    locale: 'en' | 'es' = 'es',
 ): Promise<void> {
+    const t = translations.orders.invoice;
+
+    const getStatusLabel = (status: string): string => {
+        return t.statuses[status as keyof typeof t.statuses] || status;
+    };
     const doc = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
@@ -74,21 +71,21 @@ export async function generateInvoicePDF(
     doc.setFont('helvetica', 'bold');
     doc.text('NIKE STORE', 20, yPos);
     doc.setFontSize(18);
-    doc.text('FACTURA', 150, yPos);
+    doc.text(t.title, 150, yPos);
     yPos += 10;
 
     // Info factura
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
-    doc.text(`No: ${order.id.slice(0, 8).toUpperCase()}`, 150, yPos);
+    doc.text(`${t.number}: ${order.id.slice(0, 8).toUpperCase()}`, 150, yPos);
     yPos += 5;
     doc.text(
-        `Fecha: ${new Date(order.createdAt).toLocaleDateString('es-ES')}`,
+        `${t.date}: ${new Date(order.createdAt).toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-US')}`,
         150,
         yPos,
     );
     yPos += 5;
-    doc.text(`Estado: ${getStatusLabel(order.status)}`, 150, yPos);
+    doc.text(`${t.status}: ${getStatusLabel(order.status)}`, 150, yPos);
     yPos += 10;
 
     // Línea
@@ -100,11 +97,11 @@ export async function generateInvoicePDF(
     // Cliente
     doc.setFontSize(11);
     doc.setFont('helvetica', 'bold');
-    doc.text('Facturado a:', 20, yPos);
+    doc.text(`${t.billedTo}:`, 20, yPos);
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
     yPos += 6;
-    doc.text(user.name || 'Cliente', 20, yPos);
+    doc.text(user.name || t.customer, 20, yPos);
     yPos += 5;
     doc.text(user.email, 20, yPos);
 
@@ -112,7 +109,7 @@ export async function generateInvoicePDF(
     let rightYPos = yPos - 11;
     doc.setFontSize(11);
     doc.setFont('helvetica', 'bold');
-    doc.text('Direccion de Envio:', 110, rightYPos);
+    doc.text(`${t.shippingAddressLabel}:`, 110, rightYPos);
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
     rightYPos += 6;
@@ -137,7 +134,7 @@ export async function generateInvoicePDF(
     // Tabla productos
     doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
-    doc.text('Productos', 20, yPos);
+    doc.text(t.productsTitle, 20, yPos);
     yPos += 8;
 
     // Headers tabla
@@ -145,11 +142,11 @@ export async function generateInvoicePDF(
     doc.rect(20, yPos - 5, 170, 8, 'F');
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(9);
-    doc.text('Producto', 22, yPos);
-    doc.text('Detalles', 80, yPos);
-    doc.text('Cant.', 130, yPos);
-    doc.text('Precio', 150, yPos);
-    doc.text('Total', 175, yPos);
+    doc.text(t.product, 22, yPos);
+    doc.text(t.details, 80, yPos);
+    doc.text(t.qty, 130, yPos);
+    doc.text(t.price, 150, yPos);
+    doc.text(t.total, 175, yPos);
     doc.setTextColor(0, 0, 0);
     yPos += 8;
 
@@ -188,21 +185,21 @@ export async function generateInvoicePDF(
     yPos += 8;
 
     doc.setFontSize(10);
-    doc.text('Subtotal:', 130, yPos);
+    doc.text(`${t.subtotal}:`, 130, yPos);
     doc.text(`$${subtotal.toFixed(2)}`, 175, yPos, { align: 'right' });
     yPos += 6;
 
-    doc.text('Envio:', 130, yPos);
+    doc.text(`${t.shipping}:`, 130, yPos);
     if (shipping === 0) {
         doc.setTextColor(74, 222, 128);
-        doc.text('Gratis', 175, yPos, { align: 'right' });
+        doc.text(t.free, 175, yPos, { align: 'right' });
         doc.setTextColor(0, 0, 0);
     } else {
         doc.text(`$${shipping.toFixed(2)}`, 175, yPos, { align: 'right' });
     }
     yPos += 6;
 
-    doc.text('Impuestos (8%):', 130, yPos);
+    doc.text(`${t.taxRate}:`, 130, yPos);
     doc.text(`$${tax.toFixed(2)}`, 175, yPos, { align: 'right' });
     yPos += 8;
 
@@ -213,7 +210,7 @@ export async function generateInvoicePDF(
 
     doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
-    doc.text('TOTAL:', 130, yPos);
+    doc.text(`${t.grandTotal}:`, 130, yPos);
     doc.text(`$${total.toFixed(2)}`, 175, yPos, { align: 'right' });
 
     // Footer
@@ -225,22 +222,18 @@ export async function generateInvoicePDF(
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(100, 100, 100);
-    doc.text('Gracias por tu compra en Nike Store', 105, yPos, {
+    doc.text(t.thankYouMessage, 105, yPos, {
         align: 'center',
     });
     yPos += 5;
-    doc.text(
-        'Para cualquier consulta, contactanos en support@nikestore.com',
-        105,
-        yPos,
-        { align: 'center' },
-    );
+    doc.text(t.supportMessage, 105, yPos, { align: 'center' });
     yPos += 6;
     doc.setFontSize(9);
-    doc.text('Este documento es una factura valida', 105, yPos, {
+    doc.text(t.validInvoice, 105, yPos, {
         align: 'center',
     });
 
     // Guardar PDF
-    doc.save(`factura-${orderNumber}.pdf`);
+    const fileName = locale === 'es' ? 'factura' : 'invoice';
+    doc.save(`${fileName}-${orderNumber}.pdf`);
 }
