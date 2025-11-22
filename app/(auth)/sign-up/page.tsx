@@ -5,8 +5,10 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { AuthForm, SocialProviders } from '@/components';
 import { signUp } from '@/lib/auth/actions';
 import { useState, Suspense } from 'react';
+import { useI18n } from '@/lib/i18n';
 
 function SignUpContent() {
+    const { t } = useI18n();
     const searchParams = useSearchParams();
     const router = useRouter();
     const [isRedirecting, setIsRedirecting] = useState(false);
@@ -42,23 +44,23 @@ function SignUpContent() {
         <div className="space-y-8">
             <div className="space-y-2 text-center">
                 <p className="text-caption text-dark-700">
-                    Already have an account?{' '}
+                    {t.auth.alreadyHaveAccount}{' '}
                     <Link
                         href={`/sign-in${redirect !== '/' ? `?redirect=${redirect}` : ''}`}
                         className="font-medium text-dark-900 underline hover:no-underline"
                     >
-                        Sign In
+                        {t.auth.signIn}
                     </Link>
                 </p>
                 <h2 className="text-heading-3 font-bold text-dark-900">
                     {isFromCheckout
-                        ? 'Create Account to Continue'
-                        : 'Join Nike Today!'}
+                        ? t.auth.createAccountToContinue
+                        : t.auth.joinNikeToday}
                 </h2>
                 <p className="text-body text-dark-700">
                     {isFromCheckout
-                        ? 'Create your account to complete your purchase'
-                        : 'Create your account to start your fitness journey'}
+                        ? t.auth.createAccountToCompletePurchase
+                        : t.auth.createAccountToStart}
                 </p>
             </div>
 
@@ -70,7 +72,7 @@ function SignUpContent() {
                 </div>
                 <div className="relative flex justify-center text-caption">
                     <span className="bg-light-200 px-4 text-dark-700">
-                        Or sign up with
+                        {t.auth.orSignUpWith}
                     </span>
                 </div>
             </div>
@@ -84,9 +86,14 @@ function SignUpContent() {
     );
 }
 
+function LoadingFallback() {
+    const { t } = useI18n();
+    return <div>{t.common.loading}</div>;
+}
+
 export default function SignUpPage() {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<LoadingFallback />}>
             <SignUpContent />
         </Suspense>
     );
