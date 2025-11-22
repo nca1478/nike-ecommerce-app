@@ -15,7 +15,7 @@ export function DownloadInvoiceButton({
     orderId,
     orderNumber,
 }: DownloadInvoiceButtonProps) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const [isDownloading, setIsDownloading] = useState(false);
 
     const handleDownload = async () => {
@@ -30,7 +30,7 @@ export function DownloadInvoiceButton({
 
             const data = await response.json();
 
-            await generateInvoicePDF(data, orderNumber);
+            await generateInvoicePDF(data, orderNumber, t, locale);
 
             toast.success(t.orders.invoiceDownloaded);
         } catch (error) {
