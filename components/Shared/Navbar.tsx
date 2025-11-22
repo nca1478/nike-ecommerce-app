@@ -263,49 +263,6 @@ export function Navbar() {
                                 {link.label}
                             </Link>
                         ))}
-
-                        {/* Mobile User Actions */}
-                        <div className="pt-4 border-t border-light-300 space-y-3">
-                            {!loading && (
-                                <>
-                                    {user ? (
-                                        <>
-                                            <div className="py-2 text-dark-900 text-sm font-medium">
-                                                {t.nav.hi},{' '}
-                                                {user.name ||
-                                                    user.email?.split('@')[0]}
-                                            </div>
-                                            <Link
-                                                href="/orders"
-                                                className="block w-full text-left py-2 text-dark-900 hover:text-dark-700 transition-colors"
-                                                onClick={() =>
-                                                    setIsMenuOpen(false)
-                                                }
-                                            >
-                                                {t.nav.myOrders}
-                                            </Link>
-                                            <button
-                                                onClick={() => {
-                                                    handleLogout();
-                                                    setIsMenuOpen(false);
-                                                }}
-                                                className="block w-full text-left py-2 text-dark-900 hover:text-dark-700 transition-colors cursor-pointer"
-                                            >
-                                                {t.nav.logout}
-                                            </button>
-                                        </>
-                                    ) : (
-                                        <Link
-                                            href="/sign-in"
-                                            className="block w-full text-left py-2 text-dark-900 hover:text-dark-700 transition-colors"
-                                            onClick={() => setIsMenuOpen(false)}
-                                        >
-                                            {t.nav.signIn}
-                                        </Link>
-                                    )}
-                                </>
-                            )}
-                        </div>
                     </div>
                 </div>
             )}
