@@ -100,6 +100,8 @@ export interface Translations {
         productDetails: string;
         delivery: string;
         reviews: string;
+        review: string;
+        reviewRating: string;
         recommended: string;
         noReviews: string;
         beFirst: string;
@@ -119,6 +121,17 @@ export interface Translations {
         newest: string;
         priceHighToLow: string;
         priceLowToHigh: string;
+        productNotFound: string;
+        productNotFoundDescription: string;
+        browseAllProducts: string;
+        selectColor: string;
+        save: string;
+        availableIn: string;
+        shippingReturns: string;
+        genderLabel: string;
+        freeShipping: string;
+        freeShippingDescription: string;
+        returnsPolicy: string;
         colors: {
             white: string;
             black: string;
@@ -205,6 +218,12 @@ export interface Translations {
         downloading: string;
         invoiceDownloaded: string;
         errorDownloadingInvoice: string;
+        orderReceived: string;
+        paymentConfirmed: string;
+        currentStatus: string;
+        orderCancelled: string;
+        andMore: string;
+        more: string;
     };
     footer: {
         location: string;
