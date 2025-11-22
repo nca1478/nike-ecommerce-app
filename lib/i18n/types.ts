@@ -224,6 +224,37 @@ export interface Translations {
         orderCancelled: string;
         andMore: string;
         more: string;
+        invoice: {
+            title: string;
+            number: string;
+            date: string;
+            status: string;
+            billedTo: string;
+            shippingAddressLabel: string;
+            productsTitle: string;
+            product: string;
+            details: string;
+            qty: string;
+            price: string;
+            total: string;
+            subtotal: string;
+            shipping: string;
+            tax: string;
+            taxRate: string;
+            grandTotal: string;
+            free: string;
+            thankYouMessage: string;
+            supportMessage: string;
+            validInvoice: string;
+            customer: string;
+            statuses: {
+                pending: string;
+                paid: string;
+                shipped: string;
+                delivered: string;
+                cancelled: string;
+            };
+        };
     };
     footer: {
         location: string;
