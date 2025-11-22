@@ -18,26 +18,7 @@ const translations: Record<Locale, Translations> = {
     es: es as Translations,
 };
 
-const LOCALE_COOKIE_NAME = 'nike-locale';
-
-// Helper para obtener el idioma de la cookie
-function getLocaleFromCookie(): Locale {
-    if (typeof document === 'undefined') return 'es';
-
-    const cookies = document.cookie.split(';');
-    const localeCookie = cookies.find((cookie) =>
-        cookie.trim().startsWith(`${LOCALE_COOKIE_NAME}=`),
-    );
-
-    if (localeCookie) {
-        const locale = localeCookie.split('=')[1].trim() as Locale;
-        if (locale === 'en' || locale === 'es') {
-            return locale;
-        }
-    }
-
-    return 'es'; // Default a español
-}
+export const LOCALE_COOKIE_NAME = 'nike-locale';
 
 // Helper para guardar el idioma en la cookie
 function setLocaleToCookie(locale: Locale) {
@@ -48,10 +29,16 @@ function setLocaleToCookie(locale: Locale) {
     document.cookie = `${LOCALE_COOKIE_NAME}=${locale}; path=/; max-age=${maxAge}; SameSite=Lax`;
 }
 
-export function I18nProvider({ children }: { children: ReactNode }) {
-    const [locale, setLocaleState] = useState<Locale>(() =>
-        getLocaleFromCookie(),
-    );
+interface I18nProviderProps {
+    children: ReactNode;
+    initialLocale?: Locale;
+}
+
+export function I18nProvider({
+    children,
+    initialLocale = 'es',
+}: I18nProviderProps) {
+    const [locale, setLocaleState] = useState<Locale>(initialLocale);
 
     const setLocale = (newLocale: Locale) => {
         setLocaleState(newLocale);
