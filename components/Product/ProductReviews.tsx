@@ -1,18 +1,55 @@
+'use client';
+
 import { Star } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { getProductReviews } from '@/lib/actions/product';
+import { useI18n } from '@/lib/i18n';
+
+interface Review {
+    id: string;
+    rating: number;
+    author: string;
+    title: string | null;
+    content: string;
+    createdAt: Date;
+}
 
 interface ProductReviewsProps {
     productId: string;
 }
 
-export async function ProductReviews({ productId }: ProductReviewsProps) {
-    const reviews = await getProductReviews(productId);
+export function ProductReviews({ productId }: ProductReviewsProps) {
+    const { t } = useI18n();
+    const [reviews, setReviews] = useState<Review[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        async function loadReviews() {
+            try {
+                const data = await getProductReviews(productId);
+                setReviews(data);
+            } catch (error) {
+                console.error('Error loading reviews:', error);
+            } finally {
+                setLoading(false);
+            }
+        }
+        loadReviews();
+    }, [productId]);
+
+    if (loading) {
+        return (
+            <div className="py-6">
+                <p className="text-body text-dark-700">{t.common.loading}</p>
+            </div>
+        );
+    }
 
     if (reviews.length === 0) {
         return (
             <div className="py-6">
                 <p className="text-body text-dark-700">
-                    No reviews yet. Be the first to review this product!
+                    {t.products.noReviews}. {t.products.beFirst}
                 </p>
             </div>
         );
@@ -39,11 +76,15 @@ export async function ProductReviews({ productId }: ProductReviewsProps) {
                     ))}
                 </div>
                 <span className="text-body-medium text-dark-900">
-                    {averageRating.toFixed(1)} out of 5
+                    {averageRating.toFixed(1)}{' '}
+                    {t.products.reviewRating || 'out of 5'}
                 </span>
                 <span className="text-body text-dark-700">
                     ({reviews.length}{' '}
-                    {reviews.length === 1 ? 'review' : 'reviews'})
+                    {reviews.length === 1
+                        ? t.products.review || 'review'
+                        : t.products.reviews}
+                    )
                 </span>
             </div>
 
