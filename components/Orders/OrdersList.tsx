@@ -31,7 +31,7 @@ interface OrdersListProps {
 }
 
 export function OrdersList({ orders }: OrdersListProps) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
 
     if (orders.length === 0) {
         return (
@@ -116,9 +116,9 @@ export function OrdersList({ orders }: OrdersListProps) {
                                         </p>
                                         <h3 className="font-semibold text-lg mb-1">
                                             {firstItem?.productVariant.product
-                                                .name || 'Producto'}
+                                                .name || t.products.title}
                                             {itemCount > 1 &&
-                                                ` y ${itemCount - 1} más`}
+                                                ` ${t.orders.andMore || 'and'} ${itemCount - 1} ${t.orders.more || 'more'}`}
                                         </h3>
                                         <p className="text-sm text-gray-600">
                                             {totalItems}{' '}
@@ -135,11 +135,14 @@ export function OrdersList({ orders }: OrdersListProps) {
                                     <span className="text-sm text-gray-500">
                                         {new Date(
                                             order.createdAt,
-                                        ).toLocaleDateString('es-ES', {
-                                            year: 'numeric',
-                                            month: 'long',
-                                            day: 'numeric',
-                                        })}
+                                        ).toLocaleDateString(
+                                            locale === 'es' ? 'es-ES' : 'en-US',
+                                            {
+                                                year: 'numeric',
+                                                month: 'long',
+                                                day: 'numeric',
+                                            },
+                                        )}
                                     </span>
                                 </div>
 
