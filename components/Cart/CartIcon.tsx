@@ -6,10 +6,12 @@ import { useEffect } from 'react';
 import { getCart } from '@/lib/actions/cart';
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth/hooks';
+import { useI18n } from '@/lib/i18n';
 
 export function CartIcon() {
     const { items, setItems } = useCartStore();
     const { user } = useAuth();
+    const { t } = useI18n();
 
     // Calcular total de items reactivamente
     const totalItems = items.reduce((total, item) => total + item.quantity, 0);
@@ -32,7 +34,7 @@ export function CartIcon() {
         >
             <ShoppingBag className="w-6 h-6 shrink-0" />
             <span className="text-body-medium">
-                My Cart {totalItems > 0 && `(${totalItems})`}
+                {t.cart.myCart} {totalItems > 0 && `(${totalItems})`}
             </span>
         </Link>
     );

@@ -7,52 +7,50 @@ import { createStripeCheckoutSession } from '@/lib/actions/checkout';
 import { isAuthenticated } from '@/lib/auth/actions';
 import { ShoppingBag, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { useI18n } from '@/lib/i18n';
 
 export default function CartSummary() {
     const router = useRouter();
     const { getTotalItems, getSubtotal } = useCartStore();
     const [isLoading, setIsLoading] = useState(false);
+    const { t } = useI18n();
 
     const subtotal = getSubtotal();
     const itemCount = getTotalItems();
-    const shipping = subtotal > 100 ? 0 : 10; // Envío gratis para pedidos > $100
-    const tax = subtotal * 0.08; // 8% de impuestos
+    const shipping = subtotal > 100 ? 0 : 10;
+    const tax = subtotal * 0.08;
     const total = subtotal + shipping + tax;
 
     const handleCheckout = async () => {
         if (itemCount === 0) {
-            toast.error('Your cart is empty');
+            toast.error(t.cart.cartIsEmpty);
             return;
         }
 
         setIsLoading(true);
 
         try {
-            // Verificar si el usuario está autenticado
             const authenticated = await isAuthenticated();
 
             if (!authenticated) {
-                // Redirigir a sign-in con parámetros de redirección
-                toast.error('Please sign in to complete your purchase');
+                toast.error(t.cart.pleaseSignIn);
                 router.push('/sign-in?redirect=/cart&action=checkout');
                 setIsLoading(false);
                 return;
             }
 
-            // Usuario autenticado - proceder con Stripe
             const result = await createStripeCheckoutSession();
 
             if (!result.success || !result.data) {
-                toast.error(result.error || 'Error processing payment');
+                toast.error(result.error || t.cart.errorProcessing);
                 setIsLoading(false);
                 return;
             }
 
-            // Redirigir a Stripe Checkout
             window.location.href = result.data.url;
         } catch (error) {
             console.error('Error en checkout:', error);
-            toast.error('Error processing payment');
+            toast.error(t.cart.errorProcessing);
             setIsLoading(false);
         }
     };
@@ -60,28 +58,28 @@ export default function CartSummary() {
     return (
         <div className="bg-light-100 rounded-lg p-6">
             <h2 className="text-heading-5 font-medium text-dark-900 mb-6">
-                Summary
+                {t.cart.summary}
             </h2>
 
             <div className="space-y-4 mb-6">
                 <div className="flex justify-between text-body">
-                    <span className="text-dark-700">Subtotal</span>
+                    <span className="text-dark-700">{t.cart.subtotal}</span>
                     <span className="font-medium text-dark-900">
                         ${subtotal.toFixed(2)}
                     </span>
                 </div>
 
                 <div className="flex justify-between text-body">
-                    <span className="text-dark-700">
-                        Estimated Delivery & Handling
-                    </span>
+                    <span className="text-dark-700">{t.cart.shipping}</span>
                     <span className="font-medium text-dark-900">
-                        {shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}
+                        {shipping === 0
+                            ? t.cart.free
+                            : `$${shipping.toFixed(2)}`}
                     </span>
                 </div>
 
                 <div className="flex justify-between text-body">
-                    <span className="text-dark-700">Estimated Tax</span>
+                    <span className="text-dark-700">{t.cart.tax}</span>
                     <span className="font-medium text-dark-900">
                         ${tax.toFixed(2)}
                     </span>
@@ -90,7 +88,7 @@ export default function CartSummary() {
                 <div className="border-t border-dark-300 pt-4">
                     <div className="flex justify-between">
                         <span className="text-body font-medium text-dark-900">
-                            Total
+                            {t.cart.total}
                         </span>
                         <span className="text-heading-5 font-medium text-dark-900">
                             ${total.toFixed(2)}
@@ -107,18 +105,18 @@ export default function CartSummary() {
                 {isLoading ? (
                     <>
                         <Loader2 className="w-5 h-5 animate-spin" />
-                        Processing...
+                        {t.cart.processing}
                     </>
                 ) : (
                     <>
                         <ShoppingBag className="w-5 h-5" />
-                        Checkout
+                        {t.cart.checkout}
                     </>
                 )}
             </button>
 
             <p className="text-caption text-dark-600 text-center mt-4">
-                Secure payment powered by Stripe
+                {t.cart.securePayment}
             </p>
         </div>
     );

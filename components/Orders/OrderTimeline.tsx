@@ -1,21 +1,27 @@
 'use client';
 
 import { CheckCircle, Circle } from 'lucide-react';
+import { useI18n } from '@/lib/i18n';
 
 interface OrderTimelineProps {
     status: string;
 }
 
-const steps = [
-    { key: 'pending', label: 'Pedido Recibido' },
-    { key: 'paid', label: 'Pago Confirmado' },
-    { key: 'shipped', label: 'En Camino' },
-    { key: 'delivered', label: 'Entregado' },
-];
-
 const statusOrder = ['pending', 'paid', 'shipped', 'delivered'];
 
 export function OrderTimeline({ status }: OrderTimelineProps) {
+    const { t } = useI18n();
+
+    const steps = [
+        { key: 'pending', label: t.orders.orderReceived || 'Order Received' },
+        {
+            key: 'paid',
+            label: t.orders.paymentConfirmed || 'Payment Confirmed',
+        },
+        { key: 'shipped', label: t.orders.inTransit },
+        { key: 'delivered', label: t.orders.delivered },
+    ];
+
     const currentIndex = statusOrder.indexOf(status);
     const isCancelled = status === 'cancelled';
 
@@ -24,10 +30,10 @@ export function OrderTimeline({ status }: OrderTimelineProps) {
             <div className="text-center py-8">
                 <div className="inline-flex items-center gap-2 text-red-600">
                     <Circle className="w-6 h-6" />
-                    <span className="font-semibold">Pedido Cancelado</span>
+                    <span className="font-semibold">{t.orders.cancelled}</span>
                 </div>
                 <p className="text-sm text-gray-600 mt-2">
-                    Este pedido ha sido cancelado
+                    {t.orders.orderCancelled || 'This order has been cancelled'}
                 </p>
             </div>
         );
@@ -77,7 +83,7 @@ export function OrderTimeline({ status }: OrderTimelineProps) {
                             </p>
                             {isActive && (
                                 <p className="text-sm text-gray-600 mt-1">
-                                    Estado actual
+                                    {t.orders.currentStatus || 'Current status'}
                                 </p>
                             )}
                         </div>

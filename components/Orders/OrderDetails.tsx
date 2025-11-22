@@ -7,6 +7,7 @@ import { OrderStatusBadge } from './OrderStatusBadge';
 import { OrderTimeline } from './OrderTimeline';
 import { ReorderButton } from './ReorderButton';
 import { DownloadInvoiceButton } from './DownloadInvoiceButton';
+import { useI18n } from '@/lib/i18n';
 
 interface OrderItem {
     id: string;
@@ -42,6 +43,7 @@ interface OrderDetailsProps {
 }
 
 export function OrderDetails({ order, items }: OrderDetailsProps) {
+    const { t, locale } = useI18n();
     const subtotal = items.reduce(
         (sum, item) => sum + item.price * item.quantity,
         0,
@@ -59,18 +61,18 @@ export function OrderDetails({ order, items }: OrderDetailsProps) {
                     className="inline-flex items-center gap-2 text-gray-600 hover:text-black mb-4"
                 >
                     <ArrowLeft className="w-4 h-4" />
-                    Volver a mis pedidos
+                    {t.orders.backToOrders}
                 </Link>
 
                 <div className="flex items-start justify-between">
                     <div>
                         <h1 className="text-3xl font-bold mb-2">
-                            Pedido #{order.id.slice(0, 8)}
+                            {t.orders.orderNumber} #{order.id.slice(0, 8)}
                         </h1>
                         <p className="text-gray-600">
-                            Realizado el{' '}
+                            {t.orders.placedOn}{' '}
                             {new Date(order.createdAt).toLocaleDateString(
-                                'es-ES',
+                                locale === 'es' ? 'es-ES' : 'en-US',
                                 {
                                     year: 'numeric',
                                     month: 'long',
@@ -91,7 +93,7 @@ export function OrderDetails({ order, items }: OrderDetailsProps) {
                     {/* Timeline de estado */}
                     <div className="bg-white border border-gray-200 rounded-lg p-6">
                         <h2 className="text-xl font-semibold mb-4">
-                            Estado del Pedido
+                            {t.orders.orderStatus}
                         </h2>
                         <OrderTimeline status={order.status} />
                     </div>
@@ -99,7 +101,7 @@ export function OrderDetails({ order, items }: OrderDetailsProps) {
                     {/* Productos */}
                     <div className="bg-white border border-gray-200 rounded-lg p-6">
                         <h2 className="text-xl font-semibold mb-4">
-                            Productos ({items.length})
+                            {t.orders.products} ({items.length})
                         </h2>
                         <div className="space-y-4">
                             {items.map((item) => (
@@ -125,11 +127,11 @@ export function OrderDetails({ order, items }: OrderDetailsProps) {
                                             {item.productName}
                                         </h3>
                                         <p className="text-sm text-gray-600 mb-2">
-                                            Talla: {item.size} | Color:{' '}
-                                            {item.color}
+                                            {t.cart.size}: {item.size} |{' '}
+                                            {t.cart.color}: {item.color}
                                         </p>
                                         <p className="text-sm text-gray-600">
-                                            Cantidad: {item.quantity}
+                                            {t.orders.quantity}: {item.quantity}
                                         </p>
                                     </div>
                                     <div className="text-right">
@@ -140,7 +142,8 @@ export function OrderDetails({ order, items }: OrderDetailsProps) {
                                             ).toFixed(2)}
                                         </p>
                                         <p className="text-sm text-gray-500">
-                                            ${item.price.toFixed(2)} c/u
+                                            ${item.price.toFixed(2)}{' '}
+                                            {t.orders.each}
                                         </p>
                                     </div>
                                 </div>
@@ -151,7 +154,7 @@ export function OrderDetails({ order, items }: OrderDetailsProps) {
                     {/* Dirección de envío */}
                     <div className="bg-white border border-gray-200 rounded-lg p-6">
                         <h2 className="text-xl font-semibold mb-4">
-                            Dirección de Envío
+                            {t.orders.shippingAddress}
                         </h2>
                         <div className="text-gray-700">
                             <p>{order.shippingAddress.line1}</p>
@@ -172,31 +175,33 @@ export function OrderDetails({ order, items }: OrderDetailsProps) {
                 <div className="space-y-6">
                     {/* Resumen */}
                     <div className="bg-white border border-gray-200 rounded-lg p-6">
-                        <h2 className="text-xl font-semibold mb-4">Resumen</h2>
+                        <h2 className="text-xl font-semibold mb-4">
+                            {t.orders.summary}
+                        </h2>
                         <div className="space-y-3">
                             <div className="flex justify-between text-gray-700">
-                                <span>Subtotal</span>
+                                <span>{t.cart.subtotal}</span>
                                 <span>${subtotal.toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between text-gray-700">
-                                <span>Envío</span>
+                                <span>{t.cart.shipping}</span>
                                 <span
                                     className={
                                         shipping === 0 ? 'text-green-600' : ''
                                     }
                                 >
                                     {shipping === 0
-                                        ? 'Gratis'
+                                        ? t.cart.free
                                         : `$${shipping.toFixed(2)}`}
                                 </span>
                             </div>
                             <div className="flex justify-between text-gray-700">
-                                <span>Impuestos</span>
+                                <span>{t.cart.tax}</span>
                                 <span>${tax.toFixed(2)}</span>
                             </div>
                             <div className="pt-3 border-t border-gray-200">
                                 <div className="flex justify-between text-lg font-bold">
-                                    <span>Total</span>
+                                    <span>{t.cart.total}</span>
                                     <span>${calculatedTotal}</span>
                                 </div>
                             </div>
@@ -215,17 +220,16 @@ export function OrderDetails({ order, items }: OrderDetailsProps) {
                     {/* Ayuda */}
                     <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
                         <h3 className="font-semibold mb-2">
-                            ¿Necesitas ayuda?
+                            {t.orders.needHelp}
                         </h3>
                         <p className="text-sm text-gray-600 mb-4">
-                            Contáctanos si tienes alguna pregunta sobre tu
-                            pedido
+                            {t.orders.needHelpDescription}
                         </p>
                         <a
                             href="/contact"
                             className="text-sm text-blue-600 hover:underline"
                         >
-                            Contactar soporte
+                            {t.orders.contactSupport}
                         </a>
                     </div>
                 </div>

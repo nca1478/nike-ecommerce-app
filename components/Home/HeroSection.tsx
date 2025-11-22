@@ -1,6 +1,11 @@
+'use client';
+
 import Link from 'next/link';
+import { useI18n } from '@/lib/i18n';
 
 export const HeroSection = () => {
+    const { t } = useI18n();
+
     return (
         <section
             className="relative from-gray-100 to-gray-200 overflow-hidden bg-cover bg-center bg-no-repeat"
@@ -11,22 +16,21 @@ export const HeroSection = () => {
                     {/* Left Content */}
                     <div className="space-y-6 z-10">
                         <p className="text-pink-500 font-semibold text-sm uppercase tracking-wide">
-                            Bold & Sporty
+                            {t.home.hero.badge}
                         </p>
                         <h1 className="text-5xl lg:text-6xl font-black text-dark-900 leading-tight">
-                            Style That Moves
+                            {t.home.hero.title}
                             <br />
-                            With You.
+                            {t.home.hero.titleLine2}
                         </h1>
                         <p className="text-lg text-dark-700 max-w-md">
-                            Not just style. Not just comfort. Footwear that
-                            effortlessly moves with your every step.
+                            {t.home.hero.description}
                         </p>
                         <Link
                             href="/products"
                             className="inline-block bg-dark-900 text-white px-8 py-3 rounded-full font-semibold hover:bg-dark-700 transition-colors duration-300"
                         >
-                            Find Your Shoe
+                            {t.home.hero.cta}
                         </Link>
                     </div>
 

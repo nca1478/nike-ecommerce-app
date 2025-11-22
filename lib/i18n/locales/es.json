@@ -1,0 +1,377 @@
+{
+    "common": {
+        "loading": "Cargando...",
+        "error": "Error",
+        "success": "Éxito",
+        "cancel": "Cancelar",
+        "confirm": "Confirmar",
+        "save": "Guardar",
+        "delete": "Eliminar",
+        "edit": "Editar",
+        "search": "Buscar",
+        "filter": "Filtrar",
+        "sort": "Ordenar",
+        "clear": "Limpiar",
+        "apply": "Aplicar",
+        "close": "Cerrar",
+        "back": "Atrás",
+        "next": "Siguiente",
+        "previous": "Anterior",
+        "viewAll": "Ver Todo",
+        "learnMore": "Saber Más"
+    },
+    "nav": {
+        "men": "Hombres",
+        "women": "Mujeres",
+        "kids": "Niños",
+        "unisex": "Unisex",
+        "signIn": "Iniciar Sesión",
+        "logout": "Cerrar Sesión",
+        "myOrders": "Mis Pedidos",
+        "hi": "Hola",
+        "search": "Buscar"
+    },
+    "auth": {
+        "signIn": "Iniciar Sesión",
+        "signUp": "Crear Cuenta",
+        "email": "Email",
+        "password": "Contraseña",
+        "name": "Nombre",
+        "nameOptional": "Nombre (opcional)",
+        "createAccount": "Crear Cuenta",
+        "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+        "dontHaveAccount": "¿No tienes una cuenta?",
+        "signingIn": "Iniciando sesión...",
+        "creatingAccount": "Creando cuenta...",
+        "emailPlaceholder": "tu@email.com",
+        "passwordPlaceholder": "••••••••",
+        "namePlaceholder": "Tu nombre",
+        "passwordRequirements": "Mínimo 8 caracteres, incluye mayúsculas, minúsculas y números",
+        "signInError": "Error al iniciar sesión",
+        "signUpError": "Error al crear la cuenta",
+        "unexpectedError": "Error inesperado"
+    },
+    "home": {
+        "hero": {
+            "badge": "Audaz y Deportivo",
+            "title": "Estilo Que Se Mueve",
+            "titleLine2": "Contigo.",
+            "description": "No solo estilo. No solo comodidad. Calzado que se mueve sin esfuerzo con cada paso.",
+            "cta": "Encuentra Tu Calzado"
+        },
+        "latestShoes": "Últimos calzados",
+        "noProducts": "No hay productos disponibles en este momento.",
+        "trendingNow": "Tendencias Actuales",
+        "shopNow": "Comprar Ahora",
+        "feature": {
+            "badge": "Audaz y Deportivo",
+            "title": "NIKE REACT",
+            "titleLine2": "PRESTO BY YOU",
+            "description": "Aprovecha la nueva tecnología de amortiguación patentada con un par de zapatos Nike React frescos.",
+            "cta": "Comprar Ahora"
+        },
+        "trending": {
+            "reactPresto": "REACT PRESTO",
+            "reactPrestoDesc": "Con espuma React para el Presto más cómodo de todos.",
+            "summerMustHaves": "Imprescindibles de Verano: Air Max Dia",
+            "airJordan": "Air Jordan 11 Retro Low LE"
+        }
+    },
+    "products": {
+        "title": "Productos",
+        "filters": "Filtros",
+        "gender": "Género",
+        "size": "Talla",
+        "color": "Color",
+        "price": "Comprar Por Precio",
+        "clearAllFilters": "Limpiar Todos los Filtros",
+        "sortBy": "Ordenar Por",
+        "latest": "Más Recientes",
+        "priceAsc": "Precio: Menor a Mayor",
+        "priceDesc": "Precio: Mayor a Menor",
+        "selectSize": "Seleccionar Talla",
+        "sizeGuide": "Guía de Tallas",
+        "pleaseSelectSize": "Por favor selecciona una talla",
+        "outOfStock": "Esta talla está actualmente agotada",
+        "addToCart": "Agregar al Carrito",
+        "favorite": "Favorito",
+        "productDetails": "Detalles del Producto",
+        "delivery": "Entrega y Devoluciones",
+        "reviews": "Reseñas",
+        "review": "reseña",
+        "reviewRating": "de 5",
+        "recommended": "También Te Puede Gustar",
+        "noReviews": "Aún no hay reseñas",
+        "beFirst": "Sé el primero en reseñar este producto",
+        "filterApplied": "filtro aplicado",
+        "filtersApplied": "filtros aplicados",
+        "noProductsFound": "No se encontraron productos",
+        "adjustFilters": "Intenta ajustar tus filtros para ver más resultados",
+        "previous": "Anterior",
+        "next": "Siguiente",
+        "pageOf": "Página {page} de {total}",
+        "search": "Búsqueda",
+        "brand": "Marca",
+        "category": "Categoría",
+        "from": "Desde",
+        "upTo": "Hasta",
+        "featured": "Destacados",
+        "newest": "Más Recientes",
+        "priceHighToLow": "Precio: Mayor a Menor",
+        "priceLowToHigh": "Precio: Menor a Mayor",
+        "productNotFound": "Producto No Encontrado",
+        "productNotFoundDescription": "El producto que buscas no existe o ha sido eliminado.",
+        "browseAllProducts": "Ver Todos los Productos",
+        "selectColor": "Seleccionar Color",
+        "save": "Ahorra",
+        "availableIn": "Disponible en",
+        "shippingReturns": "Envío y Devoluciones",
+        "genderLabel": "Género",
+        "freeShipping": "Envío estándar gratuito",
+        "freeShippingDescription": "en pedidos superiores a $50.",
+        "returnsPolicy": "Puedes devolver tu pedido por cualquier motivo, sin cargo, dentro de los 30 días.",
+        "colors": {
+            "white": "Blanco",
+            "black": "Negro",
+            "red": "Rojo",
+            "blue": "Azul",
+            "green": "Verde",
+            "yellow": "Amarillo",
+            "orange": "Naranja",
+            "pink": "Rosa",
+            "grey": "Gris"
+        },
+        "priceRanges": {
+            "under50": "Menos de $50",
+            "50to100": "$50 - $100",
+            "100to150": "$100 - $150",
+            "over150": "Más de $150"
+        }
+    },
+    "cart": {
+        "title": "Carrito de Compras",
+        "myCart": "Mi Carrito",
+        "empty": "Tu carrito está vacío",
+        "emptyDescription": "Agrega algunos productos para comenzar",
+        "continueShopping": "Continuar Comprando",
+        "summary": "Resumen",
+        "subtotal": "Subtotal",
+        "shipping": "Envío y Manejo Estimado",
+        "tax": "Impuesto Estimado",
+        "total": "Total",
+        "checkout": "Finalizar Compra",
+        "free": "Gratis",
+        "securePayment": "Pago seguro con Stripe",
+        "processing": "Procesando...",
+        "remove": "Eliminar",
+        "quantity": "Cantidad",
+        "size": "Talla",
+        "color": "Color",
+        "addedToCart": "Agregado al carrito",
+        "removedFromCart": "Eliminado del carrito",
+        "cartIsEmpty": "Tu carrito está vacío",
+        "pleaseSignIn": "Por favor inicia sesión para completar tu compra",
+        "errorProcessing": "Error al procesar el pago"
+    },
+    "orders": {
+        "title": "Mis Pedidos",
+        "description": "Revisa el estado de tus pedidos y realiza seguimiento de envíos",
+        "orderNumber": "Pedido",
+        "date": "Fecha",
+        "status": "Estado",
+        "total": "Total",
+        "items": "artículos",
+        "item": "artículo",
+        "noOrders": "No tienes pedidos aún",
+        "noOrdersDescription": "Cuando realices tu primera compra, aparecerá aquí",
+        "exploreProducts": "Explorar Productos",
+        "orderDetails": "Detalles del Pedido",
+        "orderStatus": "Estado del Pedido",
+        "confirmed": "Confirmado",
+        "preparing": "Preparando",
+        "shipped": "Enviado",
+        "delivered": "Entregado",
+        "cancelled": "Cancelado",
+        "orderItems": "Artículos del Pedido",
+        "downloadInvoice": "Descargar Factura",
+        "reorder": "Volver a Pedir",
+        "trackOrder": "Rastrear Pedido",
+        "orderConfirmed": "¡Pedido confirmado!",
+        "thankYou": "Gracias por tu compra. Tu pedido ha sido procesado exitosamente.",
+        "continueShopping": "Seguir Comprando",
+        "viewMyOrders": "Ver Mis Pedidos",
+        "inTransit": "En Camino",
+        "backToOrders": "Volver a mis pedidos",
+        "placedOn": "Realizado el",
+        "products": "Productos",
+        "quantity": "Cantidad",
+        "each": "c/u",
+        "shippingAddress": "Dirección de Envío",
+        "summary": "Resumen",
+        "needHelp": "¿Necesitas ayuda?",
+        "needHelpDescription": "Contáctanos si tienes alguna pregunta sobre tu pedido",
+        "contactSupport": "Contactar soporte",
+        "orderNotFound": "Pedido no encontrado",
+        "orderNotFoundDescription": "No se pudo encontrar el pedido solicitado",
+        "downloading": "Descargando...",
+        "invoiceDownloaded": "Factura descargada correctamente",
+        "errorDownloadingInvoice": "Error al descargar la factura",
+        "orderReceived": "Pedido Recibido",
+        "paymentConfirmed": "Pago Confirmado",
+        "currentStatus": "Estado actual",
+        "orderCancelled": "Este pedido ha sido cancelado",
+        "andMore": "y",
+        "more": "más",
+        "invoice": {
+            "title": "FACTURA",
+            "number": "No",
+            "date": "Fecha",
+            "status": "Estado",
+            "billedTo": "Facturado a",
+            "shippingAddressLabel": "Dirección de Envío",
+            "productsTitle": "Productos",
+            "product": "Producto",
+            "details": "Detalles",
+            "qty": "Cant.",
+            "price": "Precio",
+            "total": "Total",
+            "subtotal": "Subtotal",
+            "shipping": "Envío",
+            "tax": "Impuestos",
+            "taxRate": "Impuestos (8%)",
+            "grandTotal": "TOTAL",
+            "free": "Gratis",
+            "thankYouMessage": "Gracias por tu compra en Nike Store",
+            "supportMessage": "Para cualquier consulta, contáctanos en support@nikestore.com",
+            "validInvoice": "Este documento es una factura válida",
+            "customer": "Cliente",
+            "statuses": {
+                "pending": "Pendiente",
+                "paid": "Pagado",
+                "shipped": "Enviado",
+                "delivered": "Entregado",
+                "cancelled": "Cancelado"
+            }
+        }
+    },
+    "footer": {
+        "location": "Venezuela",
+        "copyright": "© 2025 Nike, Inc. Todos los Derechos Reservados",
+        "guides": "Guías",
+        "termsOfSale": "Términos de Venta",
+        "termsOfUse": "Términos de Uso",
+        "privacyPolicy": "Política de Privacidad de Nike"
+    },
+    "legal": {
+        "backToHome": "← Volver al Inicio",
+        "guides": {
+            "title": "Guías de Nike",
+            "sizeGuide": {
+                "title": "Guía de Tallas",
+                "description": "Encontrar el ajuste perfecto es esencial para la comodidad y el rendimiento. Usa nuestras tablas de tallas completas para determinar tu talla ideal de zapatos Nike.",
+                "howToMeasure": "Cómo Medir Tus Pies",
+                "step1": "Coloca tu pie en una superficie plana",
+                "step2": "Mide desde el talón hasta el dedo más largo en centímetros",
+                "step3": "Compara con nuestra tabla de tallas",
+                "step4": "Si estás entre tallas, recomendamos elegir la talla mayor"
+            },
+            "careInstructions": {
+                "title": "Instrucciones de Cuidado",
+                "description": "El cuidado adecuado prolonga la vida de tus productos Nike. Sigue estas pautas para mantener tus zapatos luciendo frescos.",
+                "generalTips": "Consejos Generales de Cuidado",
+                "tip1": "Limpia con un cepillo suave y jabón suave",
+                "tip2": "Seca al aire a temperatura ambiente",
+                "tip3": "Evita el calor directo o la luz solar",
+                "tip4": "Guarda en un lugar fresco y seco"
+            },
+            "shippingReturns": {
+                "title": "Envío y Devoluciones",
+                "description": "Ofrecemos envío estándar gratuito en pedidos superiores a $50 y devoluciones fáciles dentro de los 30 días posteriores a la compra.",
+                "returnProcess": "Proceso de Devolución",
+                "step1": "Inicia la devolución desde tu cuenta",
+                "step2": "Imprime la etiqueta de envío prepagada",
+                "step3": "Empaca los artículos en el embalaje original",
+                "step4": "Déjalo en cualquier ubicación del transportista"
+            },
+            "productTechnology": {
+                "title": "Tecnología del Producto",
+                "description": "Aprende sobre las tecnologías innovadoras de Nike diseñadas para mejorar tu rendimiento y comodidad."
+            }
+        },
+        "termsOfSale": {
+            "title": "Términos de Venta",
+            "lastUpdated": "Última actualización: 1 de enero de 2025",
+            "intro": "Estos Términos de Venta rigen tu compra de productos de Nike, Inc. Al realizar un pedido, aceptas estos términos.",
+            "section1": {
+                "title": "1. Aceptación de Términos",
+                "content": "Al realizar un pedido a través de nuestro sitio web, aceptas estar sujeto a estos Términos de Venta. Si no estás de acuerdo con estos términos, no realices un pedido."
+            },
+            "section2": {
+                "title": "2. Precios y Pago",
+                "content": "Todos los precios están en dólares estadounidenses e incluyen los impuestos aplicables. Nos reservamos el derecho de cambiar los precios en cualquier momento. El pago debe realizarse en el momento de la compra."
+            },
+            "section3": {
+                "title": "3. Envío y Entrega",
+                "content": "Enviamos a direcciones dentro de Venezuela. Los tiempos de entrega varían según la ubicación. No somos responsables de retrasos causados por el transportista."
+            },
+            "section4": {
+                "title": "4. Devoluciones y Reembolsos",
+                "content": "Aceptamos devoluciones dentro de los 30 días posteriores a la compra. Los artículos deben estar sin usar y en su embalaje original. Los reembolsos se procesarán dentro de 5-7 días hábiles."
+            }
+        },
+        "termsOfUse": {
+            "title": "Términos de Uso",
+            "lastUpdated": "Última actualización: 1 de enero de 2025",
+            "intro": "Bienvenido a Nike. Estos Términos de Uso rigen tu acceso y uso de nuestro sitio web y servicios.",
+            "section1": {
+                "title": "1. Uso del Sitio Web",
+                "content": "Puedes usar nuestro sitio web solo para fines legales. No debes usar el sitio de ninguna manera que pueda dañar, deshabilitar o perjudicar el sitio."
+            },
+            "section2": {
+                "title": "2. Cuentas de Usuario",
+                "content": "Eres responsable de mantener la confidencialidad de tu cuenta y contraseña. Aceptas notificarnos inmediatamente sobre cualquier uso no autorizado de tu cuenta."
+            },
+            "section3": {
+                "title": "3. Propiedad Intelectual",
+                "content": "Todo el contenido de este sitio web, incluidos textos, gráficos, logotipos e imágenes, es propiedad de Nike, Inc. y está protegido por las leyes de derechos de autor."
+            },
+            "section4": {
+                "title": "4. Limitación de Responsabilidad",
+                "content": "Nike no será responsable de ningún daño indirecto, incidental o consecuente que surja del uso de nuestro sitio web o productos."
+            }
+        },
+        "privacyPolicy": {
+            "title": "Política de Privacidad de Nike",
+            "lastUpdated": "Última actualización: 1 de enero de 2025",
+            "intro": "En Nike, nos tomamos en serio tu privacidad. Esta Política de Privacidad explica cómo recopilamos, usamos y protegemos tu información personal.",
+            "section1": {
+                "title": "1. Información que Recopilamos",
+                "content": "Recopilamos información que nos proporcionas directamente, como tu nombre, dirección de correo electrónico, dirección de envío e información de pago cuando realizas un pedido."
+            },
+            "section2": {
+                "title": "2. Cómo Usamos Tu Información",
+                "content": "Usamos tu información para procesar pedidos, mejorar nuestros servicios, comunicarnos contigo y personalizar tu experiencia de compra."
+            },
+            "section3": {
+                "title": "3. Compartir Información",
+                "content": "No vendemos tu información personal a terceros. Podemos compartir información con proveedores de servicios que nos ayudan a operar nuestro negocio."
+            },
+            "section4": {
+                "title": "4. Seguridad de Datos",
+                "content": "Implementamos medidas de seguridad para proteger tu información personal. Sin embargo, ningún método de transmisión por Internet es 100% seguro."
+            },
+            "section5": {
+                "title": "5. Tus Derechos",
+                "content": "Tienes derecho a acceder, corregir o eliminar tu información personal. Contáctanos si deseas ejercer estos derechos."
+            }
+        }
+    },
+    "checkout": {
+        "title": "Finalizar Compra",
+        "shippingAddress": "Dirección de Envío",
+        "paymentMethod": "Método de Pago",
+        "reviewOrder": "Revisar Pedido",
+        "placeOrder": "Realizar Pedido",
+        "processing": "Procesando..."
+    }
+}

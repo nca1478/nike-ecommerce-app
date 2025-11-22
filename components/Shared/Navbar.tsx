@@ -7,6 +7,8 @@ import { useAuth } from '@/lib/auth/hooks';
 import { signOut } from '@/lib/auth/actions';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { CartIcon } from '@/components/Cart/CartIcon';
+import { LanguageSwitcher } from './LanguageSwitcher';
+import { useI18n } from '@/lib/i18n';
 
 export function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,12 +16,17 @@ export function Navbar() {
     const { user, loading, refresh } = useAuth();
     const router = useRouter();
     const searchParams = useSearchParams();
+    const { t } = useI18n();
 
     const navLinks = [
-        { href: '/products?gender=men', label: 'Men', gender: 'men' },
-        { href: '/products?gender=women', label: 'Women', gender: 'women' },
-        { href: '/products?gender=kids', label: 'Kids', gender: 'kids' },
-        { href: '/products?gender=unisex', label: 'Unisex', gender: 'unisex' },
+        { href: '/products?gender=men', label: t.nav.men, gender: 'men' },
+        { href: '/products?gender=women', label: t.nav.women, gender: 'women' },
+        { href: '/products?gender=kids', label: t.nav.kids, gender: 'kids' },
+        {
+            href: '/products?gender=unisex',
+            label: t.nav.unisex,
+            gender: 'unisex',
+        },
     ];
 
     const currentGender = searchParams.get('gender');
@@ -61,7 +68,7 @@ export function Navbar() {
                                     {user ? (
                                         <div className="flex items-center space-x-3">
                                             <span className="text-dark-900 font-medium">
-                                                Hi,{' '}
+                                                {t.nav.hi},{' '}
                                                 {user.name ||
                                                     user.email?.split('@')[0]}
                                             </span>
@@ -72,7 +79,7 @@ export function Navbar() {
                                                 href="/orders"
                                                 className="text-dark-900 hover:text-dark-700 transition-colors"
                                             >
-                                                My Orders
+                                                {t.nav.myOrders}
                                             </Link>
                                             <span className="text-dark-500">
                                                 |
@@ -81,7 +88,7 @@ export function Navbar() {
                                                 onClick={handleLogout}
                                                 className="text-dark-900 hover:text-dark-700 transition-colors cursor-pointer"
                                             >
-                                                Logout
+                                                {t.nav.logout}
                                             </button>
                                         </div>
                                     ) : (
@@ -89,7 +96,7 @@ export function Navbar() {
                                             href="/sign-in"
                                             className="text-dark-900 hover:text-dark-700 transition-colors"
                                         >
-                                            Sign In
+                                            {t.nav.signIn}
                                         </Link>
                                     )}
                                 </>
@@ -136,8 +143,11 @@ export function Navbar() {
                             </div>
                         </div>
 
-                        {/* Right Side Actions - Fixed width to match logo */}
-                        <div className="hidden md:flex items-center justify-end space-x-4 w-[200px] lg:w-[280px] shrink-0">
+                        {/* Right Side Actions */}
+                        <div
+                            className="hidden md:flex items-center justify-end space-x-1 lg:space-x-2 shrink-0"
+                            style={{ width: '200px' }}
+                        >
                             {/* Search Bar */}
                             <form onSubmit={handleSearch} className="relative">
                                 <div className="relative">
@@ -148,11 +158,11 @@ export function Navbar() {
                                             setSearchQuery(e.target.value)
                                         }
                                         onBlur={() => setSearchQuery('')}
-                                        placeholder="Search"
-                                        className="w-44 lg:w-52 pl-10 pr-4 py-2 bg-light-200 rounded-full text-sm text-dark-900 placeholder-dark-500 focus:outline-none focus:ring-2 focus:ring-dark-900 transition-all"
+                                        placeholder={t.nav.search}
+                                        className="w-28 lg:w-32 focus:w-52 pl-9 pr-3 py-1.5 bg-light-200 rounded-full text-sm text-dark-900 placeholder-dark-500 focus:outline-none focus:ring-2 focus:ring-dark-900 transition-all duration-300 ease-in-out"
                                     />
                                     <svg
-                                        className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-dark-700"
+                                        className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-700"
                                         fill="none"
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
@@ -164,6 +174,9 @@ export function Navbar() {
                                     </svg>
                                 </div>
                             </form>
+
+                            {/* Language Switcher */}
+                            <LanguageSwitcher />
 
                             {/* Cart Icon */}
                             <CartIcon />
@@ -198,19 +211,30 @@ export function Navbar() {
             {/* Mobile Menu */}
             {isMenuOpen && (
                 <div className="md:hidden border-b border-light-300 bg-light-100">
-                    <div className="px-4 pt-4 pb-4 space-y-4">
+                    <div className="px-6 py-6">
+                        {/* Actions Row - Top */}
+                        <div className="flex items-center justify-between mb-4">
+                            <div onClick={() => setIsMenuOpen(false)}>
+                                <CartIcon />
+                            </div>
+                            <LanguageSwitcher />
+                        </div>
+
                         {/* Mobile Search */}
-                        <form onSubmit={handleSearch} className="relative">
+                        <form
+                            onSubmit={handleSearch}
+                            className="relative w-full mb-6"
+                        >
                             <input
                                 type="text"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 onBlur={() => setSearchQuery('')}
-                                placeholder="Search"
-                                className="w-full pl-10 pr-4 py-2 bg-light-200 rounded-full text-sm text-dark-900 placeholder-dark-500 focus:outline-none focus:ring-2 focus:ring-dark-900"
+                                placeholder={t.nav.search}
+                                className="w-full pl-12 pr-4 py-3.5 bg-light-200 rounded-lg text-base text-dark-900 placeholder-dark-500 focus:outline-none focus:ring-2 focus:ring-dark-900 focus:bg-white transition-all"
                             />
                             <svg
-                                className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-dark-700"
+                                className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-dark-700"
                                 fill="none"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
@@ -223,69 +247,22 @@ export function Navbar() {
                         </form>
 
                         {/* Mobile Navigation Links */}
-                        {navLinks.map((link) => (
-                            <Link
-                                key={link.href}
-                                href={link.href}
-                                className={`block py-2 text-dark-900 hover:text-dark-700 transition-colors font-medium ${
-                                    isActiveLink(link.gender)
-                                        ? 'border-l-4 border-dark-900 pl-3'
-                                        : ''
-                                }`}
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                {link.label}
-                            </Link>
-                        ))}
-
-                        {/* Mobile User Actions */}
-                        <div className="pt-4 border-t border-light-300 space-y-3">
-                            {!loading && (
-                                <>
-                                    {user ? (
-                                        <>
-                                            <div className="py-2 text-dark-900 text-sm font-medium">
-                                                Hi,{' '}
-                                                {user.name ||
-                                                    user.email?.split('@')[0]}
-                                            </div>
-                                            <Link
-                                                href="/orders"
-                                                className="block w-full text-left py-2 text-dark-900 hover:text-dark-700 transition-colors"
-                                                onClick={() =>
-                                                    setIsMenuOpen(false)
-                                                }
-                                            >
-                                                My Orders
-                                            </Link>
-                                            <button
-                                                onClick={() => {
-                                                    handleLogout();
-                                                    setIsMenuOpen(false);
-                                                }}
-                                                className="block w-full text-left py-2 text-dark-900 hover:text-dark-700 transition-colors cursor-pointer"
-                                            >
-                                                Logout
-                                            </button>
-                                        </>
-                                    ) : (
-                                        <Link
-                                            href="/sign-in"
-                                            className="block w-full text-left py-2 text-dark-900 hover:text-dark-700 transition-colors"
-                                            onClick={() => setIsMenuOpen(false)}
-                                        >
-                                            Sign In
-                                        </Link>
-                                    )}
-                                </>
-                            )}
-                            <div
-                                className="py-2"
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                <CartIcon />
-                            </div>
-                        </div>
+                        <nav className="space-y-0">
+                            {navLinks.map((link) => (
+                                <Link
+                                    key={link.href}
+                                    href={link.href}
+                                    className={`block py-4 text-dark-900 transition-all font-semibold text-xl border-b border-light-300 last:border-b-0 ${
+                                        isActiveLink(link.gender)
+                                            ? 'text-dark-900'
+                                            : 'text-dark-600'
+                                    }`}
+                                    onClick={() => setIsMenuOpen(false)}
+                                >
+                                    {link.label}
+                                </Link>
+                            ))}
+                        </nav>
                     </div>
                 </div>
             )}

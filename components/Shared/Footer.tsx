@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { getFooterProducts, type FooterSection } from '@/lib/actions/product';
+import { FooterClient } from './FooterClient';
+import { FooterLegalLinks } from './FooterLegalLinks';
 
 export async function Footer() {
     const footerSections: FooterSection[] = await getFooterProducts();
@@ -17,13 +19,6 @@ export async function Footer() {
             href: 'https://instagram.com/nike',
             label: 'Instagram',
         },
-    ];
-
-    const legalLinks = [
-        { label: 'Guides', href: '/legal/guides' },
-        { label: 'Terms of Sale', href: '/legal/terms-of-sale' },
-        { label: 'Terms of Use', href: '/legal/terms-of-use' },
-        { label: 'Nike Privacy Policy', href: '/legal/privacy-policy' },
     ];
 
     return (
@@ -68,26 +63,9 @@ export async function Footer() {
 
                 {/* Bottom Section */}
                 <div className="border-t border-dark-700 pt-8">
-                    <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-6">
                         {/* Location & Copyright */}
-                        <div className="flex items-center gap-2 text-caption text-dark-500">
-                            <svg
-                                className="w-4 h-4"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    fillRule="evenodd"
-                                    d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                            <span>Venezuela</span>
-                            <span className="ml-4">
-                                © 2025 Nike, Inc. All Rights Reserved
-                            </span>
-                        </div>
+                        <FooterClient />
 
                         {/* Social Links */}
                         <div className="flex items-center gap-4">
@@ -113,16 +91,8 @@ export async function Footer() {
                     </div>
 
                     {/* Legal Links */}
-                    <div className="flex flex-wrap items-center justify-center md:justify-end gap-6 mt-6">
-                        {legalLinks.map((link) => (
-                            <Link
-                                key={link.href}
-                                href={link.href}
-                                className="text-caption text-dark-500 hover:text-light-100 transition-colors"
-                            >
-                                {link.label}
-                            </Link>
-                        ))}
+                    <div className="flex flex-wrap items-center justify-center md:justify-end gap-6">
+                        <FooterLegalLinks />
                     </div>
                 </div>
             </div>

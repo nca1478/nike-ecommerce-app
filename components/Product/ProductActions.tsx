@@ -5,6 +5,7 @@ import { Heart } from 'lucide-react';
 import { AddToCartButton } from '@/components';
 import { SizeOption } from './SizePickerWithStock';
 import Link from 'next/link';
+import { useI18n } from '@/lib/i18n';
 
 interface ProductVariant {
     id: string;
@@ -35,6 +36,7 @@ export function ProductActions({
     selectedColorName,
 }: ProductActionsProps) {
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
+    const { t } = useI18n();
 
     // Encontrar la variante específica según color y talla seleccionados
     const selectedVariant = variants.find(
@@ -57,13 +59,13 @@ export function ProductActions({
             <div>
                 <div className="flex items-center justify-between mb-3">
                     <h3 className="text-body-medium text-dark-900">
-                        Select Size
+                        {t.products.selectSize}
                     </h3>
                     <Link
                         href="#"
                         className="text-caption text-dark-700 hover:text-dark-900 underline focus:outline-none focus:ring-2 focus:ring-dark-900 rounded"
                     >
-                        Size Guide
+                        {t.products.sizeGuide}
                     </Link>
                 </div>
                 <SizePickerWithStockControlled
@@ -76,14 +78,12 @@ export function ProductActions({
             {/* Mensaje de validación */}
             {!selectedSize && (
                 <p className="text-caption text-dark-700">
-                    Please select a size
+                    {t.products.pleaseSelectSize}
                 </p>
             )}
 
             {selectedSize && !hasStock && (
-                <p className="text-caption text-red">
-                    This size is currently out of stock
-                </p>
+                <p className="text-caption text-red">{t.products.outOfStock}</p>
             )}
 
             {/* Action Buttons */}
@@ -107,7 +107,7 @@ export function ProductActions({
                 <button className="w-full bg-light-100 text-dark-900 py-4 rounded-full text-body-medium font-medium border-2 border-dark-900 hover:bg-light-200 transition-colors focus:outline-none focus:ring-2 focus:ring-dark-900 focus:ring-offset-2 cursor-pointer">
                     <span className="flex items-center justify-center gap-2">
                         <Heart className="w-5 h-5" />
-                        Favorite
+                        {t.products.favorite}
                     </span>
                 </button>
             </div>

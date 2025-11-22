@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { ShoppingBag } from 'lucide-react';
 import { addCartItem } from '@/lib/actions/cart';
 import { useCartStore } from '@/lib/store/cart.store';
+import { useI18n } from '@/lib/i18n';
 import toast from 'react-hot-toast';
 
 type AddToCartButtonProps = {
@@ -33,6 +34,7 @@ export function AddToCartButton({
 }: AddToCartButtonProps) {
     const [isAdding, setIsAdding] = useState(false);
     const { addItem } = useCartStore();
+    const { t } = useI18n();
 
     const handleAddToCart = async () => {
         setIsAdding(true);
@@ -54,9 +56,9 @@ export function AddToCartButton({
                 category,
             });
 
-            toast.success('Product added to cart');
+            toast.success(t.cart.addedToCart);
         } else {
-            toast.error(result.error || 'Error adding to cart');
+            toast.error(result.error || t.cart.errorProcessing);
         }
 
         setIsAdding(false);
@@ -69,7 +71,7 @@ export function AddToCartButton({
             className={`w-full bg-dark-900 text-light-100 py-4 rounded-full text-body-medium font-medium hover:bg-dark-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer ${className}`}
         >
             <ShoppingBag className="w-5 h-5" />
-            {isAdding ? 'Adding...' : 'Add to Cart'}
+            {isAdding ? t.common.loading : t.products.addToCart}
         </button>
     );
 }

@@ -1,6 +1,11 @@
+'use client';
+
 import Link from 'next/link';
+import { useI18n } from '@/lib/i18n';
 
 export default function GuidesPage() {
+    const { t } = useI18n();
+
     return (
         <div className="min-h-screen bg-light-100">
             <div className="mx-auto max-w-4xl px-6 py-12">
@@ -8,91 +13,80 @@ export default function GuidesPage() {
                     href="/"
                     className="mb-8 inline-block text-body text-dark-700 hover:text-dark-900"
                 >
-                    ← Back to Home
+                    {t.legal.backToHome}
                 </Link>
 
                 <h1 className="mb-8 text-heading-2 font-bold text-dark-900">
-                    Nike Guides
+                    {t.legal.guides.title}
                 </h1>
 
                 <div className="space-y-8">
                     <section>
                         <h2 className="mb-4 text-heading-3 font-medium text-dark-900">
-                            Size Guide
+                            {t.legal.guides.sizeGuide.title}
                         </h2>
                         <p className="mb-4 text-body text-dark-700">
-                            Finding the perfect fit is essential for comfort and
-                            performance. Use our comprehensive size charts to
-                            determine your ideal Nike shoe size.
+                            {t.legal.guides.sizeGuide.description}
                         </p>
                         <div className="rounded-lg bg-light-200 p-6">
                             <h3 className="mb-3 text-body-medium font-medium text-dark-900">
-                                How to Measure Your Feet
+                                {t.legal.guides.sizeGuide.howToMeasure}
                             </h3>
                             <ol className="list-decimal space-y-2 pl-5 text-body text-dark-700">
-                                <li>Place your foot on a flat surface</li>
-                                <li>
-                                    Measure from heel to longest toe in
-                                    centimeters
-                                </li>
-                                <li>Compare with our size chart</li>
-                                <li>
-                                    If between sizes, we recommend sizing up
-                                </li>
+                                <li>{t.legal.guides.sizeGuide.step1}</li>
+                                <li>{t.legal.guides.sizeGuide.step2}</li>
+                                <li>{t.legal.guides.sizeGuide.step3}</li>
+                                <li>{t.legal.guides.sizeGuide.step4}</li>
                             </ol>
                         </div>
                     </section>
 
                     <section>
                         <h2 className="mb-4 text-heading-3 font-medium text-dark-900">
-                            Care Instructions
+                            {t.legal.guides.careInstructions.title}
                         </h2>
                         <p className="mb-4 text-body text-dark-700">
-                            Proper care extends the life of your Nike products.
-                            Follow these guidelines to keep your shoes looking
-                            fresh.
+                            {t.legal.guides.careInstructions.description}
                         </p>
                         <div className="rounded-lg bg-light-200 p-6">
                             <h3 className="mb-3 text-body-medium font-medium text-dark-900">
-                                General Care Tips
+                                {t.legal.guides.careInstructions.generalTips}
                             </h3>
                             <ul className="list-disc space-y-2 pl-5 text-body text-dark-700">
-                                <li>Clean with a soft brush and mild soap</li>
-                                <li>Air dry at room temperature</li>
-                                <li>Avoid direct heat or sunlight</li>
-                                <li>Store in a cool, dry place</li>
+                                <li>{t.legal.guides.careInstructions.tip1}</li>
+                                <li>{t.legal.guides.careInstructions.tip2}</li>
+                                <li>{t.legal.guides.careInstructions.tip3}</li>
+                                <li>{t.legal.guides.careInstructions.tip4}</li>
                             </ul>
                         </div>
                     </section>
 
                     <section>
                         <h2 className="mb-4 text-heading-3 font-medium text-dark-900">
-                            Shipping & Returns
+                            {t.legal.guides.shippingReturns.title}
                         </h2>
                         <p className="mb-4 text-body text-dark-700">
-                            We offer free standard shipping on orders over $50
-                            and easy returns within 30 days of purchase.
+                            {t.legal.guides.shippingReturns.description}
                         </p>
                         <div className="rounded-lg bg-light-200 p-6">
                             <h3 className="mb-3 text-body-medium font-medium text-dark-900">
-                                Return Process
+                                {t.legal.guides.shippingReturns.returnProcess}
                             </h3>
                             <ol className="list-decimal space-y-2 pl-5 text-body text-dark-700">
-                                <li>Initiate return from your account</li>
-                                <li>Print the prepaid shipping label</li>
-                                <li>Pack items in original packaging</li>
-                                <li>Drop off at any carrier location</li>
+                                <li>{t.legal.guides.shippingReturns.step1}</li>
+                                <li>{t.legal.guides.shippingReturns.step2}</li>
+                                <li>{t.legal.guides.shippingReturns.step3}</li>
+                                <li>{t.legal.guides.shippingReturns.step4}</li>
                             </ol>
                         </div>
                     </section>
 
                     <section>
                         <h2 className="mb-4 text-heading-3 font-medium text-dark-900">
-                            Product Technology
+                            {t.legal.guides.productTechnology.title}
                         </h2>
                         <p className="text-body text-dark-700">
-                            Learn about Nike&apos;s innovative technologies
-                            designed to enhance your performance and comfort.
+                            {t.legal.guides.productTechnology.description}
                         </p>
                     </section>
                 </div>

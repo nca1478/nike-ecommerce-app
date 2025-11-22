@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Download } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { generateInvoicePDF } from '@/lib/utils/generateInvoicePDF';
+import { useI18n } from '@/lib/i18n';
 
 interface DownloadInvoiceButtonProps {
     orderId: string;
@@ -14,6 +15,7 @@ export function DownloadInvoiceButton({
     orderId,
     orderNumber,
 }: DownloadInvoiceButtonProps) {
+    const { t, locale } = useI18n();
     const [isDownloading, setIsDownloading] = useState(false);
 
     const handleDownload = async () => {
@@ -28,12 +30,12 @@ export function DownloadInvoiceButton({
 
             const data = await response.json();
 
-            await generateInvoicePDF(data, orderNumber);
+            await generateInvoicePDF(data, orderNumber, t, locale);
 
-            toast.success('Factura descargada correctamente');
+            toast.success(t.orders.invoiceDownloaded);
         } catch (error) {
             console.error('Error al descargar factura:', error);
-            toast.error('Error al descargar la factura');
+            toast.error(t.orders.errorDownloadingInvoice);
         } finally {
             setIsDownloading(false);
         }
@@ -46,7 +48,7 @@ export function DownloadInvoiceButton({
             className="w-full flex items-center justify-center gap-2 bg-white text-black border-2 border-black px-6 py-3 rounded-full hover:bg-gray-50 transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed cursor-pointer"
         >
             <Download className="w-5 h-5" />
-            {isDownloading ? 'Descargando...' : 'Descargar Factura'}
+            {isDownloading ? t.orders.downloading : t.orders.downloadInvoice}
         </button>
     );
 }

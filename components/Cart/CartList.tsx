@@ -4,8 +4,10 @@ import { useEffect } from 'react';
 import { useCartStore } from '@/lib/store/cart.store';
 import { CartItem } from './CartItem';
 import { getCart } from '@/lib/actions/cart';
+import { useI18n } from '@/lib/i18n';
 
 export function CartList() {
+    const { t } = useI18n();
     const { items, setItems, setLoading } = useCartStore();
 
     useEffect(() => {
@@ -25,7 +27,7 @@ export function CartList() {
     if (items.length === 0) {
         return (
             <div className="text-center py-12">
-                <p className="text-lead text-dark-700">Your cart is empty</p>
+                <p className="text-lead text-dark-700">{t.cart.empty}</p>
             </div>
         );
     }

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { ShoppingCart } from 'lucide-react';
 import { toast } from 'react-hot-toast';
+import { useI18n } from '@/lib/i18n';
 
 interface OrderItem {
     id: string;
@@ -19,6 +20,7 @@ interface ReorderButtonProps {
 }
 
 export function ReorderButton({ items }: ReorderButtonProps) {
+    const { t } = useI18n();
     const [isLoading, setIsLoading] = useState(false);
 
     const handleReorder = async () => {
@@ -29,8 +31,10 @@ export function ReorderButton({ items }: ReorderButtonProps) {
             // y agregarlos al carrito usando el store
             // Por ahora, mostramos un mensaje informativo
 
+            const itemText =
+                items.length === 1 ? t.orders.item : t.orders.items;
             toast.success(
-                `Funcionalidad de reordenar en desarrollo. ${items.length} ${items.length === 1 ? 'producto' : 'productos'} para agregar.`,
+                `Funcionalidad de reordenar en desarrollo. ${items.length} ${itemText} para agregar.`,
             );
 
             // Comentado para implementación futura:
@@ -55,7 +59,7 @@ export function ReorderButton({ items }: ReorderButtonProps) {
             className="w-full flex items-center justify-center gap-2 bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed cursor-pointer"
         >
             <ShoppingCart className="w-5 h-5" />
-            {isLoading ? 'Procesando...' : 'Volver a Pedir'}
+            {isLoading ? t.cart.processing : t.orders.reorder}
         </button>
     );
 }

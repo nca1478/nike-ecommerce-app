@@ -1,13 +1,14 @@
 import { redirect } from 'next/navigation';
 import { getCurrentUser } from '@/lib/auth/actions';
 import { getUserOrders } from '@/lib/actions/orders';
-import { OrdersList } from '@/components/Orders/OrdersList';
+import { OrdersPageContent } from '@/components/Orders/OrdersPageContent';
 
 export const dynamic = 'force-dynamic';
 
+// Metadata will be set dynamically based on locale
 export const metadata = {
-    title: 'Mis Pedidos | Nike Store',
-    description: 'Historial de pedidos y seguimiento de envíos',
+    title: 'My Orders | Nike Store',
+    description: 'Order history and shipment tracking',
 };
 
 export default async function OrdersPage() {
@@ -32,17 +33,5 @@ export default async function OrdersPage() {
         );
     }
 
-    return (
-        <div className="container mx-auto px-4 py-8">
-            <div className="mb-8">
-                <h1 className="text-3xl font-bold mb-2">Mis Pedidos</h1>
-                <p className="text-gray-600">
-                    Revisa el estado de tus pedidos y realiza seguimiento de
-                    envíos
-                </p>
-            </div>
-
-            <OrdersList orders={result.data} />
-        </div>
-    );
+    return <OrdersPageContent orders={result.data} />;
 }

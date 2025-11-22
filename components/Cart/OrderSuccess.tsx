@@ -3,6 +3,7 @@
 import { CheckCircle, Package, Truck } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useI18n } from '@/lib/i18n';
 
 interface OrderItem {
     id: string;
@@ -27,6 +28,8 @@ export default function OrderSuccess({
     total,
     orderDate,
 }: OrderSuccessProps) {
+    const { t } = useI18n();
+
     return (
         <div className="max-w-3xl mx-auto px-4 py-12">
             {/* Success Header */}
@@ -34,22 +37,23 @@ export default function OrderSuccess({
                 <div className="flex justify-center mb-4">
                     <CheckCircle className="w-16 h-16 text-green-500" />
                 </div>
-                <h1 className="text-3xl font-bold mb-2">¡Pedido confirmado!</h1>
-                <p className="text-gray-600">
-                    Gracias por tu compra. Tu pedido ha sido procesado
-                    exitosamente.
-                </p>
+                <h1 className="text-3xl font-bold mb-2">
+                    {t.orders.orderConfirmed}
+                </h1>
+                <p className="text-gray-600">{t.orders.thankYou}</p>
             </div>
 
             {/* Order Info */}
             <div className="bg-gray-50 rounded-lg p-6 mb-6">
                 <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
-                        <p className="text-gray-600 mb-1">Número de pedido</p>
+                        <p className="text-gray-600 mb-1">
+                            {t.orders.orderNumber}
+                        </p>
                         <p className="font-semibold">{orderId.slice(0, 8)}</p>
                     </div>
                     <div>
-                        <p className="text-gray-600 mb-1">Fecha</p>
+                        <p className="text-gray-600 mb-1">{t.orders.date}</p>
                         <p className="font-semibold">
                             {orderDate.toLocaleDateString('es-ES', {
                                 year: 'numeric',
@@ -64,14 +68,16 @@ export default function OrderSuccess({
             {/* Order Status */}
             <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
                 <h2 className="text-lg font-semibold mb-4">
-                    Estado del pedido
+                    {t.orders.orderStatus}
                 </h2>
                 <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
                         <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
                             <CheckCircle className="w-5 h-5 text-white" />
                         </div>
-                        <span className="text-sm font-medium">Confirmado</span>
+                        <span className="text-sm font-medium">
+                            {t.orders.confirmed}
+                        </span>
                     </div>
                     <div className="flex-1 h-0.5 bg-gray-200"></div>
                     <div className="flex items-center gap-2">
@@ -79,7 +85,7 @@ export default function OrderSuccess({
                             <Package className="w-5 h-5 text-gray-400" />
                         </div>
                         <span className="text-sm text-gray-500">
-                            Preparando
+                            {t.orders.preparing}
                         </span>
                     </div>
                     <div className="flex-1 h-0.5 bg-gray-200"></div>
@@ -87,7 +93,9 @@ export default function OrderSuccess({
                         <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
                             <Truck className="w-5 h-5 text-gray-400" />
                         </div>
-                        <span className="text-sm text-gray-500">En camino</span>
+                        <span className="text-sm text-gray-500">
+                            {t.orders.inTransit}
+                        </span>
                     </div>
                 </div>
             </div>
@@ -95,7 +103,7 @@ export default function OrderSuccess({
             {/* Order Items */}
             <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
                 <h2 className="text-lg font-semibold mb-4">
-                    Artículos del pedido
+                    {t.orders.orderItems}
                 </h2>
                 <div className="space-y-4">
                     {items.map((item) => (
@@ -118,10 +126,11 @@ export default function OrderSuccess({
                                     {item.productName}
                                 </h3>
                                 <p className="text-sm text-gray-600">
-                                    Talla: {item.size} | Color: {item.color}
+                                    {t.cart.size}: {item.size} | {t.cart.color}:{' '}
+                                    {item.color}
                                 </p>
                                 <p className="text-sm text-gray-600">
-                                    Cantidad: {item.quantity}
+                                    {t.cart.quantity}: {item.quantity}
                                 </p>
                             </div>
                             <div className="text-right">
@@ -135,7 +144,7 @@ export default function OrderSuccess({
 
                 <div className="border-t pt-4 mt-4">
                     <div className="flex justify-between font-bold text-lg">
-                        <span>Total</span>
+                        <span>{t.cart.total}</span>
                         <span>${total.toFixed(2)}</span>
                     </div>
                 </div>
@@ -147,13 +156,13 @@ export default function OrderSuccess({
                     href="/"
                     className="flex-1 bg-black text-white py-3 rounded-full font-medium hover:bg-gray-800 transition-colors text-center"
                 >
-                    Seguir comprando
+                    {t.orders.continueShopping}
                 </Link>
                 <Link
                     href="/orders"
                     className="flex-1 bg-white text-black border-2 border-black py-3 rounded-full font-medium hover:bg-gray-50 transition-colors text-center"
                 >
-                    Ver mis pedidos
+                    {t.orders.viewMyOrders}
                 </Link>
             </div>
         </div>
