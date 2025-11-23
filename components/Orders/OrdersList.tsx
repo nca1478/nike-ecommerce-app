@@ -130,20 +130,42 @@ export function OrdersList({ orders }: OrdersListProps) {
                                     <ChevronRight className="w-5 h-5 text-gray-400 shrink-0" />
                                 </div>
 
-                                <div className="flex items-center gap-4 mt-4">
-                                    <OrderStatusBadge status={order.status} />
-                                    <span className="text-sm text-gray-500">
-                                        {new Date(
-                                            order.createdAt,
-                                        ).toLocaleDateString(
-                                            locale === 'es' ? 'es-ES' : 'en-US',
-                                            {
-                                                year: 'numeric',
-                                                month: 'long',
-                                                day: 'numeric',
-                                            },
-                                        )}
-                                    </span>
+                                <div className="mt-4">
+                                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                                        <OrderStatusBadge
+                                            status={order.status}
+                                        />
+                                        {/* Fecha para móviles - debajo del badge, formato corto */}
+                                        <span className="text-sm text-gray-500 sm:hidden">
+                                            {new Date(
+                                                order.createdAt,
+                                            ).toLocaleDateString(
+                                                locale === 'es'
+                                                    ? 'es-ES'
+                                                    : 'en-US',
+                                                {
+                                                    day: 'numeric',
+                                                    month: 'short',
+                                                    year: 'numeric',
+                                                },
+                                            )}
+                                        </span>
+                                        {/* Fecha para tablets y desktop - al lado del badge, formato largo */}
+                                        <span className="text-sm text-gray-500 hidden sm:inline">
+                                            {new Date(
+                                                order.createdAt,
+                                            ).toLocaleDateString(
+                                                locale === 'es'
+                                                    ? 'es-ES'
+                                                    : 'en-US',
+                                                {
+                                                    year: 'numeric',
+                                                    month: 'long',
+                                                    day: 'numeric',
+                                                },
+                                            )}
+                                        </span>
+                                    </div>
                                 </div>
 
                                 <div className="mt-4 pt-4 border-t border-gray-100">
