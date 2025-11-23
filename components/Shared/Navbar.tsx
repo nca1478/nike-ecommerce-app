@@ -61,43 +61,42 @@ export function Navbar() {
             {/* Top Bar */}
             <div className="bg-light-200 border-b border-light-300">
                 <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-end h-9 text-sm">
+                    <div className="flex items-center justify-center sm:justify-end h-9 text-sm">
                         <div className="flex items-center space-x-3">
+                            {/* Language Switcher */}
+                            <LanguageSwitcher />
+
+                            <span className="text-dark-500">|</span>
+
+                            {/* Cart Icon */}
+                            <CartIcon />
+
                             {!loading && (
                                 <>
                                     {user ? (
-                                        <div className="flex items-center space-x-3">
-                                            <span className="text-dark-900 font-medium">
-                                                {t.nav.hi},{' '}
-                                                {user.name ||
-                                                    user.email?.split('@')[0]}
-                                            </span>
-                                            <span className="text-dark-500">
-                                                |
-                                            </span>
-                                            <Link
-                                                href="/orders"
-                                                className="text-dark-900 hover:text-dark-700 transition-colors"
-                                            >
-                                                {t.nav.myOrders}
-                                            </Link>
+                                        <>
                                             <span className="text-dark-500">
                                                 |
                                             </span>
                                             <button
                                                 onClick={handleLogout}
-                                                className="text-dark-900 hover:text-dark-700 transition-colors cursor-pointer"
+                                                className="text-dark-900 hover:text-dark-700 transition-colors text-body-medium cursor-pointer"
                                             >
                                                 {t.nav.logout}
                                             </button>
-                                        </div>
+                                        </>
                                     ) : (
-                                        <Link
-                                            href="/sign-in"
-                                            className="text-dark-900 hover:text-dark-700 transition-colors"
-                                        >
-                                            {t.nav.signIn}
-                                        </Link>
+                                        <>
+                                            <span className="text-dark-500">
+                                                |
+                                            </span>
+                                            <Link
+                                                href="/sign-in"
+                                                className="text-dark-900 hover:text-dark-700 transition-colors text-body-medium"
+                                            >
+                                                {t.nav.signIn}
+                                            </Link>
+                                        </>
                                     )}
                                 </>
                             )}
@@ -109,7 +108,7 @@ export function Navbar() {
             {/* Main Navigation */}
             <div className="border-b border-light-300">
                 <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center h-16">
+                    <div className="flex items-center justify-between h-16 lg:relative">
                         {/* Logo - Fixed width */}
                         <div className="w-[200px] shrink-0">
                             <Link href="/" className="inline-block">
@@ -124,8 +123,8 @@ export function Navbar() {
                             </Link>
                         </div>
 
-                        {/* Center Navigation - Desktop */}
-                        <div className="hidden lg:flex items-center justify-center flex-1">
+                        {/* Center Navigation - Desktop - Absolutely positioned */}
+                        <div className="hidden lg:flex items-center justify-center absolute left-1/2 -translate-x-1/2">
                             <div className="flex items-center space-x-6">
                                 {navLinks.map((link) => (
                                     <Link
@@ -144,13 +143,13 @@ export function Navbar() {
                         </div>
 
                         {/* Right Side Actions */}
-                        <div
-                            className="hidden md:flex items-center justify-end space-x-1 lg:space-x-2 shrink-0"
-                            style={{ width: '200px' }}
-                        >
+                        <div className="hidden md:flex items-center justify-end space-x-3 lg:space-x-4 shrink-0">
                             {/* Search Bar */}
-                            <form onSubmit={handleSearch} className="relative">
-                                <div className="relative">
+                            <form
+                                onSubmit={handleSearch}
+                                className="relative z-10 flex justify-end"
+                            >
+                                <div className="relative w-28 lg:w-32 focus-within:w-52 focus-within:-ml-24 lg:focus-within:-ml-20 transition-all duration-300 ease-in-out">
                                     <input
                                         type="text"
                                         value={searchQuery}
@@ -159,10 +158,10 @@ export function Navbar() {
                                         }
                                         onBlur={() => setSearchQuery('')}
                                         placeholder={t.nav.search}
-                                        className="w-28 lg:w-32 focus:w-52 pl-9 pr-3 py-1.5 bg-light-200 rounded-full text-sm text-dark-900 placeholder-dark-500 focus:outline-none focus:ring-2 focus:ring-dark-900 transition-all duration-300 ease-in-out"
+                                        className="w-full pl-9 pr-3 py-1.5 bg-light-200 rounded-full text-sm text-dark-900 placeholder-dark-500 focus:outline-none focus:ring-2 focus:ring-dark-900 focus:bg-white focus:shadow-lg transition-colors duration-300"
                                     />
                                     <svg
-                                        className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-700"
+                                        className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-700 pointer-events-none"
                                         fill="none"
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
@@ -175,11 +174,23 @@ export function Navbar() {
                                 </div>
                             </form>
 
-                            {/* Language Switcher */}
-                            <LanguageSwitcher />
-
-                            {/* Cart Icon */}
-                            <CartIcon />
+                            {/* User Info */}
+                            {!loading && user && (
+                                <div className="flex items-center space-x-3 text-sm whitespace-nowrap">
+                                    <span className="text-dark-900 font-medium">
+                                        {t.nav.hi},{' '}
+                                        {user.name?.split(' ')[0] ||
+                                            user.email?.split('@')[0]}
+                                    </span>
+                                    <span className="text-dark-500">|</span>
+                                    <Link
+                                        href="/orders"
+                                        className="text-dark-900 hover:text-dark-700 transition-colors"
+                                    >
+                                        {t.nav.myOrders}
+                                    </Link>
+                                </div>
+                            )}
                         </div>
 
                         {/* Mobile Menu Button */}
@@ -212,14 +223,6 @@ export function Navbar() {
             {isMenuOpen && (
                 <div className="md:hidden border-b border-light-300 bg-light-100">
                     <div className="px-6 py-6">
-                        {/* Actions Row - Top */}
-                        <div className="flex items-center justify-between mb-4">
-                            <div onClick={() => setIsMenuOpen(false)}>
-                                <CartIcon />
-                            </div>
-                            <LanguageSwitcher />
-                        </div>
-
                         {/* Mobile Search */}
                         <form
                             onSubmit={handleSearch}
@@ -248,6 +251,18 @@ export function Navbar() {
 
                         {/* Mobile Navigation Links */}
                         <nav className="space-y-0">
+                            {/* My Orders Link - Same style as gender links */}
+                            {!loading && user && (
+                                <Link
+                                    href="/orders"
+                                    className="block py-4 text-dark-900 hover:text-dark-700 transition-all font-semibold text-xl border-b border-light-300"
+                                    onClick={() => setIsMenuOpen(false)}
+                                >
+                                    {t.nav.myOrders}
+                                </Link>
+                            )}
+
+                            {/* Gender Links */}
                             {navLinks.map((link) => (
                                 <Link
                                     key={link.href}
