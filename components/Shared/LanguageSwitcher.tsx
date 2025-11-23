@@ -50,7 +50,7 @@ export function LanguageSwitcher() {
                 aria-expanded={isOpen}
             >
                 <Globe className="w-4 h-4 text-dark-900" />
-                <span className="text-xs font-medium text-dark-900">
+                <span className="text-sm text-body-medium text-dark-900">
                     {currentLanguage?.code.toUpperCase()}
                 </span>
             </button>
