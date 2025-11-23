@@ -54,7 +54,11 @@ export default function OrderSuccess({
                     </div>
                     <div>
                         <p className="text-gray-600 mb-1">{t.orders.date}</p>
-                        <p className="font-semibold">
+                        {/* Formato corto en móvil, largo en desktop */}
+                        <p className="font-semibold md:hidden">
+                            {orderDate.toLocaleDateString('es-ES')}
+                        </p>
+                        <p className="font-semibold hidden md:block">
                             {orderDate.toLocaleDateString('es-ES', {
                                 year: 'numeric',
                                 month: 'long',
@@ -70,30 +74,30 @@ export default function OrderSuccess({
                 <h2 className="text-lg font-semibold mb-4">
                     {t.orders.orderStatus}
                 </h2>
-                <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1 md:gap-4">
+                    <div className="flex flex-col items-center gap-1 md:gap-2 shrink-0">
                         <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
                             <CheckCircle className="w-5 h-5 text-white" />
                         </div>
-                        <span className="text-sm font-medium">
+                        <span className="text-xs md:text-sm font-medium text-center whitespace-nowrap">
                             {t.orders.confirmed}
                         </span>
                     </div>
-                    <div className="flex-1 h-0.5 bg-gray-200"></div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex-1 min-w-[10px] h-0.5 bg-gray-200"></div>
+                    <div className="flex flex-col items-center gap-1 md:gap-2 shrink-0">
                         <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
                             <Package className="w-5 h-5 text-gray-400" />
                         </div>
-                        <span className="text-sm text-gray-500">
+                        <span className="text-xs md:text-sm text-gray-500 text-center whitespace-nowrap">
                             {t.orders.preparing}
                         </span>
                     </div>
-                    <div className="flex-1 h-0.5 bg-gray-200"></div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex-1 min-w-[10px] h-0.5 bg-gray-200"></div>
+                    <div className="flex flex-col items-center gap-1 md:gap-2 shrink-0">
                         <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
                             <Truck className="w-5 h-5 text-gray-400" />
                         </div>
-                        <span className="text-sm text-gray-500">
+                        <span className="text-xs md:text-sm text-gray-500 text-center whitespace-nowrap">
                             {t.orders.inTransit}
                         </span>
                     </div>
