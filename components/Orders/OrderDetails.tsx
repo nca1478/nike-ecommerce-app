@@ -98,11 +98,30 @@ export function OrderDetails({ order, items }: OrderDetailsProps) {
                         <OrderTimeline status={order.status} />
                     </div>
 
-                    {/* Productos */}
+                    {/* Products */}
                     <div className="bg-white border border-gray-200 rounded-lg p-6">
-                        <h2 className="text-xl font-semibold mb-4">
-                            {t.orders.products} ({items.length})
-                        </h2>
+                        <div className="flex justify-between items-center mb-4">
+                            <h2 className="text-xl font-semibold">
+                                {t.orders.products} ({items.length})
+                            </h2>
+                            {/* Precios en móvil - alineados con el título */}
+                            <div className="md:hidden text-right">
+                                {items.map((item) => (
+                                    <div key={item.id}>
+                                        <p className="font-semibold">
+                                            $
+                                            {(
+                                                item.price * item.quantity
+                                            ).toFixed(2)}
+                                        </p>
+                                        <p className="text-sm text-gray-500">
+                                            ${item.price.toFixed(2)}{' '}
+                                            {t.orders.each}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                         <div className="space-y-4">
                             {items.map((item) => (
                                 <div
@@ -127,14 +146,17 @@ export function OrderDetails({ order, items }: OrderDetailsProps) {
                                             {item.productName}
                                         </h3>
                                         <p className="text-sm text-gray-600 mb-2">
-                                            {t.cart.size}: {item.size} |{' '}
+                                            {t.cart.size}: {item.size}
+                                        </p>
+                                        <p className="text-sm text-gray-600 mb-2">
                                             {t.cart.color}: {item.color}
                                         </p>
                                         <p className="text-sm text-gray-600">
                                             {t.orders.quantity}: {item.quantity}
                                         </p>
                                     </div>
-                                    <div className="text-right">
+                                    {/* Precios en desktop - posición original */}
+                                    <div className="hidden md:block text-right">
                                         <p className="font-semibold">
                                             $
                                             {(
