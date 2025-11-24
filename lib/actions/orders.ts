@@ -41,11 +41,19 @@ export async function createOrder(
 
         const cartId = session.metadata?.cartId;
         const userId = session.metadata?.userId;
+        const guestId = session.metadata?.guestId;
 
-        if (!cartId || !userId) {
+        if (!cartId) {
             return {
                 success: false,
-                error: 'Información de sesión incompleta',
+                error: 'Cart ID no encontrado en metadata',
+            };
+        }
+
+        if (!userId && !guestId) {
+            return {
+                success: false,
+                error: 'Usuario o invitado no identificado',
             };
         }
 
@@ -81,6 +89,14 @@ export async function createOrder(
 
         // Calcular total incluyendo shipping y tax
         const totalAmount = subtotal + shipping + tax;
+
+        // Validar que tengamos userId (por ahora solo soportamos usuarios autenticados)
+        if (!userId) {
+            return {
+                success: false,
+                error: 'Solo usuarios autenticados pueden crear órdenes',
+            };
+        }
 
         // Crear dirección temporal (en producción, esto vendría del formulario de checkout)
         // Por ahora, usamos una dirección por defecto
