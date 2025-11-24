@@ -1,6 +1,6 @@
 import 'dotenv/config';
-import { drizzle } from 'drizzle-orm/neon-serverless';
-import { Pool } from '@neondatabase/serverless';
+import { drizzle } from 'drizzle-orm/node-postgres';
+import { Pool } from 'pg';
 import * as schema from './schema';
 import { v4 as uuidv4 } from 'uuid';
 import * as fs from 'fs';
@@ -226,6 +226,22 @@ async function seed() {
             fs.mkdirSync(uploadsDir, { recursive: true });
             console.log('✅ Created uploads directory\n');
         }
+
+        // Clean up .avif and .webp files from uploads directory
+        console.log('🧹 Cleaning up .avif, .webp and .jpg files...');
+        const files = fs.readdirSync(uploadsDir);
+        let deletedCount = 0;
+        for (const file of files) {
+            if (
+                file.endsWith('.avif') ||
+                file.endsWith('.webp') ||
+                file.endsWith('.jpg')
+            ) {
+                fs.unlinkSync(path.join(uploadsDir, file));
+                deletedCount++;
+            }
+        }
+        console.log(`✅ Deleted ${deletedCount} .avif, .webp and .jpg files\n`);
 
         console.log('📊 Seeding genders...');
         let genders = await db
