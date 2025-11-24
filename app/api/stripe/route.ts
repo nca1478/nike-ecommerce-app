@@ -69,7 +69,6 @@ export async function POST(req: NextRequest) {
             case 'payment_intent.payment_failed': {
                 const paymentIntent = event.data.object as Stripe.PaymentIntent;
                 console.error('Payment failed:', paymentIntent.id);
-                // Aquí puedes notificar al usuario o registrar el fallo
                 break;
             }
 
@@ -80,7 +79,8 @@ export async function POST(req: NextRequest) {
             }
 
             default:
-                console.log(`Unhandled event type: ${event.type}`);
+                // Silently ignore unhandled events
+                break;
         }
 
         return NextResponse.json({ received: true });
