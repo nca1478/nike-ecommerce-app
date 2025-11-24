@@ -848,12 +848,12 @@ ZIP: Cualquier 5 dígitos
 
 ## 📄 Licencia
 
-Este proyecto es privado y confidencial.
+Este proyecto es público, desarrollado solo por propósito educativo.
 
 ## 👥 Equipo
 
-Desarrollado con ❤️ por el equipo de Nike E-Commerce
+Desarrollado con ❤️ por Nelson Cadenas
 
 ---
 
-**¿Necesitas ayuda?** Abre un issue en el repositorio o contacta al equipo de desarrollo.
+**¿Algo no funciona bien?** Abre un issue en el repositorio o contactame.
