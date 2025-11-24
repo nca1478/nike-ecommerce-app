@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { getProduct } from '@/lib/actions/product';
 import { RecommendedProducts, RecommendedSkeleton } from '@/components';
-import ProductPageClient from './ProductPageClient';
+import ProductPageClient from '@/components/Product/ProductPageClient';
 
 interface ProductPageProps {
     params: Promise<{ id: string }>;

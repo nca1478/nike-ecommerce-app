@@ -3,7 +3,7 @@ version: '3.9'
 services:
     postgres:
         image: postgres:17-alpine
-        container_name: nike-ecommerce-postgres
+        container_name: postgres-db
         restart: unless-stopped
         environment:
             POSTGRES_USER: ${DB_USER}
@@ -19,6 +19,27 @@ services:
             interval: 10s
             timeout: 5s
             retries: 5
+        networks:
+            - nike-network
+
+    stripe-cli:
+        image: stripe/stripe-cli:latest
+        container_name: stripe-cli
+        restart: unless-stopped
+        command: listen --forward-to host.docker.internal:3000/api/stripe --skip-verify --log-level info
+        environment:
+            STRIPE_API_KEY: ${STRIPE_SECRET_KEY}
+            STRIPE_DEVICE_NAME: nike-ecommerce-dev
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        depends_on:
+            - postgres
+        networks:
+            - nike-network
+
+networks:
+    nike-network:
+        driver: bridge
 
 volumes:
     postgres_data:
