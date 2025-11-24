@@ -151,7 +151,7 @@ export async function signOut(): Promise<ActionResult> {
  * Crear sesión de invitado
  */
 export async function createGuestSession(): Promise<
-    ActionResult<{ sessionToken: string }>
+    ActionResult<{ sessionToken: string; guestId: string }>
 > {
     try {
         // Verificar si ya existe una sesión de invitado
@@ -165,7 +165,10 @@ export async function createGuestSession(): Promise<
             if (existingGuest && existingGuest.expiresAt > new Date()) {
                 return {
                     success: true,
-                    data: { sessionToken: existingToken },
+                    data: {
+                        sessionToken: existingToken,
+                        guestId: existingGuest.id,
+                    },
                 };
             }
         }
@@ -174,17 +177,23 @@ export async function createGuestSession(): Promise<
         const sessionToken = crypto.randomUUID();
         const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 días
 
-        await db.insert(guest).values({
-            sessionToken,
-            expiresAt,
-        });
+        const [newGuest] = await db
+            .insert(guest)
+            .values({
+                sessionToken,
+                expiresAt,
+            })
+            .returning();
 
         // Establecer cookie
         await setGuestSessionCookie(sessionToken);
 
         return {
             success: true,
-            data: { sessionToken },
+            data: {
+                sessionToken,
+                guestId: newGuest.id,
+            },
         };
     } catch (error) {
         console.error('Error en createGuestSession:', error);

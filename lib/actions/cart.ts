@@ -52,34 +52,49 @@ async function getOrCreateCart(): Promise<string | null> {
         } else {
             // Usuario invitado
             let guestSessionToken = await getGuestSessionCookie();
+            let guestId: string | null = null;
 
-            // Si no hay sesión de invitado, crear una
-            if (!guestSessionToken) {
+            // Si hay sesión de invitado, buscar el guest record
+            if (guestSessionToken) {
+                const guestRecord = await db.query.guest.findFirst({
+                    where: (guest, { eq }) =>
+                        eq(guest.sessionToken, guestSessionToken),
+                });
+
+                if (guestRecord && guestRecord.expiresAt > new Date()) {
+                    guestId = guestRecord.id;
+                } else if (guestRecord) {
+                    console.log(
+                        '[Cart] Sesión de invitado expirada, creando nueva',
+                    );
+                }
+            }
+
+            // Si no hay guestId válido, crear nueva sesión
+            if (!guestId) {
+                console.log('[Cart] Creando nueva sesión de invitado');
                 const result = await createGuestSession();
                 if (!result.success || !result.data) {
+                    console.error(
+                        '[Cart] Error al crear sesión de invitado:',
+                        result.error,
+                    );
                     return null;
                 }
-                guestSessionToken = result.data.sessionToken;
+                guestId = result.data.guestId;
+                console.log('[Cart] Sesión de invitado creada:', guestId);
             }
 
-            // Buscar invitado por sessionToken
-            const guestRecord = await db.query.guest.findFirst({
-                where: (guest, { eq }) =>
-                    eq(guest.sessionToken, guestSessionToken),
-            });
-
-            if (!guestRecord) {
-                return null;
-            }
-
+            // Buscar o crear carrito para el invitado
             let cart = await db.query.carts.findFirst({
-                where: eq(carts.guestId, guestRecord.id),
+                where: eq(carts.guestId, guestId),
             });
 
             if (!cart) {
+                console.log('[Cart] Creando nuevo carrito para invitado');
                 const [newCart] = await db
                     .insert(carts)
-                    .values({ guestId: guestRecord.id })
+                    .values({ guestId })
                     .returning();
                 cart = newCart;
             }
@@ -87,7 +102,7 @@ async function getOrCreateCart(): Promise<string | null> {
             return cart.id;
         }
     } catch (error) {
-        console.error('Error en getOrCreateCart:', error);
+        console.error('[Cart] Error en getOrCreateCart:', error);
         return null;
     }
 }

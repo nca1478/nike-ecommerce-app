@@ -15,14 +15,23 @@ export interface CookieOptions {
 const defaultCookieOptions: CookieOptions = {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax', // Cambiado de 'strict' a 'lax' para mejor compatibilidad
+    sameSite: 'lax',
+    path: '/',
+    maxAge: COOKIE_MAX_AGE,
+};
+
+// Opciones específicas para guest session (más permisivas para producción)
+const guestCookieOptions: CookieOptions = {
+    httpOnly: false, // Permitir acceso desde cliente para mejor compatibilidad
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
     path: '/',
     maxAge: COOKIE_MAX_AGE,
 };
 
 export async function setGuestSessionCookie(sessionToken: string) {
     const cookieStore = await cookies();
-    cookieStore.set(GUEST_SESSION_COOKIE, sessionToken, defaultCookieOptions);
+    cookieStore.set(GUEST_SESSION_COOKIE, sessionToken, guestCookieOptions);
 }
 
 export async function getGuestSessionCookie(): Promise<string | undefined> {
