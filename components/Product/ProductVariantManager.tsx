@@ -105,7 +105,7 @@ export function ColorVariantPickerClient({
                     key={variant.colorId}
                     onClick={() => handleSelect(variant)}
                     onKeyDown={(e) => handleKeyDown(e, variant, index)}
-                    className={`relative w-12 h-12 rounded-lg overflow-hidden border-2 transition-all focus:outline-none focus:ring-2 focus:ring-dark-900 ${
+                    className={`relative w-12 h-12 rounded-lg overflow-hidden border-2 transition-all focus:outline-none focus:ring-2 focus:ring-dark-900 cursor-pointer ${
                         selectedVariant.colorId === variant.colorId
                             ? 'border-dark-900'
                             : 'border-light-300 hover:border-dark-500'
