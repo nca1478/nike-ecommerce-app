@@ -49,12 +49,15 @@ export default function AuthLayout({
                 <div className="w-full max-w-md">
                     {/* Mobile logo */}
                     <div className="mb-8 flex justify-center lg:hidden">
-                        <Image
-                            src="/logo.svg"
-                            alt="Nike Logo"
-                            width={50}
-                            height={50}
-                        />
+                        <Link href="/">
+                            <Image
+                                src="/logo.svg"
+                                alt="Nike Logo"
+                                width={50}
+                                height={50}
+                                className="invert"
+                            />
+                        </Link>
                     </div>
                     {children}
                 </div>
