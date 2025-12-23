@@ -15,6 +15,7 @@ interface OrderItem {
             name: string;
             images: Array<{ url: string }>;
         };
+        images?: Array<{ url: string }>;
     };
 }
 
@@ -84,26 +85,34 @@ export function OrdersList({ orders }: OrdersListProps) {
                         <div className="flex items-start gap-6">
                             {/* Imagen del primer producto */}
                             <div className="shrink-0">
-                                {firstItem?.productVariant.product.images[0]
-                                    ?.url ? (
-                                    <Image
-                                        src={
-                                            firstItem.productVariant.product
-                                                .images[0].url
-                                        }
-                                        alt={
-                                            firstItem.productVariant.product
-                                                .name
-                                        }
-                                        width={120}
-                                        height={120}
-                                        className="rounded-lg object-cover"
-                                    />
-                                ) : (
-                                    <div className="w-[120px] h-[120px] bg-gray-100 rounded-lg flex items-center justify-center">
-                                        <Package className="w-8 h-8 text-gray-400" />
-                                    </div>
-                                )}
+                                {(() => {
+                                    // Usar imagen de la variante si existe, sino usar imagen del producto
+                                    const variantImage =
+                                        firstItem?.productVariant.images?.[0]
+                                            ?.url;
+                                    const productImage =
+                                        firstItem?.productVariant.product
+                                            .images[0]?.url;
+                                    const imageUrl =
+                                        variantImage || productImage;
+
+                                    return imageUrl ? (
+                                        <Image
+                                            src={imageUrl}
+                                            alt={
+                                                firstItem.productVariant.product
+                                                    .name
+                                            }
+                                            width={120}
+                                            height={120}
+                                            className="rounded-lg object-cover"
+                                        />
+                                    ) : (
+                                        <div className="w-[120px] h-[120px] bg-gray-100 rounded-lg flex items-center justify-center">
+                                            <Package className="w-8 h-8 text-gray-400" />
+                                        </div>
+                                    );
+                                })()}
                             </div>
 
                             {/* Información del pedido */}

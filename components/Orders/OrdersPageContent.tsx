@@ -17,6 +17,7 @@ interface Order {
                 name: string;
                 images: Array<{ url: string }>;
             };
+            images?: Array<{ url: string }>;
         };
     }>;
 }

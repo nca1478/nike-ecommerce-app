@@ -37,6 +37,12 @@ async function getCurrentCart() {
                                         },
                                     },
                                 },
+                                images: {
+                                    orderBy: (images, { asc }) => [
+                                        asc(images.sortOrder),
+                                    ],
+                                    limit: 1,
+                                },
                             },
                         },
                     },
@@ -68,6 +74,12 @@ async function getCurrentCart() {
                                             limit: 1,
                                         },
                                     },
+                                },
+                                images: {
+                                    orderBy: (images, { asc }) => [
+                                        asc(images.sortOrder),
+                                    ],
+                                    limit: 1,
                                 },
                             },
                         },
@@ -114,8 +126,11 @@ export async function createStripeCheckoutSession(): Promise<
                 const price = variant.salePrice || variant.price;
                 const priceInCents = Math.round(parseFloat(price) * 100);
 
-                // Validar URL de imagen
-                const imageUrl = product.images[0]?.url;
+                // Usar imagen de la variante si existe, sino usar imagen del producto
+                const variantImage = variant.images?.[0]?.url;
+                const productImage = product.images[0]?.url;
+                const imageUrl = variantImage || productImage;
+
                 const isValidUrl =
                     imageUrl &&
                     (imageUrl.startsWith('http://') ||

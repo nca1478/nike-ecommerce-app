@@ -243,6 +243,12 @@ export async function getOrder(identifier: string): Promise<
                                             },
                                         },
                                     },
+                                    images: {
+                                        orderBy: (images, { asc }) => [
+                                            asc(images.sortOrder),
+                                        ],
+                                        limit: 1,
+                                    },
                                 },
                             },
                         },
@@ -279,6 +285,12 @@ export async function getOrder(identifier: string): Promise<
                                                         limit: 1,
                                                     },
                                                 },
+                                            },
+                                            images: {
+                                                orderBy: (images, { asc }) => [
+                                                    asc(images.sortOrder),
+                                                ],
+                                                limit: 1,
                                             },
                                         },
                                     },
@@ -319,15 +331,21 @@ export async function getOrder(identifier: string): Promise<
         const colorMap = new Map(colors.map((c) => [c.id, c.name]));
         const sizeMap = new Map(sizes.map((s) => [s.id, s.name]));
 
-        const itemsWithDetails = order.items.map((item) => ({
-            id: item.id,
-            productName: item.productVariant.product.name,
-            productImage: item.productVariant.product.images[0]?.url || '',
-            quantity: parseInt(item.quantity),
-            price: parseFloat(item.priceAtPurchase),
-            size: sizeMap.get(item.productVariant.sizeId) || '',
-            color: colorMap.get(item.productVariant.colorId) || '',
-        }));
+        const itemsWithDetails = order.items.map((item) => {
+            // Usar imagen de la variante si existe, sino usar imagen del producto
+            const variantImage = item.productVariant.images?.[0]?.url;
+            const productImage = item.productVariant.product.images[0]?.url;
+
+            return {
+                id: item.id,
+                productName: item.productVariant.product.name,
+                productImage: variantImage || productImage || '',
+                quantity: parseInt(item.quantity),
+                price: parseFloat(item.priceAtPurchase),
+                size: sizeMap.get(item.productVariant.sizeId) || '',
+                color: colorMap.get(item.productVariant.colorId) || '',
+            };
+        });
 
         return {
             success: true,
@@ -391,6 +409,12 @@ export async function getUserOrders(
                                             limit: 1,
                                         },
                                     },
+                                },
+                                images: {
+                                    orderBy: (images, { asc }) => [
+                                        asc(images.sortOrder),
+                                    ],
+                                    limit: 1,
                                 },
                             },
                         },
