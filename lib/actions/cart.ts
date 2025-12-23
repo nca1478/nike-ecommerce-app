@@ -51,7 +51,7 @@ async function getOrCreateCart(): Promise<string | null> {
             return cart.id;
         } else {
             // Usuario invitado
-            let guestSessionToken = await getGuestSessionCookie();
+            const guestSessionToken = await getGuestSessionCookie();
             let guestId: string | null = null;
 
             // Si hay sesión de invitado, buscar el guest record

@@ -2,7 +2,10 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { getRecommendedProducts } from '@/lib/actions/product';
+import {
+    getRecommendedProducts,
+    type RecommendedProduct,
+} from '@/lib/actions/product';
 import { Card } from '@/components';
 import { useI18n } from '@/lib/i18n/context';
 
@@ -12,7 +15,7 @@ interface RecommendedProductsProps {
 
 export function RecommendedProducts({ productId }: RecommendedProductsProps) {
     const { t } = useI18n();
-    const [products, setProducts] = useState<any[]>([]);
+    const [products, setProducts] = useState<RecommendedProduct[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {

@@ -12,14 +12,6 @@ export interface CookieOptions {
     maxAge: number;
 }
 
-const defaultCookieOptions: CookieOptions = {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    path: '/',
-    maxAge: COOKIE_MAX_AGE,
-};
-
 // Opciones específicas para guest session (más permisivas para producción)
 const guestCookieOptions: CookieOptions = {
     httpOnly: false, // Permitir acceso desde cliente para mejor compatibilidad
