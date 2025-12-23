@@ -170,7 +170,10 @@
             "yellow": "Yellow",
             "orange": "Orange",
             "pink": "Pink",
-            "grey": "Grey"
+            "grey": "Grey",
+            "purple": "Purple",
+            "brown": "Brown",
+            "navy": "Navy"
         },
         "priceRanges": {
             "under50": "Under $50",

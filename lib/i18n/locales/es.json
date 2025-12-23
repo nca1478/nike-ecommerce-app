@@ -170,7 +170,10 @@
             "yellow": "Amarillo",
             "orange": "Naranja",
             "pink": "Rosa",
-            "grey": "Gris"
+            "grey": "Gris",
+            "purple": "Morado",
+            "brown": "Marrón",
+            "navy": "Azul Marino"
         },
         "priceRanges": {
             "under50": "Menos de $50",

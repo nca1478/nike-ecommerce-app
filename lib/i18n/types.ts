@@ -173,6 +173,9 @@ export interface Translations {
             orange: string;
             pink: string;
             grey: string;
+            purple: string;
+            brown: string;
+            navy: string;
         };
         priceRanges: {
             under50: string;

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useI18n } from '@/lib/i18n';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { X, ChevronDown, ChevronUp, SlidersHorizontal } from 'lucide-react';
-import { filterOptions } from '@/lib/data/mock-products.data';
+import { getFilterOptions } from '@/lib/actions/filters';
 import {
     parseFilters,
     stringifyFilters,
@@ -29,6 +29,33 @@ export function Filters() {
         color: false,
         price: false,
     });
+
+    // State for dynamic filter options
+    const [filterOptions, setFilterOptions] = useState<{
+        genders: Array<{ label: string; value: string; id: string }>;
+        colors: Array<{
+            label: string;
+            value: string;
+            hex: string;
+            id: string;
+        }>;
+        sizes: Array<{ label: string; value: string; id: string }>;
+        brands: Array<{ label: string; value: string; id: string }>;
+        categories: Array<{ label: string; value: string; id: string }>;
+    } | null>(null);
+
+    // Load filter options from database
+    useEffect(() => {
+        const loadFilterOptions = async () => {
+            try {
+                const options = await getFilterOptions();
+                setFilterOptions(options);
+            } catch (error) {
+                console.error('Failed to load filter options:', error);
+            }
+        };
+        loadFilterOptions();
+    }, []);
 
     // Sync filters when URL changes
     useEffect(() => {
@@ -163,6 +190,30 @@ export function Filters() {
             { label: t.nav.unisex, value: 'unisex' },
         ];
 
+        // Static price ranges (these don't change often)
+        const priceRanges = [
+            { label: 'Under $50', min: 0, max: 50 },
+            { label: '$50 - $100', min: 50, max: 100 },
+            { label: '$100 - $150', min: 100, max: 150 },
+            { label: 'Over $150', min: 150, max: 999999 },
+        ];
+
+        // Show loading state if filter options haven't loaded yet
+        if (!filterOptions) {
+            return (
+                <div className="space-y-4">
+                    <div className="animate-pulse">
+                        <div className="h-4 bg-light-300 rounded w-3/4 mb-4"></div>
+                        <div className="space-y-2">
+                            <div className="h-8 bg-light-300 rounded"></div>
+                            <div className="h-8 bg-light-300 rounded"></div>
+                            <div className="h-8 bg-light-300 rounded"></div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
         return (
             <div className="space-y-4">
                 {/* Gender Filter */}
@@ -194,7 +245,7 @@ export function Filters() {
                 {/* Size Filter */}
                 <FilterSection title={t.products.size} section="size">
                     <div className="grid grid-cols-3 gap-2">
-                        {filterOptions.sizes.map((option) => (
+                        {filterOptions?.sizes?.map((option) => (
                             <button
                                 key={option.value}
                                 onClick={() =>
@@ -219,7 +270,7 @@ export function Filters() {
                 {/* Color Filter */}
                 <FilterSection title={t.products.color} section="color">
                     <div className="grid grid-cols-3 gap-3">
-                        {filterOptions.colors.map((option) => {
+                        {filterOptions?.colors?.map((option) => {
                             // Get translated color name
                             const translatedLabel =
                                 t.products.colors[
@@ -261,7 +312,7 @@ export function Filters() {
 
                 {/* Price Range Filter */}
                 <FilterSection title={t.products.price} section="price">
-                    {filterOptions.priceRanges.map((range) => {
+                    {priceRanges.map((range) => {
                         // Get translated price range label
                         let translatedLabel = range.label;
                         if (range.min === 0 && range.max === 50) {
