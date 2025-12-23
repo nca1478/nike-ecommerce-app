@@ -14,7 +14,7 @@ import {
     categoriesData,
     collectionsData,
     productsData,
-} from './seed-data';
+} from '../data/seed.data';
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL! });
 const db = drizzle(pool, { schema });

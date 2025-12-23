@@ -18,6 +18,7 @@ export const colorsData = [
     { name: 'Purple', slug: 'purple', hexCode: '#800080' },
     { name: 'Grey', slug: 'grey', hexCode: '#808080' },
     { name: 'Brown', slug: 'brown', hexCode: '#A52A2A' },
+    { name: 'Navy', slug: 'navy', hexCode: '#000080' },
 ];
 
 export const sizesData = [

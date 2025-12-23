@@ -1,8 +1,10 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { useI18n } from '@/lib/i18n';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { X, ChevronDown, ChevronUp, SlidersHorizontal } from 'lucide-react';
+import { filterOptions } from '@/lib/data/mock-products.data';
 import {
     parseFilters,
     stringifyFilters,
@@ -11,8 +13,6 @@ import {
     isFilterActive,
     type FilterParams,
 } from '@/lib/utils/query';
-import { filterOptions } from '@/lib/data/mock-products';
-import { useI18n } from '@/lib/i18n';
 
 export function Filters() {
     const router = useRouter();
