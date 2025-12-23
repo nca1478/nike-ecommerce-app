@@ -20,7 +20,7 @@ Una plataforma de comercio electrónico moderna y completa para la venta de calz
 
 Nike E-Commerce es una aplicación web full-stack que permite a los usuarios:
 
-- Explorar y filtrar productos de calzado Nike
+- Explorar y filtrar productos de calzado Nike.
 - Gestionar carritos de compra (usuarios autenticados e invitados)
 - Realizar compras seguras mediante Stripe
 - Gestionar pedidos y descargar facturas
