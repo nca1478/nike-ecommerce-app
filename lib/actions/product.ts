@@ -281,13 +281,46 @@ export async function getAllProducts(
                     FROM ${productVariants}
                     WHERE ${productVariants.productId} = ${products.id}
                 )`,
-                primaryImage: sql<string | null>`(
-                    SELECT url
-                    FROM ${productImages}
-                    WHERE ${productImages.productId} = ${products.id}
-                    ORDER BY ${productImages.isPrimary} DESC, ${productImages.sortOrder} ASC
-                    LIMIT 1
-                )`,
+                primaryImage:
+                    colorIds && colorIds.length === 1
+                        ? sql<string | null>`(
+                        SELECT COALESCE(
+                            (
+                                -- First try to get image for the specific color variant
+                                SELECT pi.url
+                                FROM ${productImages} pi
+                                LEFT JOIN ${productVariants} pv ON pi.variant_id = pv.id
+                                WHERE pi.product_id = ${products.id}
+                                AND pv.color_id = ${colorIds[0]}
+                                ORDER BY pi.is_primary DESC, pi.sort_order ASC
+                                LIMIT 1
+                            ),
+                            (
+                                -- Fallback to generic product images (no variant_id)
+                                SELECT pi.url
+                                FROM ${productImages} pi
+                                WHERE pi.product_id = ${products.id}
+                                AND pi.variant_id IS NULL
+                                ORDER BY pi.is_primary DESC, pi.sort_order ASC
+                                LIMIT 1
+                            ),
+                            (
+                                -- Final fallback to any image
+                                SELECT pi.url
+                                FROM ${productImages} pi
+                                WHERE pi.product_id = ${products.id}
+                                ORDER BY pi.is_primary DESC, pi.sort_order ASC
+                                LIMIT 1
+                            )
+                        )
+                    )`
+                        : sql<string | null>`(
+                        SELECT url
+                        FROM ${productImages}
+                        WHERE ${productImages.productId} = ${products.id}
+                        ORDER BY ${productImages.isPrimary} DESC, ${productImages.sortOrder} ASC
+                        LIMIT 1
+                    )`,
                 categoryName: categories.name,
                 categorySlug: categories.slug,
                 brandName: brands.name,
