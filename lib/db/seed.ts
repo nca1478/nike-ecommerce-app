@@ -442,14 +442,12 @@ async function seed() {
                     productData.folder,
                     imageName,
                 );
-                const destPath = path.join(
-                    uploadsDir,
-                    `${uuidv4()}-${imageName}`,
-                );
+                const uniqueFileName = `${uuidv4()}.${imageExtension}`;
+                const destPath = path.join(uploadsDir, uniqueFileName);
 
                 if (fs.existsSync(sourcePath)) {
                     fs.copyFileSync(sourcePath, destPath);
-                    const publicUrl = `/uploads/${path.basename(destPath)}`;
+                    const publicUrl = `/uploads/${uniqueFileName}`;
 
                     // Get all variant IDs for this color
                     const variantIds = colorVariantMap[color.slug];
