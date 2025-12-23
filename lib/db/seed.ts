@@ -230,6 +230,50 @@ const productsData = [
         basePrice: '75.00',
         salePrice: null,
     },
+    {
+        name: 'Sonic Fly',
+        description:
+            'Fast-paced lifestyle shoe for active kids who love adventure. Lightweight design with vibrant colors.',
+        category: 'lifestyle',
+        gender: 'kids',
+        folder: 'shoe-16',
+        colorVariants: ['black', 'blue', 'orange', 'purple'],
+        basePrice: '67.00',
+        salePrice: null,
+    },
+    {
+        name: 'Cosmic Runner',
+        description:
+            'Out-of-this-world running shoe designed for young athletes. Comfortable fit with stellar performance.',
+        category: 'running',
+        gender: 'kids',
+        folder: 'shoe-17',
+        colorVariants: ['blue', 'green', 'pink', 'red'],
+        basePrice: '52.00',
+        salePrice: null,
+    },
+    {
+        name: 'Flex Runner 4',
+        description:
+            'Flexible running shoe that moves with growing feet. Perfect for playground adventures and sports.',
+        category: 'running',
+        gender: 'kids',
+        folder: 'shoe-18',
+        colorVariants: ['black', 'green', 'grey', 'pink'],
+        basePrice: '45.00',
+        salePrice: null,
+    },
+    {
+        name: 'Air Max 270 Mini',
+        description:
+            'Junior version of the iconic Air Max with maximum comfort. Built for young basketball enthusiasts.',
+        category: 'basketball',
+        gender: 'kids',
+        folder: 'shoe-19',
+        colorVariants: ['blue', 'grey', 'pink', 'white'],
+        basePrice: '132.00',
+        salePrice: null,
+    },
 ];
 
 async function seed() {
