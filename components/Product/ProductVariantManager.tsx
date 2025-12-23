@@ -23,12 +23,19 @@ const VariantContext = createContext<VariantContextType | null>(null);
 export function VariantProvider({
     children,
     variants,
+    initialColorId,
 }: {
     children: ReactNode;
     variants: VariantWithImages[];
+    initialColorId?: string;
 }) {
+    // Find the initial variant based on colorId, or default to first variant
+    const initialVariant = initialColorId
+        ? variants.find((v) => v.colorId === initialColorId) || variants[0]
+        : variants[0];
+
     const [selectedVariant, setSelectedVariant] = useState(
-        variants[0] || {
+        initialVariant || {
             colorId: '',
             colorName: 'Default',
             colorHex: '#000000',
@@ -73,6 +80,17 @@ export function ColorVariantPickerClient({
 
     const handleSelect = (variant: VariantWithImages) => {
         setSelectedVariant(variant);
+
+        // Update URL with the selected color
+        const url = new URL(window.location.href);
+        if (variant.colorId && variant.colorId !== 'default') {
+            url.searchParams.set('color', variant.colorId);
+        } else {
+            url.searchParams.delete('color');
+        }
+
+        // Update URL without page reload
+        window.history.replaceState({}, '', url.toString());
     };
 
     const handleKeyDown = (

@@ -53,6 +53,7 @@ export interface ProductWithDetails {
     minPrice: string;
     maxPrice: string;
     primaryImage: string | null;
+    primaryColorId?: string | null; // Add color ID for the primary image
     category?: { id: string; name: string; slug: string };
     brand?: { id: string; name: string; slug: string };
     gender?: { id: string; label: string; slug: string };
@@ -321,6 +322,17 @@ export async function getAllProducts(
                         ORDER BY ${productImages.isPrimary} DESC, ${productImages.sortOrder} ASC
                         LIMIT 1
                     )`,
+                primaryColorId:
+                    colorIds && colorIds.length === 1
+                        ? sql<string | null>`${colorIds[0]}`
+                        : sql<string | null>`(
+                        SELECT pv.color_id
+                        FROM ${productImages} pi
+                        LEFT JOIN ${productVariants} pv ON pi.variant_id = pv.id
+                        WHERE pi.product_id = ${products.id}
+                        AND pi.is_primary = true
+                        LIMIT 1
+                    )`,
                 categoryName: categories.name,
                 categorySlug: categories.slug,
                 brandName: brands.name,
@@ -352,6 +364,7 @@ export async function getAllProducts(
                 minPrice: p.minPrice || '0',
                 maxPrice: p.maxPrice || '0',
                 primaryImage: p.primaryImage,
+                primaryColorId: p.primaryColorId,
                 category: p.categoryName
                     ? {
                           id: p.categoryId,
@@ -528,13 +541,14 @@ export interface RecommendedProduct {
     price: string;
     salePrice: string | null;
     primaryImage: string | null;
+    primaryColorId: string | null;
     category: string;
     brand: string;
 }
 
 /**
  * Get recommended products based on the current product
- * Returns products from the same category/brand/gender
+ * Returns products from the same category/brand/gender with varied color variants
  */
 export async function getRecommendedProducts(
     productId: string,
@@ -572,12 +586,53 @@ export async function getRecommendedProducts(
                     WHERE ${productVariants.productId} = ${products.id}
                     AND ${productVariants.salePrice} IS NOT NULL
                 )`,
+                // Get the first available variant image (more predictable than random)
                 primaryImage: sql<string | null>`(
-                    SELECT url
-                    FROM ${productImages}
-                    WHERE ${productImages.productId} = ${products.id}
-                    ORDER BY ${productImages.isPrimary} DESC, ${productImages.sortOrder} ASC
-                    LIMIT 1
+                    SELECT COALESCE(
+                        (
+                            -- Try to get first variant image (not primary)
+                            SELECT pi.url
+                            FROM ${productImages} pi
+                            LEFT JOIN ${productVariants} pv ON pi.variant_id = pv.id
+                            WHERE pi.product_id = ${products.id}
+                            AND pi.variant_id IS NOT NULL
+                            AND pi.is_primary = false
+                            ORDER BY pi.sort_order ASC
+                            LIMIT 1
+                        ),
+                        (
+                            -- Fallback to primary image
+                            SELECT pi.url
+                            FROM ${productImages} pi
+                            WHERE pi.product_id = ${products.id}
+                            ORDER BY pi.is_primary DESC, pi.sort_order ASC
+                            LIMIT 1
+                        )
+                    )
+                )`,
+                primaryColorId: sql<string | null>`(
+                    SELECT COALESCE(
+                        (
+                            -- Get the color ID for the first non-primary variant image
+                            SELECT pv.color_id
+                            FROM ${productImages} pi
+                            LEFT JOIN ${productVariants} pv ON pi.variant_id = pv.id
+                            WHERE pi.product_id = ${products.id}
+                            AND pi.variant_id IS NOT NULL
+                            AND pi.is_primary = false
+                            ORDER BY pi.sort_order ASC
+                            LIMIT 1
+                        ),
+                        (
+                            -- Fallback to primary image color
+                            SELECT pv.color_id
+                            FROM ${productImages} pi
+                            LEFT JOIN ${productVariants} pv ON pi.variant_id = pv.id
+                            WHERE pi.product_id = ${products.id}
+                            AND pi.is_primary = true
+                            LIMIT 1
+                        )
+                    )
                 )`,
                 categoryName: categories.name,
                 brandName: brands.name,
@@ -597,10 +652,10 @@ export async function getRecommendedProducts(
                 ),
             )
             .orderBy(desc(products.createdAt))
-            .limit(3);
+            .limit(6); // Get more products to have variety
 
         // Filter out products without valid images and transform
-        return recommendedData
+        const validProducts = recommendedData
             .filter((p) => p.primaryImage && p.primaryImage.trim() !== '')
             .map((p) => ({
                 id: p.id,
@@ -608,9 +663,13 @@ export async function getRecommendedProducts(
                 price: p.minPrice || '0',
                 salePrice: p.minSalePrice,
                 primaryImage: p.primaryImage,
+                primaryColorId: p.primaryColorId,
                 category: p.categoryName || 'Uncategorized',
                 brand: p.brandName || 'Unknown',
             }));
+
+        // Return only 3 products for display
+        return validProducts.slice(0, 3);
     } catch (error) {
         console.error('Error in getRecommendedProducts:', error);
         // Return empty array on error to prevent page crash

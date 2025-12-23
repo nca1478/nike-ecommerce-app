@@ -45,9 +45,13 @@ interface Product {
 
 interface ProductPageClientProps {
     product: Product | null;
+    selectedColorId?: string;
 }
 
-export default function ProductPageClient({ product }: ProductPageClientProps) {
+export default function ProductPageClient({
+    product,
+    selectedColorId,
+}: ProductPageClientProps) {
     const { t } = useI18n();
 
     if (!product) {
@@ -180,7 +184,10 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
             : null;
 
     return (
-        <VariantProvider variants={colorVariants}>
+        <VariantProvider
+            variants={colorVariants}
+            initialColorId={selectedColorId}
+        >
             <div className="min-h-screen bg-light-100">
                 {/* Main Product Section */}
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

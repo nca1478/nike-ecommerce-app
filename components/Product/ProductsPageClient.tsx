@@ -11,6 +11,7 @@ interface Product {
     name: string;
     description: string;
     primaryImage: string | null;
+    primaryColorId?: string | null;
     minPrice: string;
     category?: {
         name: string;
@@ -167,23 +168,26 @@ export function ProductsPageClient({
             {products.length > 0 ? (
                 <>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {products.map((product) => (
-                            <Link
-                                key={product.id}
-                                href={`/products/${product.id}`}
-                            >
-                                <Card
-                                    title={product.name}
-                                    description={product.description}
-                                    image={
-                                        product.primaryImage ||
-                                        '/placeholder-product.jpg'
-                                    }
-                                    price={parseFloat(product.minPrice)}
-                                    category={product.category?.name}
-                                />
-                            </Link>
-                        ))}
+                        {products.map((product) => {
+                            const href = product.primaryColorId
+                                ? `/products/${product.id}?color=${product.primaryColorId}`
+                                : `/products/${product.id}`;
+
+                            return (
+                                <Link key={product.id} href={href}>
+                                    <Card
+                                        title={product.name}
+                                        description={product.description}
+                                        image={
+                                            product.primaryImage ||
+                                            '/placeholder-product.jpg'
+                                        }
+                                        price={parseFloat(product.minPrice)}
+                                        category={product.category?.name}
+                                    />
+                                </Link>
+                            );
+                        })}
                     </div>
 
                     {/* Pagination */}

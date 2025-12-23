@@ -70,11 +70,13 @@ export function RecommendedProducts({ productId }: RecommendedProductsProps) {
                             : null;
                         const displayPrice = salePrice || price;
 
+                        // Create href with color parameter if available
+                        const href = product.primaryColorId
+                            ? `/products/${product.id}?color=${product.primaryColorId}`
+                            : `/products/${product.id}`;
+
                         return (
-                            <Link
-                                key={product.id}
-                                href={`/products/${product.id}`}
-                            >
+                            <Link key={product.id} href={href}>
                                 <Card
                                     title={product.name}
                                     description={product.category}
