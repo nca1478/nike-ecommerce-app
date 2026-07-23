@@ -3,7 +3,6 @@ import * as fs from 'fs';
 import { Pool } from 'pg';
 import * as path from 'path';
 import { eq } from 'drizzle-orm';
-import { v4 as uuidv4 } from 'uuid';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import * as schema from './schema';
 import {
@@ -23,28 +22,6 @@ async function seed() {
     console.log('🌱 Starting database seed...\n');
 
     try {
-        const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
-        if (!fs.existsSync(uploadsDir)) {
-            fs.mkdirSync(uploadsDir, { recursive: true });
-            console.log('✅ Created uploads directory\n');
-        }
-
-        // Clean up .avif, .webp and .jpg files from uploads directory
-        console.log('🧹 Cleaning up .avif, .webp and .jpg files...');
-        const files = fs.readdirSync(uploadsDir);
-        let deletedCount = 0;
-        for (const file of files) {
-            if (
-                file.endsWith('.avif') ||
-                file.endsWith('.webp') ||
-                file.endsWith('.jpg')
-            ) {
-                fs.unlinkSync(path.join(uploadsDir, file));
-                deletedCount++;
-            }
-        }
-        console.log(`✅ Deleted ${deletedCount} .avif, .webp and .jpg files\n`);
-
         console.log('📊 Seeding genders...');
         let genders = await db
             .insert(schema.genders)
@@ -219,7 +196,7 @@ async function seed() {
             ) {
                 const color = productColors[colorIndex];
 
-                // Copy and process image for this color variant
+                // Reference the source image directly (committed to git, stable across deploys)
                 const imageExtension = 'jpg'; // All are .jpg now
                 const imageName = `${productData.folder}-${color.slug}.${imageExtension}`;
                 const sourcePath = path.join(
@@ -229,12 +206,9 @@ async function seed() {
                     productData.folder,
                     imageName,
                 );
-                const uniqueFileName = `${uuidv4()}.${imageExtension}`;
-                const destPath = path.join(uploadsDir, uniqueFileName);
 
                 if (fs.existsSync(sourcePath)) {
-                    fs.copyFileSync(sourcePath, destPath);
-                    const publicUrl = `/uploads/${uniqueFileName}`;
+                    const publicUrl = `/shoes/${productData.folder}/${imageName}`;
 
                     // Get all variant IDs for this color
                     const variantIds = colorVariantMap[color.slug];
