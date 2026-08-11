@@ -148,6 +148,63 @@ export async function signOut(): Promise<ActionResult> {
 }
 
 /**
+ * Sanitizar callbackURL para aceptar solo rutas relativas internas
+ * (evita open redirect)
+ */
+function sanitizeCallbackURL(callbackURL: string): string {
+    if (!callbackURL) return '/';
+    // Rechazar protocolos (http/https/javascript/data) y URLs absolutas/protocol-relative
+    if (
+        callbackURL.startsWith('//') ||
+        /^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(callbackURL)
+    ) {
+        return '/';
+    }
+    // Asegurar que empiece con '/' (ruta interna)
+    return callbackURL.startsWith('/') ? callbackURL : `/${callbackURL}`;
+}
+
+/**
+ * Iniciar sesión con proveedor social (Google)
+ */
+export async function signInWithSocial(
+    provider: 'google',
+    callbackURL = '/',
+): Promise<ActionResult<{ url: string }>> {
+    try {
+        const sanitizedURL = sanitizeCallbackURL(callbackURL);
+
+        const result = await auth.api.signInSocial({
+            body: {
+                provider,
+                callbackURL: sanitizedURL,
+            },
+        });
+
+        if (!result || !result.url) {
+            return {
+                success: false,
+                error: 'Error al iniciar sesión con Google',
+            };
+        }
+
+        return {
+            success: true,
+            data: { url: result.url },
+        };
+    } catch (error) {
+        console.error('Error en signInWithSocial:', error);
+        return {
+            success: false,
+            error:
+                error instanceof Error
+                    ? error.message
+                    : 'Error al iniciar sesión con Google',
+        };
+    }
+}
+
+/**
  * Crear sesión de invitado
  */
 export async function createGuestSession(): Promise<
