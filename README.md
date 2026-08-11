@@ -34,6 +34,7 @@ Nike E-Commerce es una aplicación web full-stack que permite a los usuarios:
 - **Sistema de Variantes**: Múltiples colores y tallas por producto
 - **Carrito Persistente**: Funciona para usuarios autenticados e invitados
 - **Autenticación Segura**: Sistema de registro e inicio de sesión con Better Auth
+- **Inicio de Sesión con Google**: OAuth 2.0 con migración automática del carrito de invitado
 - **Procesamiento de Pagos**: Integración completa con Stripe
 - **Gestión de Pedidos**: Historial completo con seguimiento de estado
 - **Facturas PDF**: Generación y descarga automática de facturas
@@ -224,6 +225,10 @@ BETTER_AUTH_URL=http://localhost:3000
 STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key
 STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret_from_stripe_cli
+
+# Google OAuth (Credenciales de Google Cloud Console)
+GOOGLE_CLIENT_ID=your_google_client_id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your_google_client_secret
 ```
 
 ### 4. Variables de entorno Base de Datos
@@ -395,6 +400,31 @@ npm run predeploy        # Prepara para despliegue (DB + build)
 - ✅ Monitorea logs y errores
 
 ### Obtener Credenciales
+
+#### Google OAuth (Inicio de Sesión con Google)
+
+Para habilitar el inicio de sesión con Google:
+
+1. Ve a [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
+2. Crea un proyecto (o selecciona uno existente)
+3. Ve a **APIs & Services → Credentials → Create Credentials → OAuth Client ID**
+4. Elige **Web application** y configura:
+   - **Authorized redirect URIs**: `${BETTER_AUTH_URL}/api/auth/callback/google`
+     - Dev: `http://localhost:3000/api/auth/callback/google`
+     - Prod: `https://tu-dominio/api/auth/callback/google`
+   - **Authorized JS origins** (opcional; el redirect full-page no lo exige):
+     `http://localhost:3000` / tu dominio
+5. Copia el **Client ID** y el **Client Secret**:
+   - `GOOGLE_CLIENT_ID` → `GOOGLE_CLIENT_ID` en `.env`
+   - `GOOGLE_CLIENT_SECRET` → `GOOGLE_CLIENT_SECRET` en `.env`
+
+**Notas de seguridad**:
+
+- Las credenciales se usan **solo en servidor** (`lib/auth.ts`); nunca uses `NEXT_PUBLIC_*` para el secret.
+- El `callbackURL` de post-login se sanitiza para aceptar solo rutas internas (evita open redirect).
+- Better Auth gestiona automáticamente el estado `state`/PKCE de Google.
+- El carrito de invitado se migra al usuario autenticado también en el login OAuth.
+- Asegúrate de que el **Authorized redirect URI** coincida exactamente con `BETTER_AUTH_URL`.
 
 #### Stripe
 
