@@ -65,6 +65,7 @@ export interface Translations {
         orSignUpWith: string;
         continueWithGoogle: string;
         continueWithApple: string;
+        connectingWithGoogle: string;
         enterYourName: string;
         minimumCharacters: string;
         showPassword: string;
