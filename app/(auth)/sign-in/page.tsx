@@ -56,7 +56,7 @@ function SignInContent() {
                 </p>
             </div>
 
-            <SocialProviders />
+            <SocialProviders redirectTo={redirect} />
 
             <div className="relative">
                 <div className="absolute inset-0 flex items-center">
