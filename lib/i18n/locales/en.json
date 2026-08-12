@@ -72,6 +72,7 @@
         "accountCreatedSuccess": "Account created successfully!",
         "signedInSuccess": "Signed in successfully!",
         "errorRegisteringUser": "Error registering user",
+        "comingSoon": "This feature will be available soon",
         "unexpectedErrorTryAgain": "An unexpected error occurred. Please try again.",
         "bySigningUpAgree": "By signing up, you agree to our",
         "termsOfService": "Terms of Service",

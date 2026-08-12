@@ -72,6 +72,7 @@
         "accountCreatedSuccess": "¡Cuenta creada exitosamente!",
         "signedInSuccess": "¡Sesión iniciada exitosamente!",
         "errorRegisteringUser": "Error al registrar usuario",
+        "comingSoon": "Esta funcionalidad estará disponible en breve",
         "unexpectedErrorTryAgain": "Ocurrió un error inesperado. Por favor intenta de nuevo.",
         "bySigningUpAgree": "Al registrarte, aceptas nuestros",
         "termsOfService": "Términos de Servicio",

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { AuthForm, SocialProviders } from '@/components';
 import { signIn } from '@/lib/auth/actions';
+import { toast } from 'react-hot-toast';
 import { useState, Suspense } from 'react';
 import { useI18n } from '@/lib/i18n';
 
@@ -78,6 +79,7 @@ function SignInContent() {
             <div className="text-center">
                 <Link
                     href="#"
+                    onClick={() => toast.error(t.auth.comingSoon)}
                     className="text-caption text-dark-900 underline hover:no-underline"
                 >
                     {t.auth.forgotPassword}

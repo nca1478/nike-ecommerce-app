@@ -75,6 +75,7 @@ export interface Translations {
         signedInSuccess: string;
         errorRegisteringUser: string;
         unexpectedErrorTryAgain: string;
+        comingSoon: string;
         bySigningUpAgree: string;
         termsOfService: string;
         and: string;
